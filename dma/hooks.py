@@ -7,6 +7,13 @@ app_license = "MIT"
 
 # Includes in <head>
 # ------------------
+# include js, css files in header of desk.html
+# app_include_css = "/assets/dma/css/dma.css"
+app_include_js = "/assets/dma/js/dma.js"
+
+website_route_rules = [
+	{"from_route": "/d/<path:app_path>", "to_route": "c"},
+]
 
 # include js, css files in header of desk.html
 # app_include_css = "/assets/dma/css/dma.css"
@@ -60,6 +67,8 @@ app_license = "MIT"
 
 # Installation
 # ------------
+# before_install = "dma.install.before_install"
+after_install = "dma.install.after_install"
 
 # before_install = "dma.install.before_install"
 # after_install = "dma.install.after_install"
@@ -116,6 +125,14 @@ app_license = "MIT"
 # ---------------
 # Hook on document methods and events
 
+doc_events = {
+	"User": {
+		"after_insert": "changemakers.frappe_changemakers.doctype.changemakers_user_profile.changemakers_user_profile.create_user_profile",
+		"on_trash": [
+			"changemakers.frappe_changemakers.doctype.changemakers_user_profile.changemakers_user_profile.delete_user_profile",
+		],
+	}
+}
 # doc_events = {
 # 	"*": {
 # 		"on_update": "method",
@@ -213,3 +230,5 @@ app_license = "MIT"
 # auth_hooks = [
 # 	"dma.auth.validate"
 # ]
+
+website_route_rules = [{'from_route': '/desk/<path:app_path>', 'to_route': 'desk'},]

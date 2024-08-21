@@ -1,0 +1,25 @@
+labels:
+  rescue: Rescue
+  Toggle Language: Toggle Language
+  entitlement: ตรวจสอบสิทธิ
+  awareness_camp: Awareness Camp Records
+navigation:
+  dashboard: แดชบอร์ด
+  account: Account
+auth:
+  logout: Log Out
+  login: Log In
+  email: อีเมล์
+  password: รหัสผ่าน
+  sign_up: Sign Up
+preferences:
+  language: Preferred Language
+dashboard:
+  quick_links: 
+    header: Quick Links
+  cases:
+    header: เรคคอร์ด
+  services:
+    header: บริการ
+
+
