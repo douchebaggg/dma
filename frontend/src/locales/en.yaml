@@ -1,17 +1,60 @@
 labels:
-  rescue: Rescue
+  baskets: Basket Data
+  media: Media Data
+  oem: OEM Product Data
+  pallets: Pallet Data
+  process_order: Process Order
+  product_code: Product Code
   Toggle Language: Toggle Language
-navigation:
+  start_time: Start Time
+  duration: Duration
+  end_time: End Time
+  amount: Amount
+  code: Code
+  product: Product
+  material: Material Transfer
+  produced: Produced
+  order: Order
+  pallet_no: Pallet No
+  nums_of_times: Number of Times
+  invoice_no: Invoice No
+  product_name: Product Name
+  volume_no: Volume No
+  size: Size
+  pallet_doc: Pallet Document
+greeting:
+  hi: Hi
+nav:
   dashboard: Dashboard
+  document: Document
   account: Account
+account:
+  my_account: My Account
 auth:
   logout: Log Out
-  login: Log In
+  login: Login
   email: Email
   password: Password
-  sign_up: Sign Up
 preferences:
   language: Preferred Language
 dashboard:
-  quick_links: 
-    header: Quick Links
+  enter_data: 
+    header: Enter Data
+  warehouse:
+    header: Warehouse Data
+  today:
+    header: Today's Data
+button:
+  Cancel: Cancel
+  Save: Save
+
+basket:
+  date_select_header: You can select a date for the document list
+  date_select: Select Date for Document List
+  doctype_select: Select Document
+  update_sucess: Doctype Update Success
+  update_fail: Doctype Update Fail
+  doctype: Doctype
+  after: has been updated
+  note: You can click on the doctype name to view details in Frappe
+  preview: Preview Basket Table data

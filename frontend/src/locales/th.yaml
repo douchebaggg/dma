@@ -1,25 +1,61 @@
 labels:
-  rescue: Rescue
+  baskets: ป้อนตะแกรง
+  baskets_no: จำนวนตะแกรง
+  media: ป้อนมีเดีย
+  oem: ป้อนสินค้าเปลือย
+  pallets: ป้อนพาเลท
   Toggle Language: Toggle Language
-  entitlement: ตรวจสอบสิทธิ
-  awareness_camp: Awareness Camp Records
-navigation:
+  process_order: รายการ Process Order
+  product_code: รายการ Product Code
+  start_time: เวลาเริ่มต้น
+  duration: ระยะเวลา (นาที)
+  end_time: เวลาสิ้นสุด
+  amount: จำนวน
+  code: Code
+  product: ผลิตภัณฑ์
+  material: โอนวัตถุดิบ
+  produced: ผลิตแล้ว
+  order: สั่ง
+  pallet_no: เลขที่พาเลท
+  nums_of_times: จำนวนครั้ง
+  invoice_no: เลขที่ใบกำกับ
+  product_name: ชื่อสินค้า
+  volume_no: เล่มที่
+  size: ขนาด
+  pallet_doc: เอกสารพาเลท
+greeting:
+  hi: สวัสดี
+nav:
   dashboard: แดชบอร์ด
-  account: Account
+  document: เอกสาร
+  account: บัญชี
+account:
+  my_account: บัญชีของฉัน
 auth:
-  logout: Log Out
-  login: Log In
-  email: อีเมล์
+  logout: ออกจากระบบ
+  login: เข้าสู่ระบบ
+  email: อีเมล
   password: รหัสผ่าน
-  sign_up: Sign Up
 preferences:
-  language: Preferred Language
+  language: เปลี่ยนภาษา
 dashboard:
-  quick_links: 
-    header: Quick Links
-  cases:
-    header: เรคคอร์ด
-  services:
-    header: บริการ
+  enter_data: 
+    header: ป้อนข้อมูล
+  warehouse:
+    header: ข้อมูลโกดัง
+  today:
+    header: ข้อมูลวันนี้
+button:
+  Cancel: ยกเลิก
+  Save: บันทึก
 
-
+basket:
+  date_select_header: คุณสามารถเลือกวันที่สำหรับรายการเอกสาร
+  date_select: เลือกวันที่สำหรับรายการเอกสาร
+  doctype_select: เลือกเอกสาร
+  update_sucess: อัปเดตเอกสารสำเร็จ
+  update_fail: อัปเดตเอกสารล้มเหลว
+  doctype: เอกสาร
+  after: อัปเดตแล้ว
+  note: คุณสามารถคลิ๊กที่ชื่อเอกสารสำหรับดูรายละเอียดที่ Frappe
+  preview: ตัวอย่างตารางข้อมูลตะแกรง
