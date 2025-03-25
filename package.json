@@ -5,9 +5,12 @@
     "frappe-ui"
   ],
   "scripts": {
-    "postinstall": "cd frontend && yarn install",
+    "postinstall": "patch-package",
     "dev": "cd frontend && yarn dev",
     "test": "jest",
     "build": "cd frontend && yarn build"
+  },
+  "dependencies": {
+    "patch-package": "^8.0.0"
   }
 }
