@@ -8,6 +8,10 @@ import entitlementRoutes from "./entitlement"
 import awarenessCampRoutes from "./awarenessCamp"
 import { session } from "../data/session"
 import { userResource } from "../data/user"
+import basketRoutes  from "./basket"
+import mediaRoutes from "./media"
+import oemProductsRoutes from "./oemProducts"
+import palletsRoutes from "./pallets"
 import caseRoutes from "./cases"
 import docType from "./doctype"
 
@@ -29,18 +33,18 @@ const routes: Array<RouteRecordRaw> = [
 			{
 				path: "dashboard",
 				component: () => import("@/views/Dashboard.vue"),
-				meta: { requiresAuth: true }
+				//meta: { requiresAuth: true }
 			},
 			{
 				name: "MyAccountPage",
 				path: "Account",
 				component: () => import("@/views/Account.vue"),
-				meta: { requiresAuth: true }
+				//meta: { requiresAuth: true }
 			},
 			{
 				path: "docType",
 				component:() => import("@/views/DocType.vue"),
-				meta: { requiresAuth: true }
+				//meta: { requiresAuth: true }
 			},
 		],
 	},
@@ -50,6 +54,10 @@ const routes: Array<RouteRecordRaw> = [
 	...entitlementRoutes,
 	...awarenessCampRoutes,
 	...caseRoutes,
+	...basketRoutes,
+	...mediaRoutes,
+	...oemProductsRoutes,
+	...palletsRoutes,
 	...docType
 	
 ]
@@ -67,7 +75,7 @@ router.beforeEach(async (to, from, next) => {
 		console.log(userResource)
 		
 	} catch (error) {
-		isLoggedIn = false
+		isLoggedIn.value = false
 		userResource.reload()
 		console.log(error,to, userResource)
 	}
@@ -84,12 +92,11 @@ router.beforeEach(async (to, from, next) => {
 			try {
 				await userResource.reload()			
 			} catch (error) {
-				isLoggedIn = false
+				session.user = null
 				console.log(error,to, userResource)
 			}
 			next();
 		} else {
-			//store.dispatch('logout');
 			console.log("Login error")
 			next({ name: 'Login' });
 			

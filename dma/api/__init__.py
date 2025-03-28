@@ -3,7 +3,7 @@ from mimetypes import guess_type
 
 import frappe
 
-from dma import __mobile_version__ as mobile_version
+#from dma import __mobile_version__ as mobile_version
 from dma.utils.form import get_doctype_title_field
 
 MOBILE_SUPPORTED_FIELD_TYPES = [
@@ -22,14 +22,13 @@ MOBILE_SUPPORTED_FIELD_TYPES = [
 ]
 
 
-@frappe.whitelist()
+@frappe.whitelist(allow_guest=True)
 def get_app_version():
-	mobile_test = 1
-	#return mobile_version
-	return mobile_test
+	mobile_version = 1
+	return mobile_version
 
 
-@frappe.whitelist()
+@frappe.whitelist(allow_guest=True)
 def get_current_user_info():
 	current_user = frappe.session.user
 	frappe.msgprint('test',current_user);

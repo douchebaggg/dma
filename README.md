@@ -1,7 +1,7 @@
-## dma
+## DMA
 
-Diokan Mobile App
+Testing for mobile
 
 #### License
 
-MIT
+mit

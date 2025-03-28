@@ -52,7 +52,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, ref, shallowRef } from "vue"
+import { computed, onMounted, ref, shallowRef, defineProps } from "vue"
 import { useRouter } from "vue-router"
 import { useSchemaForm } from "formvuelate"
 import { SchemaFormWithValidation } from "@/utils/form"

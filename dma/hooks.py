@@ -1,19 +1,28 @@
 app_name = "dma"
-app_title = "dma"
-app_publisher = "ALZO Group"
-app_description = "Diokan Mobile App"
-app_email = "info@alzo.io"
-app_license = "MIT"
+app_title = "DMA"
+app_publisher = "admin@example.com"
+app_description = "Testing for mobile"
+app_email = "admin@example.com"
+app_license = "mit"
+
+# Apps
+# ------------------
+
+# required_apps = []
+
+# Each item in the list will be shown as an app in the apps page
+# add_to_apps_screen = [
+# 	{
+# 		"name": "dma",
+# 		"logo": "/assets/dma/logo.png",
+# 		"title": "DMA",
+# 		"route": "/dma",
+# 		"has_permission": "dma.api.permission.has_app_permission"
+# 	}
+# ]
 
 # Includes in <head>
 # ------------------
-# include js, css files in header of desk.html
-# app_include_css = "/assets/dma/css/dma.css"
-app_include_js = "/assets/dma/js/dma.js"
-
-website_route_rules = [
-	{"from_route": "/d/<path:app_path>", "to_route": "c"},
-]
 
 # include js, css files in header of desk.html
 # app_include_css = "/assets/dma/css/dma.css"
@@ -38,6 +47,11 @@ website_route_rules = [
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
 # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}
+
+# Svg Icons
+# ------------------
+# include app icons in desk
+# app_include_icons = "dma/public/icons.svg"
 
 # Home Pages
 # ----------
@@ -67,8 +81,6 @@ website_route_rules = [
 
 # Installation
 # ------------
-# before_install = "dma.install.before_install"
-after_install = "dma.install.after_install"
 
 # before_install = "dma.install.before_install"
 # after_install = "dma.install.after_install"
@@ -125,14 +137,6 @@ after_install = "dma.install.after_install"
 # ---------------
 # Hook on document methods and events
 
-doc_events = {
-	"User": {
-		"after_insert": "changemakers.frappe_changemakers.doctype.changemakers_user_profile.changemakers_user_profile.create_user_profile",
-		"on_trash": [
-			"changemakers.frappe_changemakers.doctype.changemakers_user_profile.changemakers_user_profile.delete_user_profile",
-		],
-	}
-}
 # doc_events = {
 # 	"*": {
 # 		"on_update": "method",
@@ -231,4 +235,10 @@ doc_events = {
 # 	"dma.auth.validate"
 # ]
 
-website_route_rules = [{'from_route': '/desk/<path:app_path>', 'to_route': 'desk'},]
+# Automatically update python controller files with type annotations for this app.
+# export_python_type_annotations = True
+
+# default_log_clearing_doctypes = {
+# 	"Logging DocType Name": 30  # days to retain logs
+# }
+

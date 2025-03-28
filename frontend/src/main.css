@@ -1,16 +1,30 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "frappe-ui/src/style.css";
+@import "tailwindcss";
+ion-modal {
+	--height: auto;
+}
 
-@layer components {
-    .form-input,
-    .form-textarea,
-    .form-select {
-      @apply rounded-md border-0 bg-gray-100 py-1 text-base leading-5 placeholder-gray-700 focus:bg-gray-200 focus:shadow-none focus:ring-0;
-    }
-  
-    .form-checkbox {
-      @apply rounded-md bg-gray-100 text-blue-500 focus:ring-0 focus-visible:ring-1;
-    }
-  }
-  
+input:disabled {
+	--webkit-text-fill-color: var(--tw-text-color);
+	opacity: 0.9; /* required on iOS */
+	color: var(--tw-text-color);
+}
+
+/* For Webkit-based browsers (Chrome, Safari and Opera) */
+input::-webkit-date-and-time-value {
+	text-align: left;
+}
+
+body {
+	-webkit-tap-highlight-color: transparent;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+	display: none;
+}
+
+/* For IE, Edge and Firefox */
+.hide-scrollbar {
+	-ms-overflow-style: none; /* IE and Edge */
+	scrollbar-width: none; /* Firefox */
+}

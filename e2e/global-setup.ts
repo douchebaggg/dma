@@ -4,7 +4,7 @@ async function globalSetup(config: FullConfig) {
   const requestContext = await request.newContext();
 
   await requestContext.post(
-    "http://localhost:8001/api/method/login",
+    "http://erp.alzo.io:10580/api/method/login",
     {
       data: {
         usr: "Administrator",

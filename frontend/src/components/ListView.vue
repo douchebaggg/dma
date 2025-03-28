@@ -2,16 +2,15 @@
 	<ion-page>
 		<ion-content :fullscreen="true">
 			<!-- Header -->
-			<div
-				class="flex w-full flex-row items-center justify-between bg-white p-4"
-			>
+			<ion-toolbar>
+				<ion-buttons slot="start">
+					<ion-back-button defaultHref @click="router.back()"></ion-back-button>
+				</ion-buttons>
+			<ion-title>Back</ion-title>
+			</ion-toolbar>
+			<div class="flex w-full flex-row items-center justify-between bg-white p-4">
 				<div class="flex flex-row items-center">
-					<Button
-						icon-left="chevron-left"
-						appearance="minimal"
-						@click="router.back()"
-					>
-					</Button>
+					
 					<h2 class="p-0 text-2xl font-semibold text-gray-900">
 						{{ doctype }}
 					</h2>
@@ -274,9 +273,9 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, reactive, onUpdated } from "vue"
+import { ref, computed, reactive, onUpdated, defineProps } from "vue"
 import { createResource, FeatherIcon, Badge } from "frappe-ui"
-import { IonPage, IonContent, IonModal } from "@ionic/vue"
+import { IonPage, IonContent, IonModal, IonBackButton,IonButtons,IonToolbar,IonTitle } from "@ionic/vue"
 import { useRouter } from "vue-router"
 import { IonItem, IonList, IonSelect, IonSelectOption } from "@ionic/vue"
 import FormField from "./core/FormField.vue"

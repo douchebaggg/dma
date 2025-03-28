@@ -3,18 +3,18 @@ import App from "./App.vue"
 import router from "./router"
 import { session } from "./data/session"
 import dayjs from "@/utils/dayjs"
-
 import {
 	Button,
 	Badge,
-	Input,
 	setConfig,
 	frappeRequest,
 	pageMetaPlugin,
 	resourcesPlugin,
 	Card,
+	Select
 } from "frappe-ui"
-
+import  Input  from "./components/Input.vue"
+//import TextInput from "../node_modules/frappe-ui/src/components/TextInput.vue"
 import { IonicVue } from "@ionic/vue"
 
 /* Core CSS required for Ionic components to work properly */
@@ -43,10 +43,10 @@ import {
 } from "./typing/InjectionKeys"
 
 import { createI18n } from "vue-i18n"
-
+import VueDatePicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css'
 // Import messages from yaml files
 import messages from "@intlify/unplugin-vue-i18n/messages"
-
 const i18n = createI18n({
 	legacy: false,
 	locale: "en", // TODO: fetch from preferences later
@@ -60,12 +60,12 @@ const app = createApp(App)
 setConfig("resourceFetcher", frappeRequest)
 app.use(resourcesPlugin)
 app.use(pageMetaPlugin)
-
 app.component("Button", Button)
 app.component("Badge", Badge)
 app.component("Input", Input)
 app.component("Card", Card)
-
+app.component("Select",Select)
+app.component('VueDatePicker', VueDatePicker);
 app.use(router)
 app.use(IonicVue, { mode: "md" })
 
@@ -80,10 +80,5 @@ app.config.globalProperties.$dayjs = dayjs
 router.isReady().then(() => {
 	app.mount("#app")
 })
-
-
-
-
-
 // Internationalization
 app.use(i18n)

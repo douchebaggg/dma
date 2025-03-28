@@ -1,13 +1,25 @@
-/** @type {import('tailwindcss').Config} */
-module.exports = {
+export default{
+	presets: [import("frappe-ui/src/utils/tailwind.config")],
 	content: [
 		"./index.html",
-		"./src/**/*.{js,ts,jsx,tsx,vue}",
-		"./node_modules/frappe-ui/src/components/**/*.{vue,js,ts}",
+		"./src/**/*.{vue,js,ts,jsx,tsx}",
+		"./node_modules/frappe-ui/src/components/**/*.{vue,js,ts,jsx,tsx}",
+		"../node_modules/frappe-ui/src/components/**/*.{vue,js,ts,jsx,tsx}",
 	],
 	theme: {
-		extend: {},
+		extend: {
+			screens: {
+				standalone: {
+					raw: "(display-mode: standalone)",
+				},
+			},
+			padding: {
+				"safe-top": "env(safe-area-inset-top)",
+				"safe-right": "env(safe-area-inset-right)",
+				"safe-bottom": "env(safe-area-inset-bottom)",
+				"safe-left": "env(safe-area-inset-left)",
+			},
+		},
 	},
 	plugins: [],
-	presets: [require("frappe-ui/src/utils/tailwind.config")],
 }

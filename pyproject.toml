@@ -1,9 +1,9 @@
 [project]
 name = "dma"
 authors = [
-    { name = "ALZO Group", email = "info@alzo.io"}
+    { name = "admin@example.com", email = "admin@example.com"}
 ]
-description = "Diokan Mobile App"
+description = "Testing for mobile"
 requires-python = ">=3.10"
 readme = "README.md"
 dynamic = ["version"]

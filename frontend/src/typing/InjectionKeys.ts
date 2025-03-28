@@ -2,7 +2,6 @@ import { Session } from "@/data/session"
 import { UserResource } from "@/data/user"
 import type { InjectionKey } from "vue"
 import { Dayjs, ConfigType } from "dayjs"
-
 type dayjs = (date?: ConfigType) => Dayjs
 
 export const sessionInjectionKey = Symbol() as InjectionKey<Session>

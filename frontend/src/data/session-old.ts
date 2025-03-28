@@ -4,7 +4,7 @@ import { userResource } from "./user";
 import { userEmail } from "./userStore";
 import router from "@/router";
 import { getCookie } from "typescript-cookie";
-import { isLocalNetwork, currentHost, apiPort } from "@/utils/devIP";
+import { isLocalNetwork, currentHost, apiPort } from "@/utils/checkIP";
 import { toastController } from "@ionic/vue";
 import axios from "axios";
 export function sessionUser() {

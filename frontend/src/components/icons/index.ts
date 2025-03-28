@@ -6,6 +6,9 @@ import ProfileIcon from "@/components/icons/Profile.vue"
 import AwarenessCampIcon from "@/components/icons/AwarenessCamp.vue"
 import TicketIcon from "@/components/icons/Ticket.vue"
 import NewTicketIcon from "@/components/icons/NewTicket.vue"
+import Baskets from "@/components/icons/Baskets.vue"
+import Pallets from "@/components/icons/Pallets.vue"
+import Media from "@/components/icons/Media.vue"
 import Document from "./Document.vue"
 export const FrappeIcons = {
 	BeneficiaryIcon,
@@ -16,5 +19,8 @@ export const FrappeIcons = {
 	ProfileIcon,
 	TicketIcon,
 	NewTicketIcon,
-	Document
+	Document,
+	Baskets,
+	Pallets,
+	Media
 }

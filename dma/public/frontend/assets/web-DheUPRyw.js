@@ -1,0 +1,2 @@
+import{W as n}from"./DocType-CG8j9IJR.js";import"./index-BmCyWIqS.js";import"./frappe-ui-DoeaObP-.js";class e extends n{constructor(){super(),this._lastWindow=null}async open(s){this._lastWindow=window.open(s.url,s.windowName||"_blank")}async close(){return new Promise((s,o)=>{this._lastWindow!=null?(this._lastWindow.close(),this._lastWindow=null,s()):o("No active window to close!")})}}const w=new e;export{w as Browser,e as BrowserWeb};
+//# sourceMappingURL=web-DheUPRyw.js.map
