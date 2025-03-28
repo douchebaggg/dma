@@ -2,7 +2,6 @@ import { computed, reactive, ComputedRef } from "vue";
 import { userResource } from "./user";
 import { userEmail,} from "./userStore";
 import router from "@/router";
-import { getCookie } from "typescript-cookie";
 import { isLocalNetwork, currentHost, apiPort } from "@/utils/checkIP";
 import { toastController } from "@ionic/vue";
 import { FrappeApp } from "frappe-js-sdk";
@@ -14,7 +13,8 @@ const frappe = new FrappeApp(api,);
 const auth = frappe.auth();
 
 export function sessionUser() {
-    let _sessionUser = getCookie("user_id") 
+	const cookies = new URLSearchParams(document.cookie.split("; ").join("&"))
+	let _sessionUser = cookies.get("user_id")
     if (!_sessionUser || _sessionUser === "Guest") {
         _sessionUser = userEmail.value;
     }
