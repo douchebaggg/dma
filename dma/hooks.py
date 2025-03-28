@@ -31,7 +31,9 @@ app_license = "mit"
 # include js, css files in header of web template
 # web_include_css = "/assets/dma/css/dma.css"
 # web_include_js = "/assets/dma/js/dma.js"
-
+website_route_rules = [
+	{"from_route": "/d/<path:app_path>", "to_route": "d"},
+]
 # include custom scss in every website theme (without file extension ".scss")
 # website_theme_scss = "dma/public/scss/website"
 
