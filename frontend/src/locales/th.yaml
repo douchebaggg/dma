@@ -1,6 +1,6 @@
 labels:
   baskets: ป้อนตะแกรง
-  baskets_no: จำนวนตะแกรง
+  baskets_no: เลขที่ตะแกรง
   media: ป้อนมีเดีย
   oem: ป้อนสินค้าเปลือย
   pallets: ป้อนพาเลท
@@ -16,13 +16,7 @@ labels:
   material: โอนวัตถุดิบ
   produced: ผลิตแล้ว
   order: สั่ง
-  pallet_no: เลขที่พาเลท
-  nums_of_times: จำนวนครั้ง
-  invoice_no: เลขที่ใบกำกับ
-  product_name: ชื่อสินค้า
-  volume_no: เล่มที่
-  size: ขนาด
-  pallet_doc: เอกสารพาเลท
+
 greeting:
   hi: สวัสดี
 nav:
@@ -50,12 +44,23 @@ button:
   Save: บันทึก
 
 basket:
+  header: ป้อนข้อมูลและรายงานตะแกรง
   date_select_header: คุณสามารถเลือกวันที่สำหรับรายการเอกสาร
   date_select: เลือกวันที่สำหรับรายการเอกสาร
-  doctype_select: เลือกเอกสาร
+  doctype_select: เลือก Product Code
   update_sucess: อัปเดตเอกสารสำเร็จ
   update_fail: อัปเดตเอกสารล้มเหลว
   doctype: เอกสาร
   after: อัปเดตแล้ว
   note: คุณสามารถคลิ๊กที่ชื่อเอกสารสำหรับดูรายละเอียดที่ Frappe
   preview: ตัวอย่างตารางข้อมูลตะแกรง
+
+pallets:
+  header: รายละเอียด Pallets
+  time: เวลา
+  invoice_no: เลขที่ใบกำกับ
+  code: Code
+  product_name: ชื่อสินค้า
+  hash_pallet: พาเลท
+  start: เริ่ม
+  minute: นาที

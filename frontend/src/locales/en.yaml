@@ -1,5 +1,6 @@
 labels:
   baskets: Basket Data
+  baskets_no: Baskets No
   media: Media Data
   oem: OEM Product Data
   pallets: Pallet Data
@@ -15,13 +16,6 @@ labels:
   material: Material Transfer
   produced: Produced
   order: Order
-  pallet_no: Pallet No
-  nums_of_times: Number of Times
-  invoice_no: Invoice No
-  product_name: Product Name
-  volume_no: Volume No
-  size: Size
-  pallet_doc: Pallet Document
 greeting:
   hi: Hi
 nav:
@@ -49,12 +43,23 @@ button:
   Save: Save
 
 basket:
+  header: Basket Entry
   date_select_header: You can select a date for the document list
   date_select: Select Date for Document List
-  doctype_select: Select Document
+  doctype_select: Select Product Code
   update_sucess: Doctype Update Success
   update_fail: Doctype Update Fail
   doctype: Doctype
   after: has been updated
   note: You can click on the doctype name to view details in Frappe
   preview: Preview Basket Table data
+
+pallets:
+  header: Palletizing Entry
+  time: Time
+  invoice_no: Invoice No
+  code: Code
+  product_name: Product Name
+  hash_pallet: Pallet
+  start: Start
+  minute: Minute

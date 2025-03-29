@@ -9,7 +9,7 @@
 			</ion-toolbar>
 		</ion-header>
 		<ion-content>
-			<h2 class="ion-text-center ion-margin">Basket Entry</h2>
+			<h2 class="ion-text-center ion-margin">{{ t('basket.header')}}</h2>
 		<!-- input -->
 		
 		<Card class="rounded-xl m-2 pb-14">
@@ -28,12 +28,16 @@
 			  @ionCancel="closePopover"
 			  @ionDismiss="closePopover"
               >
-                <ion-select-option v-for="doctype in basketList" :key="doctype" :value="doctype">
-                  {{ doctype }}
+                <ion-select-option v-for="order in workOrderList" 
+				:key="order.doc_name" 
+				:value="`${order.doc_name}|${order.work_order}`">
+                {{ order.work_order }}
                 </ion-select-option>
               </ion-select>
 
 			<form>
+			<Input class="rounded-xl py-1" name="startTime" type="number" inputmode="numeric" :label="t('labels.baskets_no')" v-model="basketNo"
+				style="outline: none; padding-left: 1rem; border: solid 1px grey;" />
 			<Input class="rounded-xl py-1" name="startTime" type="time" :label="t('labels.start_time')" v-model="startTime"
 				style="outline: none; padding-left: 1rem; border: solid 1px grey;" />
 			<Input class="rounded-xl py-1" name="timeInmins" type="number" :label="t('labels.duration')" inputmode="numeric" v-model="timeInMins"
@@ -98,21 +102,20 @@ IonModal
 } from "@ionic/vue";
 import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
-import { FrappeApp } from "frappe-js-sdk";
-
+import { frappeSDK } from "@/utils/frappeSDK";
 const { t } = useI18n();
 const startTime = ref<string>('')
 const timeInMins = ref<number | any>('')
 const endTime = ref<string>('')
 const amount = ref<number | any>('')
+const basketNo = ref<number | any>('')
 const dateValue = ref(null)
 const router = useRouter()
-const api = `http://192.168.10.105/`
-const frappe = new FrappeApp (api);
-const db = frappe.db()
+const { db } = frappeSDK()
 let displayDoctype = ref(null)
 const basketList = ref([])
-const doctypeSelector = ref(basketList.value[0]);
+const workOrderList = ref([])
+const doctypeSelector = ref(workOrderList.value[0]);
 const timeCalculate = (): void => {
   if (!startTime.value || !timeInMins.value) {
     endTime.value = ''; 
@@ -135,21 +138,45 @@ const timeCalculate = (): void => {
 };
   watch([startTime, timeInMins], timeCalculate);
 
-const selectDoctype = async (doctype: string) => {
+const selectDoctype = async (doctype?: string) => {
 	const getBasket = await db.getDocList('Basket Entry',{
-		fields: ['name', 'creation'],
+		fields: ['name', 'item', 'creation',],
 		limit: 10, 
     	filters: [['posting_date','=',getDate.value]],
 		orderBy: { field: 'modified',order: 'desc',} 
   })
-  basketList.value = getBasket.map(doc => doc.name)
+
+  //map to full doctype to get child table data
+  basketList.value = await Promise.all(
+    getBasket.map(async (doc) => {
+      const basketPO = await db.getDoc('Basket Entry', doc.name);
+      return {
+        name: doc.name,
+        item: doc.item,
+		work_order: basketPO.work_order
+          ? basketPO.work_order.map((wo:any) => ({
+              work_order: wo.item,  // Work Order Item
+              doc_name: doc.name, // Basket Entry Doc Name
+            }))
+          : [],
+      };
+    })
+  );
+  workOrderList.value = basketList.value.flatMap((doc) =>
+    doc.work_order.map((wo:any) => ({
+      work_order: wo.work_order, // Work Order Item
+      doc_name: wo.doc_name, // Basket Entry Doc Name
+    }))
+  );
+  //console.log("Basket List ",basketList.value)
+  console.log("Work Order List ",workOrderList.value)
+  //console.log("Doctype Selector ",doctypeSelector.value)
   if(basketList.value.length > 0){
 	console.log("List of ", doctype, " Basket Entry for today" )
   }
   else {
 	console.log(getDate.value, "No Basket Entry for selected day")
   }
-  
 };
 
 const closePopover = () => {
@@ -165,48 +192,50 @@ const getDate = computed(() => {
 	}
 
 });
-watch([doctypeSelector,dateValue], (newDoctype:any) => {
-	if(newDoctype){
-		selectDoctype(newDoctype);
-		getLocal();
-	}
-	else {
-		selectDoctype(doctypeSelector.value);
-		getLocal();
-	}
+watch(dateValue, (newDate) => {
+  if (newDate) {
+    selectDoctype();
+    getLocal();
+  }
 });
-
 onMounted(() => {
-  	selectDoctype(doctypeSelector.value);
+  selectDoctype();
+  getLocal();
 });
 
 const saveData = async () => {
   // Create the doctype
   try {
-	const currentDoc = await db.getDoc("Basket Entry", doctypeSelector.value);
+	const [docNameFromSelector, selectWorkOrder] = doctypeSelector.value.split("|");
+	const currentDoc = await db.getDoc("Basket Entry", docNameFromSelector);
 	const baskets_table = currentDoc.baskets || [];
-	const basketNo = baskets_table.length + 1;
-    baskets_table.push({
-		basket_no: basketNo,
-		from_time: startTime.value,
-		time_in_mins: timeInMins.value,
-		qty: amount.value,
-		to_time: endTime.value,
-    });
 
-    const doc = await db.updateDoc("Basket Entry", doctypeSelector.value, {
+	const latestBasketNo = baskets_table.length > 0 
+      ? Math.max(...baskets_table.map((basket:any)=> basket.basket_no)) + 1 
+      : 1; 
+
+    const newBasketNo = basketNo.value ? parseInt(basketNo.value) : latestBasketNo;
+    baskets_table.push({
+      basket_no: newBasketNo,
+      from_time: startTime.value,
+      time_in_mins: timeInMins.value,
+      qty: amount.value,
+      to_time: endTime.value,
+	  item_code: selectWorkOrder
+    });
+    const doc = await db.updateDoc("Basket Entry", docNameFromSelector, {
 		baskets: baskets_table,
     });
 
     displayDoctype.value = doc; // Set response to be displayed
-	console.log("docname is ", doctypeSelector.value)
+	console.log("docname is ", docNameFromSelector)
 	console.log(displayDoctype.value)
   } catch (error) {
     console.error(error);
   }
 };
 const dynamicLink = async () =>{
-	const dynamicValue = `${api}/app/testing-doctype/${displayDoctype.value.name}`;
+	//const dynamicValue = `${api}/app/testing-doctype/${displayDoctype.value.name}`;
 	//await Browser.open({ url: dynamicValue }); 
 }
 
@@ -215,6 +244,7 @@ const clearData = () => {
 	timeInMins.value = ''
 	endTime.value = ''
 	amount.value = ''
+	basketNo.value = ''
 }
 const getLocal = () => {
 	const local = localStorage.getItem('preferredLanguage');
