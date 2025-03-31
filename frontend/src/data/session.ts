@@ -1,22 +1,18 @@
 import { computed, reactive, ComputedRef } from "vue";
 import { userResource } from "./user";
-import { userEmail,} from "./userStore";
 import router from "@/router";
-import { isLocalNetwork, currentHost, apiPort } from "@/utils/checkIP";
 import { toastController } from "@ionic/vue";
-import { FrappeApp } from "frappe-js-sdk";
+import { frappeSDK } from "@/utils/frappeSDK";
 import { createResource } from "frappe-ui";
 import axios from "axios";
-
-const api = isLocalNetwork() ? `http://${currentHost}:${apiPort}` : `http://erp.alzo.io:10580`;
-const frappe = new FrappeApp(api,);
-const auth = frappe.auth();
+import { urlPort,url } from "@/utils/checkIP";
+const { auth } = frappeSDK();
 
 export function sessionUser() {
 	const cookies = new URLSearchParams(document.cookie.split("; ").join("&"))
 	let _sessionUser = cookies.get("user_id")
     if (!_sessionUser || _sessionUser === "Guest") {
-        _sessionUser = userEmail.value;
+        _sessionUser = null
     }
     if (_sessionUser === "Guest") {       
         _sessionUser = null;
@@ -43,6 +39,7 @@ export interface Session {
     login: {
         loading: boolean;
         submit: (credentials: LoginCredentials) => Promise<void>; 
+        error: boolean;
     };
     logout: {
         loading: boolean;
@@ -55,6 +52,7 @@ export interface Session {
 const sessionState = reactive({
     login: {
         loading: false,
+        error: false,
         async submit({ email, password }: LoginCredentials) {
             sessionState.login.loading = true;
             try {
@@ -62,9 +60,11 @@ const sessionState = reactive({
                 userResource.reload();
                 sessionState.user = sessionUser();
                 router.replace("/tabs/dashboard");
+                sessionState.login.error = false;
                 console.log("Login success");
             } catch (error) {
                 presentToast("Your email or password is incorrect");
+                sessionState.login.error = true;
                 console.error("Login error:", error);
             } finally {
                 sessionState.login.loading = false;
@@ -72,7 +72,7 @@ const sessionState = reactive({
         },
     },
     logout: createResource({
-        url: `${api}/api/method/logout`,
+        url: `${url}/api/method/logout`,
         onSuccess() {
             userResource.reset();
             sessionState.user = sessionUser();
@@ -86,10 +86,10 @@ const sessionState = reactive({
     user: sessionUser(),
 });
 
-// Computed property must be declared separately
+
 const isLoggedIn = computed(() => !!sessionState.user);
 
 export const session: Session = {
     ...sessionState,
-    isLoggedIn, // Assign computed separately
+    isLoggedIn,
 };

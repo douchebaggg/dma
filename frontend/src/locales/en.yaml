@@ -41,11 +41,13 @@ dashboard:
 button:
   Cancel: Cancel
   Save: Save
+  Previous: Previous
+  Next: Next
 
 basket:
   header: Basket Entry
   date_select_header: You can select a date for the document list
-  date_select: Select Date for Document List
+  date_select: Select Date for Baskets List
   doctype_select: Select Product Code
   update_sucess: Doctype Update Success
   update_fail: Doctype Update Fail
@@ -56,6 +58,7 @@ basket:
 
 pallets:
   header: Palletizing Entry
+  date_select: Select Date for Pallets List
   time: Time
   invoice_no: Invoice No
   code: Code
@@ -63,3 +66,15 @@ pallets:
   hash_pallet: Pallet
   start: Start
   minute: Minute
+  
+pagination:
+  page: Page
+  of: of
+  first: First
+  last: Last
+  total: Total
+  items: Items
+  showing: Showing
+  to: to
+  entries: entries
+  no_entries_found: No entries found

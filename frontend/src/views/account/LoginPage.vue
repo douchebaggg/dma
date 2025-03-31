@@ -3,7 +3,7 @@
 		<ion-content :fullscreen="true">
 			<div class="m-4 flex h-full flex-col justify-center">
 				<Card class="border-0 shadow-[3px_4px_14px_5px_rgba(0,_0,_0,_0.35)] ion-margin">
-					<h1 class="pb-5 text-center text-2xl font-bold text-gray-800">
+					<h1 class="pb-5 text-center text-xl font-bold text-gray-800">
 						Login to ALZO Mobile App
 					</h1>
 					<form class="flex flex-col space-y-3 ion-margin" @submit.prevent="submit">
@@ -26,14 +26,15 @@
 							:label="t('auth.password')"
               style="outline: none; padding-left: 1rem; border: solid 1px grey;"
 						/>
-						<Button
+						<Button 
 							class="rounded-xl  text-white ion-margin-top bg-[#171717]"
               :variant="'solid'"
 
               size="md"
 							:loading="session.login.loading"
 							>{{ t("auth.login") }}</Button>
-            <Button 
+            <Button
+               v-if="loginFailed"
               class="rounded-xl text-white ion-margin-top bg-[#171717]" 
               :variant="'solid'"
               size="md"
@@ -48,31 +49,32 @@
 </template>
 
 <script lang="ts" setup>
-import { inject, onMounted } from "vue";
+import { inject, onMounted, ref, computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { IonPage, IonContent } from "@ionic/vue";
 import { sessionInjectionKey } from "@/typing/InjectionKeys";
-import { userEmail } from "@/data/userStore";
 import { Browser } from "@capacitor/browser";
-import { isLocalNetwork, currentHost, apiPort } from "@/utils/checkIP";
+import { url } from "@/utils/checkIP";
 import axios from 'axios'
 import router from "@/router";
 const { t } = useI18n();
 const session = inject(sessionInjectionKey);
-const api = isLocalNetwork() ? `http://${currentHost}:${apiPort}` : `http://erp.alzo.io:10580`;
-function submit(e: Event) {
+const loginFailed = computed(() => session.login.error); 
+const api = url;
+async function submit(e: Event) {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
     const email = formData.get("email")?.toString() || "";
     const password = formData.get("password")?.toString() || "";
 	
     if (email) {
-        userEmail.value = email; 
-        if (session && session.login) {
-            session.login.submit({ email, password });
-        } 
+        try {
+          await session.login.submit({ email, password });
+        } catch (error) {
+          console.error("Login error:", error);
+        }
       }
- }
+}
 //another login 
 
 const oauthLogin = async () => {

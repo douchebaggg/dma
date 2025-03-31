@@ -81,13 +81,11 @@ import {
 	IonTitle,
 	IonContent,
 } from "@ionic/vue"
-import { FrappeApp } from "frappe-js-sdk"
-import { isLocalNetwork, currentHost, apiPort } from "@/utils/checkIP"
+import { urlPort } from "@/utils/checkIP"
+import { frappeSDK } from "@/utils/frappeSDK"
 const session = inject(sessionInjectionKey)
 const user = inject(userResourceInjectionKey)
-const api = isLocalNetwork() ? `http://${currentHost}:${apiPort}` : `http://erp.alzo.io:10580`;
-const frappe = new FrappeApp(api) 
-const call = frappe.call();
+const { call } = frappeSDK();
 const appVersion = ref(null)
 const getApp = async() => {
 	const res = await call.get('frappe.api.get_app_version');

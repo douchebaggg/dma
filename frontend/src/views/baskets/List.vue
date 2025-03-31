@@ -22,7 +22,6 @@
 					<ion-datetime :locale="getLocal()" presentation="date" id="date" v-model="dateValue"></ion-datetime>
 				</ion-modal>
 			</div>
-
 			<ion-select class="py-2" aria-label="Doctype" v-model="doctypeSelector" interface="popover" :placeholder="t('basket.doctype_select')" fill="outline"
               @ionChange="closePopover"
 			  @ionCancel="closePopover"
@@ -67,6 +66,7 @@
 			<p>{{ t("basket.doctype") }} <a class="font-semibold text-sky-600 text-lg" href="#" @click="dynamicLink">{{ displayDoctype.name }}</a> {{ t("basket.after") }}</p>
 			<p>{{ t("basket.note") }}</p>
 			<h4 v-if="displayDoctype?.baskets?.length">{{ t("basket.preview") }}</h4>
+		
 		<ion-grid class="m-2 border-1 bg-[#171717] text-white" v-if="displayDoctype?.baskets?.length">
 			<ion-row class="font-semibold border-b-1">
 				<ion-col class="font-semibold border-r-1">{{ t("labels.baskets_no") }}</ion-col>
@@ -75,7 +75,7 @@
 				<ion-col class="font-semibold border-r-1">{{ t("labels.end_time") }}</ion-col>
 				<ion-col class="font-semibold">{{ t("labels.amount") }}</ion-col>
 			</ion-row>
-			<ion-row  v-for="(row, index) in displayDoctype.baskets" :key="index">
+			<ion-row  v-for="(row, index) in paginatedBaskets" :key="index">
 				<ion-col class="border-r-1">{{ row.basket_no }}</ion-col>
 				<ion-col class="border-r-1">{{ row.from_time }}</ion-col>
 				<ion-col class="border-r-1">{{ row.to_time }}</ion-col>
@@ -83,6 +83,34 @@
 				<ion-col>{{ row.qty }}</ion-col>
 			</ion-row>
       </ion-grid>
+	  <div class="flex justify-center space-x-5 ion-margin-top ion-padding-bottom" v-if="displayDoctype?.baskets?.length > rowsPerPage">
+			<Button 
+        		class="rounded-xl text-white bg-[#171717] w-14 h-4"
+        		:variant="'solid'"
+        		:disabled="currentPage === 1"
+        		@click="firstPage"
+        		size="sm"> {{ t("pagination.first") }} </Button>
+      		<Button 
+        		class="rounded-xl text-white bg-[#171717] w-12 h-4"
+        		:variant="'solid'"
+        		:disabled="currentPage === 1"
+        		@click="previousPage"
+        		size="sm"> < </Button>
+      		<span class="">{{ t("pagination.page") }} {{ currentPage }} / {{ totalPages }}</span>
+      		<Button 
+        		class="rounded-xl text-white bg-[#171717] w-12 h-4"
+        		:variant="'solid'"
+        		:disabled="currentPage === totalPages"
+        		@click="nextPage"
+        		size="sm"> > </Button>
+			<Button 
+        		class="rounded-xl text-white bg-[#171717] w-14 h-4"
+        		:variant="'solid'"
+        		:disabled="currentPage === totalPages"
+        		@click="lastPage"
+        		size="sm"> {{ t("pagination.last") }} </Button>
+    	</div>
+
 		</div>
 		</ion-content>
 	</ion-page>
@@ -91,7 +119,7 @@
 
 <script setup lang="ts">
 import { ref, watch, onMounted, computed} from "vue";
-import { IonPage,IonContent,IonHeader,IonLabel,
+import { IonPage,IonContent,IonHeader,
 IonToolbar,
 IonBackButton,IonButtons,
 IonTitle,
@@ -116,6 +144,9 @@ let displayDoctype = ref(null)
 const basketList = ref([])
 const workOrderList = ref([])
 const doctypeSelector = ref(workOrderList.value[0]);
+const rowsPerPage = 5;
+const currentPage = ref(1);
+
 const timeCalculate = (): void => {
   if (!startTime.value || !timeInMins.value) {
     endTime.value = ''; 
@@ -192,6 +223,7 @@ const getDate = computed(() => {
 	}
 
 });
+
 watch(dateValue, (newDate) => {
   if (newDate) {
     selectDoctype();
@@ -228,16 +260,13 @@ const saveData = async () => {
     });
 
     displayDoctype.value = doc; // Set response to be displayed
+	currentPage.value = 1;
 	console.log("docname is ", docNameFromSelector)
 	console.log(displayDoctype.value)
   } catch (error) {
     console.error(error);
   }
 };
-const dynamicLink = async () =>{
-	//const dynamicValue = `${api}/app/testing-doctype/${displayDoctype.value.name}`;
-	//await Browser.open({ url: dynamicValue }); 
-}
 
 const clearData = () => {
 	startTime.value = ''
@@ -254,6 +283,38 @@ const getLocal = () => {
 	else {
 		return 'en-GB'
 	}
+}
+
+//pagination
+const paginatedBaskets = computed(() => {
+  if (!displayDoctype.value?.baskets) return [];
+  const start = (currentPage.value - 1) * rowsPerPage;
+  const end = start + rowsPerPage;
+  return displayDoctype.value.baskets.slice(start, end);
+});
+const totalPages = computed(() => {
+  return Math.ceil(displayDoctype.value?.baskets?.length / rowsPerPage);
+});
+const nextPage = () => {
+  if (currentPage.value < totalPages.value) {
+	currentPage.value++;
+  }
+};
+const previousPage = () => {
+  if (currentPage.value > 1) {
+	currentPage.value--;
+  }
+};
+
+const firstPage = () => {
+  currentPage.value = 1;
+};
+const lastPage = () => {
+  currentPage.value = totalPages.value;
+};
+const dynamicLink = async () =>{
+	//const dynamicValue = `${api}/app/testing-doctype/${displayDoctype.value.name}`;
+	//await Browser.open({ url: dynamicValue }); 
 }
 //if Frappe-js-sdk cannot post 
 /*	if(axiosError) {

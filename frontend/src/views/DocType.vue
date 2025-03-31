@@ -35,32 +35,22 @@ import {
   IonRefresherContent,
   IonItem
 } from "@ionic/vue"
-import { FrappeApp } from "frappe-js-sdk";
 import { onMounted, ref } from "vue";
 //import { RouterLink } from "vue-router";
 import DoctypeCreate from "./doctype/DoctypeCreate.vue";
-import { isLocalNetwork, currentHost, apiPort  } from "@/utils/checkIP";
+import { urlPort  } from "@/utils/checkIP";
 import ListDoctype from "./doctype/ListDoctype.vue";
 import { App } from "@capacitor/app"
 import { Browser } from "@capacitor/browser";
-
+import { frappeSDK } from "@/utils/frappeSDK";
 onMounted(() => {
 	getDoctype()
 })
-const api = isLocalNetwork() ? `http://${currentHost}:${apiPort}` : `http://erp.alzo.io:10580`;
 const displayDoc = ref(null)
 const displayWorkOrder = ref(null)
-const frappe = new FrappeApp (api);
-const db = frappe.db()
+const { db } = frappeSDK()
 const message = ref('');
 
-const testLink = async () => {
-  const link = isLocalNetwork()
-    ? `http://${currentHost}:${apiPort}`
-    : `http://erp.alzo.io:10580`;
-
-  await Browser.open({ url: link });
-};
 
 const getDoctype = async () => {
   const allDoctype = await db.getDocList('Testing Doctype', { 

@@ -10,4 +10,5 @@ export function isLocalNetwork() {
 }
 export const currentHost = window.location.hostname;
 export const apiPort = 8080; 
-//const apiUrl = isLocalNetwork() ? `http://${currentHost}:${apiPort}/api/method` : `http://erp.alzo.io:10580/api/method`;
+export const urlPort = isLocalNetwork() ? `http://${currentHost}:${apiPort}` : import.meta.env.VITE_API_URL
+export const url = isLocalNetwork() ? `http://192.168.10.105` : import.meta.env.VITE_API_URL

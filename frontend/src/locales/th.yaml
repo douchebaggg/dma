@@ -42,6 +42,8 @@ dashboard:
 button:
   Cancel: ยกเลิก
   Save: บันทึก
+  Previous: ก่อนหน้า
+  Next: ถัดไป
 
 basket:
   header: ป้อนข้อมูลและรายงานตะแกรง
@@ -64,3 +66,13 @@ pallets:
   hash_pallet: พาเลท
   start: เริ่ม
   minute: นาที
+
+pagination:
+  first: หน้าแรก
+  last: สุดท้าย
+  page: หน้า
+  of: ของ
+  total: ทั้งหมด
+  showing: แสดง
+  to: ถึง
+  entries: รายการ

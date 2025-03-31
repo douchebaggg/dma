@@ -1,9 +1,8 @@
 import { FrappeApp } from "frappe-js-sdk";
-import { isLocalNetwork, currentHost, apiPort } from "./checkIP";
-const api = isLocalNetwork() ? `http://${currentHost}:${apiPort}` : `http://erp.alzo.io:10580`;
+import { urlPort, url } from "./checkIP";
 
 export const frappeSDK = () => {
-    const frappe = new FrappeApp(api)
+    const frappe = new FrappeApp(url)
     return {
         auth: frappe.auth(),
         db: frappe.db(),
