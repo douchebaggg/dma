@@ -1,7 +1,7 @@
 labels:
   baskets: Basket Data
   baskets_no: Baskets No
-  media: Media Data
+  media: Pressure Steam Sterilizer
   oem: OEM Product Data
   pallets: Pallet Data
   process_order: Process Order
@@ -16,6 +16,8 @@ labels:
   material: Material Transfer
   produced: Produced
   order: Order
+  no_item: No Item to Display
+  date_of: Date
 greeting:
   hi: Hi
 nav:
@@ -33,7 +35,7 @@ preferences:
   language: Preferred Language
 dashboard:
   enter_data: 
-    header: Enter Data
+    header: Production Data
   warehouse:
     header: Warehouse Data
   today:
@@ -43,6 +45,7 @@ button:
   Save: Save
   Previous: Previous
   Next: Next
+  Ok: Done
 
 basket:
   header: Basket Entry
@@ -58,7 +61,8 @@ basket:
 
 pallets:
   header: Palletizing Entry
-  date_select: Select Date for Pallets List
+  date_select: Select Date Range for Pallets List
+  doctype_select: Baskets Ready for Palletizing
   time: Time
   invoice_no: Invoice No
   code: Code
@@ -66,6 +70,8 @@ pallets:
   hash_pallet: Pallet
   start: Start
   minute: Minute
+  select_code: Select Basket Code
+  lang: en-EN
   
 pagination:
   page: Page

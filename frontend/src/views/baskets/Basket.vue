@@ -137,12 +137,12 @@ const timeInMins = ref<number | any>('')
 const endTime = ref<string>('')
 const amount = ref<number | any>('')
 const basketNo = ref<number | any>('')
-const dateValue = ref(null)
+const dateValue = ref<any>(null)
 const router = useRouter()
 const { db } = frappeSDK()
-let displayDoctype = ref(null)
-const basketList = ref([])
-const workOrderList = ref([])
+let displayDoctype = ref<any>(null)
+const basketList = ref<any>([])
+const workOrderList = ref<any>([])
 const doctypeSelector = ref(workOrderList.value[0]);
 const rowsPerPage = 5;
 const currentPage = ref(1);
@@ -193,7 +193,7 @@ const selectDoctype = async (doctype?: string) => {
       };
     })
   );
-  workOrderList.value = basketList.value.flatMap((doc) =>
+  workOrderList.value = basketList.value.flatMap((doc:any) =>
     doc.work_order.map((wo:any) => ({
       work_order: wo.work_order, // Work Order Item
       doc_name: wo.doc_name, // Basket Entry Doc Name

@@ -7,14 +7,14 @@
 					<h3 class="text-xl font-semibold text-gray-900">
 						{{ t("dashboard.enter_data.header") }}
 					</h3>
-					<div class="mt-3 grid grid-cols-2 gap-5">
+					<div class="mt-3 grid grid-cols-2 gap-5 ">
 						<RouterLink :to="{ name: 'BasketEntry' }" v-slot="{ href }">
 							<a
 								:href="href"
-								class="flex flex-col items-center gap-3 rounded-xl bg-white p-[14px] shadow-md"
+								class="flex flex-col items-center gap-3 rounded-xl bg-white p-[14px] shadow-md h-34"
 							>
 								<FrappeIcons.Baskets />
-								<h3 class="text-sm font-medium text-gray-900">
+								<h3 class="text-sm font-medium text-center text-gray-900">
 								{{ t("labels.baskets") }}
 								</h3>
 							</a>
@@ -22,7 +22,7 @@
 						<RouterLink :to="{ name: 'MediaEntry' }" v-slot="{ href }">
 							<a
 								:href="href"
-								class="flex flex-col items-center gap-3 rounded-xl bg-white p-[14px] shadow-md"
+								class="flex flex-col items-center gap-3 rounded-xl bg-white p-[14px] shadow-md h-34"
 							>
 								<FrappeIcons.Media />
 								<h3 class="text-sm font-medium text-gray-900">
@@ -42,7 +42,7 @@
 						<RouterLink :to="{ name: 'OEM_productsEntry' }" v-slot="{ href }">
 							<a
 								:href="href"
-								class="flex flex-col items-center gap-3 rounded-xl bg-white p-[14px] shadow-md"
+								class="flex flex-col items-center gap-3 rounded-xl bg-white p-[14px] shadow-md h-34"
 							>
 								<FrappeIcons.TicketIcon />
 								<h3 class="text-sm font-medium text-gray-900">
@@ -53,7 +53,7 @@
 						<RouterLink :to="{ name: 'PalletsEntry' }" v-slot="{ href }">
 							<a
 								:href="href"
-								class="flex flex-col items-center gap-3 rounded-xl bg-white p-[14px] shadow-md"
+								class="flex flex-col items-center gap-3 rounded-xl bg-white p-[14px] shadow-md h-34"
 							>
 								<FrappeIcons.Pallets />
 								<h3 class=" text-sm font-medium text-gray-900">
@@ -70,29 +70,8 @@
 					<h3 class="text-xl font-semibold text-gray-900 w-36">
 						{{ t("dashboard.today.header",) }}
 					</h3>					
-				<!-- Select Code-->
-				<ion-list class="w-96">
-					<ion-item>
-						<ion-select aria-label="Fruit" interface="action-sheet" placeholder="Select Code"
-						@ionChange="handleChange($event)"
-						@ionCancel="handleCancel()"
-						@ionDismiss="handleDismiss()">
-						<ion-select-option value="UCVALS">UCVALS</ion-select-option>
-						<ion-select-option value="UCVAL">UCVAL</ion-select-option>
-						<ion-select-option value="CCH6E">CCH6E</ion-select-option>
-						<ion-select-option value="JOCC#">JOCC#</ion-select-option>
-					</ion-select>
-				</ion-item>
-			</ion-list>
 				</div>
 
-
-					<div>
-						<ion-datetime-button datetime="datetime"></ion-datetime-button>
-						<ion-modal :keep-contents-mounted="true">
-						<ion-datetime id="datetime"></ion-datetime>
-						</ion-modal>
-					</div>
 				<div class="flex flex-col gap-[2px]">
 						<RouterLink
 							:to="{ name: 'Entitlement RequestList' }"
@@ -164,15 +143,6 @@
 	});*/
 
 	//for ion-select handle
-	const  handleChange = (ev:CustomEvent) => {
-		console.log('ionChange value is : ' + ev.detail.value);
-	}
-	const handleCancel = () => {
-		console.log('ionCancel' + 'User Cancel');
-	}
-	const handleDismiss = () => {
-		console.log('ionDismiss fired');
-	}
 
 	//beneficiaryDoc.reload();
 

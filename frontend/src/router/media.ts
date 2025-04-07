@@ -1,24 +1,11 @@
 import { RouteRecordRaw } from "vue-router"
-import MediaListPage from "@/views/media/List.vue"
-import MediaFormView from "@/views/media/Details.vue"
-import MediaDetailsView from "@/views/media/Form.vue"
+import MediaListPage from "@/views/media/Media.vue"
 
 const routes: Array<RouteRecordRaw> = [
 	{
 		name: "MediaEntry",
 		path: "/media",
 		component: MediaListPage,
-	},
-	{
-		name: "NewMediaForm",
-		path: "/media/new",
-		component: MediaFormView,
-	},
-	{
-		name: "MediaForm",
-		path: "/media/:id",
-		props: true,
-		component: MediaDetailsView,
 	},
 ]
 

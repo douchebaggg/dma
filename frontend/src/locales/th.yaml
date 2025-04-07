@@ -1,9 +1,9 @@
 labels:
-  baskets: ป้อนตะแกรง
+  baskets: ป้อนข้อมูลและรายงานตะแกรง
   baskets_no: เลขที่ตะแกรง
-  media: ป้อนมีเดีย
+  media: บันทึกหม้อฆ่าเชื้อ
   oem: ป้อนสินค้าเปลือย
-  pallets: ป้อนพาเลท
+  pallets: สร้างใบกำกับพาเลท
   Toggle Language: Toggle Language
   process_order: รายการ Process Order
   product_code: รายการ Product Code
@@ -16,6 +16,8 @@ labels:
   material: โอนวัตถุดิบ
   produced: ผลิตแล้ว
   order: สั่ง
+  no_item: ไม่มีรายการ
+  date_of: ของวันที่
 
 greeting:
   hi: สวัสดี
@@ -34,9 +36,9 @@ preferences:
   language: เปลี่ยนภาษา
 dashboard:
   enter_data: 
-    header: ป้อนข้อมูล
+    header: ข้อมูลฝ่ายผลิต
   warehouse:
-    header: ข้อมูลโกดัง
+    header: ข้อมูลโกดังสินค้า
   today:
     header: ข้อมูลวันนี้
 button:
@@ -44,6 +46,7 @@ button:
   Save: บันทึก
   Previous: ก่อนหน้า
   Next: ถัดไป
+  Ok: ตกลง
 
 basket:
   header: ป้อนข้อมูลและรายงานตะแกรง
@@ -55,17 +58,21 @@ basket:
   doctype: เอกสาร
   after: อัปเดตแล้ว
   note: คุณสามารถคลิ๊กที่ชื่อเอกสารสำหรับดูรายละเอียดที่ Frappe
-  preview: ตัวอย่างตารางข้อมูลตะแกรง
+  preview: ตัวอย่างตารางข้อมูลตะแกรง  
 
 pallets:
-  header: รายละเอียด Pallets
+  header: สร้างใบกำกับพาเลต
+  date_select: เลือกช่วงวันที่สำหรับรายการเอกสาร
+  doctype_select: ตะแกรงที่พร้อมจัดพาเลต
   time: เวลา
   invoice_no: เลขที่ใบกำกับ
   code: Code
   product_name: ชื่อสินค้า
-  hash_pallet: พาเลท
+  hash_pallet: พาเลต
   start: เริ่ม
   minute: นาที
+  select_code: เลือกเลขที่ตะแกรง
+  lang: th-TH
 
 pagination:
   first: หน้าแรก
