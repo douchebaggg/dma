@@ -32,7 +32,7 @@ app_license = "mit"
 # web_include_css = "/assets/dma/css/dma.css"
 # web_include_js = "/assets/dma/js/dma.js"
 website_route_rules = [
-	{"from_route": "/d/<path:app_path>", "to_route": "d"},
+	{"from_route": "/dma/<path:app_path>", "to_route": "dma"},
 ]
 # include custom scss in every website theme (without file extension ".scss")
 # website_theme_scss = "dma/public/scss/website"
