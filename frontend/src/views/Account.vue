@@ -8,7 +8,21 @@
 		<ion-content :fullscreen="true" :scroll-events="true">
 			<div class="flex h-full flex-col justify-between">
 				<div v-if="user.data" class="m-6 flex flex-col">
-					<Card class="mb-4 rounded-xl">
+					<ion-card class=" rounded-xl border-1">
+						<div class="flex justify-end ion-margin">
+							<ion-icon
+								v-if="isDarkMode"
+								class="text-2xl cursor-pointer text-yellow-300"
+								:icon="moon"
+								@click="toggleTheme"
+							/>
+							<ion-icon
+								v-else
+								class="text-2xl cursor-pointer text-orange-300"
+								:icon="sunny"
+								@click="toggleTheme"
+							/>
+						</div>
 						<div class="flex items-center justify-center py-5">
 							<Avatar
 							  	:shape="'square'"
@@ -20,9 +34,9 @@
 							/>
 						</div>
 						<div class="flex-col items-start justify-start ion-margin">
+							<ion-label>{{ t('preferences.language') }}</ion-label>
 							<Input
 								class="rounded-xl py-2"
-								:label="t('preferences.language')"
 								type="select"
 								:options="availableLanguages"
 								v-model="locale"
@@ -34,9 +48,9 @@
 								"
 							/>
 						</div>
-					</Card>
+					</ion-card>
 					<Button
-						class="rounded-xl ion-margin-top text-white bg-red-600"
+						class="rounded-xl ion-margin-top text-white w-full hover:bg-red-800 bg-red-700"
               			:variant="'solid'"
 						theme="red"
 						size="md"
@@ -45,7 +59,7 @@
 				</div>
 				<div v-else class="m-6 flex flex-col items-center"> 
 					<Button
-						class="rounded-2xl ion-margin-top text-white bg-red-600 w-full"
+						class="rounded-xl ion-margin-top text-white w-full hover:bg-red-800 bg-red-700"
               			:variant="'solid'"
 						theme="red"
 						size="md"
@@ -67,7 +81,7 @@
 <script lang="ts" setup>
 import { inject, watch, onMounted, ref } from "vue"
 import { useI18n } from "vue-i18n"
-import { Avatar, createResource } from "frappe-ui"
+import { Avatar, createResource, Button } from "frappe-ui"
 import {
 	sessionInjectionKey,
 	userResourceInjectionKey,
@@ -80,11 +94,15 @@ import {
 	IonToolbar,
 	IonTitle,
 	IonContent,
+	IonCard,
+	IonIcon,
+	IonLabel
 } from "@ionic/vue"
+import { moon, sunny } from "ionicons/icons"
 import { urlPort } from "@/utils/checkIP"
 import { frappeSDK } from "@/utils/frappeSDK"
-const session = inject(sessionInjectionKey)
-const user = inject(userResourceInjectionKey)
+const session = <any>inject(sessionInjectionKey)
+const user = <any>inject(userResourceInjectionKey)
 const { call } = frappeSDK();
 const appVersion = ref(null)
 const getApp = async() => {
@@ -95,20 +113,33 @@ const getApp = async() => {
 	url: "http://erp.alzo.io:10580/api/method/dma.api.get_app_version",
 	auto: true,
 })*/
-
+const isDarkMode = ref(window.matchMedia('(prefers-color-scheme: dark)').matches)
 const { t, locale } = useI18n()
 const availableLanguages = [
 	{ label: "English", value: "en" },
 	{ label: "ไทย", value: "th" },
 ]
-watch(locale, (newLocale) => {
-	localStorage.setItem("preferredLanguage", newLocale)
-})
+const toggleTheme = () => {
+	isDarkMode.value = !isDarkMode.value
+	document.documentElement.classList.toggle('ion-palette-dark', isDarkMode.value)
+	localStorage.setItem("darkMode", JSON.stringify(isDarkMode.value))
+}
 
 onMounted(() => {
-	setDefaultLanguage();
-	refreshUser();
-	getApp();
+	setDefaultLanguage()
+	refreshUser()
+	getApp()
+
+	// Load from localStorage
+	const savedMode = localStorage.getItem("darkMode")
+	if (savedMode !== null) {
+		isDarkMode.value = JSON.parse(savedMode)
+		document.documentElement.classList.toggle('ion-palette-dark', isDarkMode.value)
+	}
+})
+
+watch(locale, (newLocale) => {
+	localStorage.setItem("preferredLanguage", newLocale)
 })
 
 const refreshUser = async () => {

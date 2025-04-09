@@ -77,7 +77,7 @@ const getTokenFromLocalStorage = () => {
     },
 });*/
 class UserResourceImpl implements UserResource {
-    data = reactive<UserResource['data']>({ first_name: '', full_name: '', user_image: '' });
+    data = reactive<{ first_name: string; full_name: string; user_image: string }>({ first_name: '', full_name: '', user_image: '' });
 
     async reload(): Promise<void> {
         const user_id = sessionUser(); // Fetch user ID dynamically

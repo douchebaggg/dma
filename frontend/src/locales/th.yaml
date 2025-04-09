@@ -65,7 +65,9 @@ pallets:
   date_select: เลือกช่วงวันที่สำหรับรายการเอกสาร
   doctype_select: ตะแกรงที่พร้อมจัดพาเลต
   time: เวลา
-  invoice_no: เลขที่ใบกำกับ
+  pallet_seq: เลขที่พาเลต
+  pallet_no: เลขที่ใบกำกับ
+  
   code: Code
   product_name: ชื่อสินค้า
   hash_pallet: พาเลต

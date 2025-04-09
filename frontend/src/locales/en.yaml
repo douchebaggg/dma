@@ -64,6 +64,8 @@ pallets:
   date_select: Select Date Range for Pallets List
   doctype_select: Baskets Ready for Palletizing
   time: Time
+  pallet_seq: Pallet Sequence
+  pallet_no: Pallet No
   invoice_no: Invoice No
   code: Code
   product_name: Product Name

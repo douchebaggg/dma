@@ -8,6 +8,8 @@ http://ionicframework.com/docs/theming/ */
 	--ion-font-family: "Anuphan", sans-serif;
 	--ion-tab-bar-color-selected: #525252;
 	--ion-tab-bar-background-focused: #e2e2e2;
+	--ion-card-background-color: #ffffff;
+	--ion-card-color: #171717;
 	/** primary **/
 	--ion-color-primary: #171717;
 	--ion-color-primary-rgb: 56, 128, 255;
@@ -80,3 +82,8 @@ http://ionicframework.com/docs/theming/ */
 	--ion-color-light-shade: #d7d8da;
 	--ion-color-light-tint: #f5f6f9;
 }
+
+.ion-palette-dark.md {
+	--ion-card-background: #222428;
+	--ion-card-color:#f4f5f8;
+  }

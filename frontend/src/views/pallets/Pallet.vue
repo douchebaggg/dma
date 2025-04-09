@@ -12,7 +12,7 @@
 			<ion-title class="ion-text-center ion-margin"> {{ t('pallets.header') }} </ion-title>
 
 		<!-- input -->
-		<Card class="rounded-xl m-2 pb-14"> 
+		<ion-card class="rounded-xl m-2 pb-14 border-1"> 
 		<div class="input-container m-4">
 			<div class=" flex justify-center">
 				<p class="py-5 text-sm">{{t('pallets.date_select')}}</p>
@@ -62,12 +62,59 @@
 			</form-->
 			
 		</div>	
+		<div class="ion-text-center " ><!--v-if="displayPallet"-->
+		<ion-grid class="m-4 my-8 border-1 " ><!--v-if="displayPallet?.palletized_products?.length"-->
+			<ion-row class="font-semibold border-b-1">
+				<ion-col class="font-semibold border-r-1">{{ t("pallets.pallet_seq") }}</ion-col>
+				<ion-col class=" border-r-1">{{ t("pallets.pallet_no")}}</ion-col>
+				<ion-col class=" border-r-1">{{ t("pallets.code")}}</ion-col>
+				<ion-col class="font-semibold border-r-1">{{ t("pallets.product_name") }}</ion-col>
+				<ion-col class="font-semibold border-r-1">#{{ t("pallets.hash_pallet") }}</ion-col>
+				<ion-col class="font-semibold">{{ t("labels.amount") }}</ion-col>
+			</ion-row>
+			<ion-row  v-for="(row, index) in paginatedPallet" :key="index">
+				<ion-col class="border-r-1">{{ row.pallet_seq }}</ion-col>
+				<ion-col class="border-r-1">{{ row.pallet_no }}</ion-col>
+				<ion-col class="border-r-1">{{ row.item_code }}</ion-col>
+				<ion-col class="border-r-1">{{ row.item_name }}</ion-col>
+				<ion-col class="border-r-1">{{ row.size }}</ion-col>
+				<ion-col>{{ row.qty }}</ion-col>
+			</ion-row>
+      </ion-grid>
+	  <div class="flex justify-center space-x-5 ion-margin ion-padding-bottom" ><!--v-if="displayPallet?.palletized_products?.length > rowsPerPage"-->
+			<Button 
+        		class="rounded-xl text-white bg-[#171717] w-20 h-4"
+        		:variant="'solid'"
+        		:disabled="currentPage === 1"
+        		@click="firstPage"
+        		size="sm"> {{ t("pagination.first") }} </Button>
+      		<Button 
+        		class="rounded-xl text-white bg-[#171717] w-12 h-4"
+        		:variant="'solid'"
+        		:disabled="currentPage === 1"
+        		@click="previousPage"
+        		size="sm"> < </Button>
+      		<span class="">{{ t("pagination.page") }} {{ currentPage }} / {{ totalPages }}</span>
+      		<Button 
+        		class="rounded-xl text-white bg-[#171717] w-12 h-4"
+        		:variant="'solid'"
+        		:disabled="currentPage === totalPages"
+        		@click="nextPage"
+        		size="sm"> > </Button>
+			<Button 
+        		class="rounded-xl text-white bg-[#171717] w-20 h-4"
+        		:variant="'solid'"
+        		:disabled="currentPage === totalPages"
+        		@click="lastPage"
+        		size="sm"> {{ t("pagination.last") }} </Button>
+    	</div>
+		</div>
 		<div class="m-4">
 			<ion-title class="ion-text-center">{{ t('pallets.time') }}</ion-title>
-			<Input class="rounded-xl py-1" type="time"  :label="t('pallets.start')"               
-			  style="outline: none; padding-left: 1rem; border: solid 1px grey;" />
-			<Input class="rounded-xl py-1" type="time"  :label="t('pallets.minute')" 
-			  style="outline: none; padding-left: 1rem; border: solid 1px grey;" />
+			<ion-label>{{ t('pallets.start') }}</ion-label>
+			<Input class="rounded-xl py-1" type="time" style="outline: none; padding-left: 1rem; border: solid 1px grey;" />
+			<ion-label>{{ t('pallets.minute') }}</ion-label>
+			<Input class="rounded-xl py-1" type="time" style="outline: none; padding-left: 1rem; border: solid 1px grey;" />
 		</div>
 		<div class="flex justify-center space-x-5 ion-margin-top">
 			<Button 
@@ -81,7 +128,8 @@
 			:variant="'solid'"
 			size="md" >{{ t("button.Cancel") }}</Button>
 		</div>
-		</Card>
+
+		</ion-card>
 
 		</ion-content>
 	</ion-page>
@@ -91,9 +139,10 @@
 <script setup lang="ts">
 import { IonPage,IonContent,IonHeader,IonToolbar,IonBackButton,
 IonButtons,IonTitle,IonButton,
-IonDatetime, IonDatetimeButton,
-IonSelect,IonSelectOption,
-IonModal 
+IonDatetime,IonDatetimeButton,
+IonSelect,IonSelectOption,IonCard,
+IonModal,IonGrid,IonRow,IonCol,
+IonLabel
 } from "@ionic/vue";
 import { ref, watch, onMounted, computed} from "vue";
 import { useRouter } from "vue-router"
@@ -104,16 +153,18 @@ const router = useRouter()
 const { t } = useI18n()
 const { db, call } = frappeSDK()
 
-let displayDoctype = ref(null)
+let displayPallet = ref<any>(null)
 const basketList = ref<any>([])
 const workOrderList = ref<any>([])
 const basketTable = ref<any>([])
 const dateValue = ref<any>(null)
 const palletList = ref([])
-const doctypeSelector = ref<string>(workOrderList.value[0])
+const doctypeSelector = ref<any>(workOrderList.value[0])
 const selectCodeText = computed(() => `${selectCode.value.length} Items`);
 const modal = ref();
 const selectCode = ref<string[]>([]);
+const rowsPerPage = 5;
+const currentPage = ref(1);
 
 const formattedBasketItems = computed(() => {
 	const [docNameFromSelector, selectWorkOrder] = doctypeSelector.value.split("|")
@@ -141,7 +192,7 @@ const updateSelectedCodes = async (selectedValues: string[]) => {
 	try {
 		const basketsData = selectedItems.filter((item): item is { baskets: string; index: number } => item !== null).map(({ baskets, index }) => {
 		const filtered = basketTable.value.filter((it:any) => it.baskets === baskets);
-		const item = filtered[index] as any; 
+		const item = filtered[index];
 		return item ? {
 			basket_month: item.basket_month,
 			basket_no: item.basket_no,
@@ -180,12 +231,13 @@ const updateSelectedCodes = async (selectedValues: string[]) => {
 		const currentProducts = palletizingEntry.palletized_products || [];
 		const updatedProducts = [...currentProducts, ...palletizedProducts];
 		//console.log("Current Products", palletizingEntry.palletized_products)
-		await db.updateDoc("Palletizing Entry", palletizingEntry.name, {
+		const palletUpdate = await db.updateDoc("Palletizing Entry", palletizingEntry.name, {
 			palletized_products: updatedProducts,
 		});
 		console.log("Updated Products success", updatedProducts)
 		//await selectDoctype(); 
-		
+		displayPallet.value = palletUpdate
+		currentPage.value = 1;
 	} catch (error) {
 		console.error("Error creating pallets:", error);
 	}
@@ -289,7 +341,33 @@ const closePopover = () => {
 const saveData = () => {
 
 }
+//pagination
+const paginatedPallet = computed(() => {
+  if (!displayPallet.value?.palletized_products) return [];
+  const start = (currentPage.value - 1) * rowsPerPage;
+  const end = start + rowsPerPage;
+  return displayPallet.value.palletized_products.slice(start, end);
+});
+const totalPages = computed(() => {
+  return Math.ceil(displayPallet.value?.palletized_products?.length / rowsPerPage);
+});
+const nextPage = () => {
+  if (currentPage.value < totalPages.value) {
+	currentPage.value++;
+  }
+};
+const previousPage = () => {
+  if (currentPage.value > 1) {
+	currentPage.value--;
+  }
+};
 
+const firstPage = () => {
+  currentPage.value = 1;
+};
+const lastPage = () => {
+  currentPage.value = totalPages.value;
+};
 //watch and on Mounted
 watch(dateValue, (newDate) => {
   if (newDate) {

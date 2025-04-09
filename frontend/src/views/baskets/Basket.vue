@@ -12,7 +12,7 @@
 			<h2 class="ion-text-center ion-margin">{{ t('basket.header')}}</h2>
 		<!-- input -->
 		
-		<Card class="rounded-xl m-2 pb-14">
+		<ion-card class="rounded-xl m-2 pb-14 border-1">
 		<div class="input-container m-4">
 			<p class="ion-text-center pb-3">{{ t('basket.date_select_header') }}</p>
 			<div class=" flex justify-center">
@@ -35,32 +35,37 @@
               </ion-select>
 
 			<form>
-			<Input class="rounded-xl py-1" name="startTime" type="number" inputmode="numeric" :label="t('labels.baskets_no')" v-model="basketNo"
+			<ion-label>{{ t('labels.baskets_no') }}</ion-label>
+			<Input class="rounded-xl py-1" name="startTime" type="number" inputmode="numeric" v-model="basketNo"
 				style="outline: none; padding-left: 1rem; border: solid 1px grey;" />
-			<Input class="rounded-xl py-1" name="startTime" type="time" :label="t('labels.start_time')" v-model="startTime"
+			<ion-label>{{ t('labels.start_time') }}</ion-label>
+			<Input class="rounded-xl py-1" name="startTime" type="time" v-model="startTime"
 				style="outline: none; padding-left: 1rem; border: solid 1px grey;" />
-			<Input class="rounded-xl py-1" name="timeInmins" type="number" :label="t('labels.duration')" inputmode="numeric" v-model="timeInMins"
+			<ion-label>{{ t('labels.duration') }}</ion-label>
+			<Input class="rounded-xl py-1" name="timeInmins" type="number" inputmode="numeric" v-model="timeInMins"
 				style="outline: none; padding-left: 1rem; border: solid 1px grey;" />
-			<Input class="rounded-xl py-1" name="endTime" type="time" :label="t('labels.end_time')" v-model="endTime"
+			<ion-label>{{ t('labels.end_time') }}</ion-label>
+			<Input class="rounded-xl py-1" name="endTime" type="time" v-model="endTime"
 				style="outline: none; padding-left: 1rem; border: solid 1px grey;" />
-			<Input class="rounded-xl py-1" name="amount" type="number" :label="t('labels.amount')" v-model="amount" inputmode="numeric"
+			<ion-label>{{ t('labels.amount') }}</ion-label>
+			<Input class="rounded-xl py-1" name="amount" type="number" v-model="amount" inputmode="numeric"
 				style="outline: none; padding-left: 1rem; border: solid 1px grey;" />
 			</form>
 		</div>	
 		<div class="flex justify-center space-x-5 ion-margin-top">
 			<Button 
-				class="rounded-xl text-white bg-[#171717] w-20"
+				class="rounded-xl text-white hover:bg-[#383838] bg-[#171717] w-20"
               :variant="'solid'"
 				@click="saveData"
               size="md"> {{ t("button.Save") }}</Button>
 
 			<Button
-			class="rounded-xl  text-white bg-red-600 w-20"
+			class="rounded-xl  text-white hover:bg-red-800 bg-red-700 w-20"
 			:variant="'solid'"
 			@click="clearData()"
 			size="md" >{{ t("button.Cancel") }}</Button>
 		</div>
-		</Card>
+		</ion-card>
 		<div class="ion-text-center " v-if="displayDoctype">
 			<h3>{{ t("basket.update_sucess") }}</h3>
 			<p>{{ t("basket.doctype") }} <a class="font-semibold text-sky-600 text-lg" href="#" @click="dynamicLink">{{ displayDoctype.name }}</a> {{ t("basket.after") }}</p>
@@ -126,7 +131,7 @@ IonTitle,
 IonRow,IonGrid,IonCol, 
 IonSelect,IonSelectOption,
 IonDatetime, IonDatetimeButton,
-IonModal
+IonModal,IonCard,IonLabel
 } from "@ionic/vue";
 import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
