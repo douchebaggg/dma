@@ -20,16 +20,13 @@
 							</ion-card>
 						</RouterLink>
 						<RouterLink :to="{ name: 'MediaEntry' }" v-slot="{ href }">
-							<a
-								:href="href"
-								class="flex flex-col items-center gap-3 rounded-xl bg-white p-[14px] shadow-md h-34"
-							>
+							<ion-card class="flex gap-3 flex-col justify-center items-center rounded-xl p-[14px] shadow-md h-34">
 								<FrappeIcons.Media />
 								
-								<h3 class="text-sm font-medium ">
+								<h3 class="text-sm font-medium text-center ">
 								{{ t("labels.media") }}
 								</h3>
-							</a>
+							</ion-card>
 						</RouterLink>
 					</div>
 				</div>
@@ -43,30 +40,24 @@
 					
 					<div class="mt-3 grid grid-cols-2 gap-5">
 						<RouterLink :to="{ name: 'OEM_productsEntry' }" v-slot="{ href }">
-							<a
-								:href="href"
-								class="flex flex-col items-center gap-3 rounded-xl bg-white p-[14px] shadow-md h-34"
-							>
+							<ion-card class="flex gap-3 flex-col justify-center items-center rounded-xl p-[14px] shadow-md h-34">
 								<FrappeIcons.TicketIcon />
 								
-								<h3 class="text-sm font-medium ">
+								<h3 class="text-sm font-medium text-center ">
 									{{ t("labels.oem") }}
 								</h3>
 								
-							</a>
+							</ion-card>
 						</RouterLink>						
 						<RouterLink :to="{ name: 'PalletsEntry' }" v-slot="{ href }">
-							<a
-								:href="href"
-								class="flex flex-col items-center gap-3 rounded-xl bg-white p-[14px] shadow-md h-34"
-							>
+							<ion-card class="flex gap-3 flex-col justify-center items-center rounded-xl p-[14px] shadow-md h-34">
 								<FrappeIcons.Pallets />
 								
-								<h3 class=" text-sm font-medium ">
+								<h3 class=" text-sm font-medium text-center ">
 									{{ t("labels.pallets") }}
 								</h3>
 								
-							</a>
+							</ion-card>
 						</RouterLink>
 					</div>
 				</div>
@@ -86,10 +77,7 @@
 							:to="{ name: 'Entitlement RequestList' }"
 							v-slot="{ href }"
 						>
-							<a
-								:href="href"
-								class="flex items-center justify-between gap-3 rounded-t-xl bg-white p-[14px] shadow-md"
-							>
+							<ion-card class="flex items-center justify-between gap-3 rounded-t-xl  p-[14px] shadow-md">
 								<div class="flex items-center gap-3">
 									<FeatherIcon name="clipboard" class="h-6 w-6 text-gray-700" />
 									
@@ -102,16 +90,13 @@
 									name="chevron-right"
 									class="h-6 w-6 text-gray-700"
 								/>
-							</a>
+							</ion-card>
 						</RouterLink>
 						<RouterLink
 							:to="{ name: 'Awareness Camp RecordList' }"
 							v-slot="{ href }"
 						>
-							<a
-								:href="href"
-								class="flex items-center justify-between gap-3 rounded-b-xl bg-white p-[14px] shadow-md"
-							>
+							<ion-card class="flex items-center justify-between gap-3 rounded-b-xl  p-[14px] shadow-md">
 								<div class="flex items-center gap-3">
 									<FrappeIcons.AwarenessCampIcon class="h-6 w-6" />
 									
@@ -124,7 +109,7 @@
 									name="chevron-right"
 									class="h-6 w-6 text-gray-700"
 								/>
-							</a>
+							</ion-card>
 						</RouterLink>
 					</div>
 				</div>

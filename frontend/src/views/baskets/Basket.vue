@@ -12,7 +12,7 @@
 			<h2 class="ion-text-center ion-margin">{{ t('basket.header')}}</h2>
 		<!-- input -->
 		
-		<ion-card class="rounded-xl m-2 pb-14 border-1">
+		<ion-card class="rounded-xl m-2 pb-14 border-1 border-zinc-500">
 		<div class="input-container m-4">
 			<p class="ion-text-center pb-3">{{ t('basket.date_select_header') }}</p>
 			<div class=" flex justify-center">

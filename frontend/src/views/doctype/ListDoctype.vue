@@ -2,18 +2,18 @@
     <ion-page>
         <ion-content :fullscreen="true">
           <div class="m-4">
-          <Card class="mb-2 rounded-xl border-0 shadow-xs">
+          <ion-card class="mb-2 rounded-xl border-0 shadow-xs">
             <ion-accordion-group class=" m-4">
               <ion-accordion class="rounded-xl" value="first">
                 <ion-item slot="header" lines="none">
                   <ion-label>Basket Doctype</ion-label>
                 </ion-item>
-                <div class="ion-padding bg-gray-50" slot="content" v-if="basketDisplay.length > 0">
+                <div class="ion-padding" slot="content" v-if="basketDisplay.length > 0">
                   <ul>
                   <li class="ml-5" v-for="doc in basketDisplay" >{{ doc }}</li>
                   </ul>
                 </div>
-                <div class="ion-padding bg-gray-50" slot="content" v-else>
+                <div class="ion-padding" slot="content" v-else>
                   <p class="ml-5">No Document found</p>
                 </div>
               </ion-accordion>
@@ -21,7 +21,7 @@
                 <ion-item slot="header" lines="none">
                   <ion-label>Pallet</ion-label>
                 </ion-item>
-                <div class="ion-padding bg-gray-50" slot="content" v-if="palletDisplay.length > 0">
+                <div class="ion-padding " slot="content" v-if="palletDisplay.length > 0">
                   <ul>
                   <li class="ml-5" v-for="doc in palletDisplay">
                     <ion-checkbox label-placement="end" justify="start">{{ doc }} 
@@ -29,7 +29,7 @@
                   </li>
                   </ul>
                 </div>
-                <div class="ion-padding bg-gray-50" slot="content" v-else>
+                <div class="ion-padding " slot="content" v-else>
                   <p class="ml-5">No Document found</p>
                 </div>
               </ion-accordion>
@@ -41,14 +41,7 @@
                 </ion-select-option>
               </ion-select>
             </ion-accordion-group>
-            <div class="m-4">
-              <ion-datetime-button datetime="date"></ion-datetime-button>
-
-  <ion-modal :keep-contents-mounted="true">
-    <ion-datetime presentation="date" id="date"></ion-datetime>
-  </ion-modal>
-            </div>
-          </Card>
+          </ion-card>
           </div>
            <!-- Dropdown for selecting Doctype -->
            
@@ -65,14 +58,13 @@ import { IonPage,
   IonCheckbox,
   IonSelect,
   IonSelectOption,
-  IonDatetime, IonDatetimeButton, IonModal
+  IonDatetime, IonDatetimeButton, IonCard
 } from '@ionic/vue';
 import { ref, onMounted, watch } from 'vue'
-import { Checkbox, Card } from 'frappe-ui'
 import { frappeSDK } from '@/utils/frappeSDK';
 const { db } = frappeSDK()
-const basketDisplay = ref([])
-const palletDisplay = ref([])
+const basketDisplay = ref<any>([])
+const palletDisplay = ref<any>([])
 const doctypeOptions = ref(['Testing Doctype', 'Sales Order']);
 const selectedDoctype = ref(basketDisplay.value[0]);
 const date = ref()

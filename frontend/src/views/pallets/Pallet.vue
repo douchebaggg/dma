@@ -12,7 +12,7 @@
 			<ion-title class="ion-text-center ion-margin"> {{ t('pallets.header') }} </ion-title>
 
 		<!-- input -->
-		<ion-card class="rounded-xl m-2 pb-14 border-1"> 
+		<ion-card class="rounded-xl m-2 pb-14 border-1 border-zinc-500"> 
 		<div class="input-container m-4">
 			<div class=" flex justify-center">
 				<p class="py-5 text-sm">{{t('pallets.date_select')}}</p>
@@ -63,8 +63,8 @@
 			
 		</div>	
 		<div class="ion-text-center " ><!--v-if="displayPallet"-->
-		<ion-grid class="m-4 my-8 border-1 " ><!--v-if="displayPallet?.palletized_products?.length"-->
-			<ion-row class="font-semibold border-b-1">
+		<ion-grid class="m-4 my-8 border-1" ><!--v-if="displayPallet?.palletized_products?.length"-->
+			<ion-row class="font-semibold">
 				<ion-col class="font-semibold border-r-1">{{ t("pallets.pallet_seq") }}</ion-col>
 				<ion-col class=" border-r-1">{{ t("pallets.pallet_no")}}</ion-col>
 				<ion-col class=" border-r-1">{{ t("pallets.code")}}</ion-col>
@@ -83,26 +83,26 @@
       </ion-grid>
 	  <div class="flex justify-center space-x-5 ion-margin ion-padding-bottom" ><!--v-if="displayPallet?.palletized_products?.length > rowsPerPage"-->
 			<Button 
-        		class="rounded-xl text-white bg-[#171717] w-20 h-4"
+        		class="rounded-xl text-white hover:bg-[#383838] bg-[#171717] w-20 h-4"
         		:variant="'solid'"
         		:disabled="currentPage === 1"
         		@click="firstPage"
         		size="sm"> {{ t("pagination.first") }} </Button>
       		<Button 
-        		class="rounded-xl text-white bg-[#171717] w-12 h-4"
+        		class="rounded-xl text-white hover:bg-[#383838] bg-[#171717] w-12 h-4"
         		:variant="'solid'"
         		:disabled="currentPage === 1"
         		@click="previousPage"
         		size="sm"> < </Button>
       		<span class="">{{ t("pagination.page") }} {{ currentPage }} / {{ totalPages }}</span>
       		<Button 
-        		class="rounded-xl text-white bg-[#171717] w-12 h-4"
+        		class="rounded-xl text-white hover:bg-[#383838] bg-[#171717] w-12 h-4"
         		:variant="'solid'"
         		:disabled="currentPage === totalPages"
         		@click="nextPage"
         		size="sm"> > </Button>
 			<Button 
-        		class="rounded-xl text-white bg-[#171717] w-20 h-4"
+        		class="rounded-xl text-white hover:bg-[#383838] bg-[#171717] w-20 h-4"
         		:variant="'solid'"
         		:disabled="currentPage === totalPages"
         		@click="lastPage"
@@ -118,13 +118,13 @@
 		</div>
 		<div class="flex justify-center space-x-5 ion-margin-top">
 			<Button 
-			  class="rounded-xl text-white bg-[#171717] w-20"
+			  class="rounded-xl text-white hover:bg-[#383838] bg-[#171717] w-20"
               :variant="'solid'"
 			  @click="saveData"
               size="md"> {{ t("button.Save") }}</Button>
 
 			<Button
-			class="rounded-xl  text-white  bg-red-600 w-20"
+			class="rounded-xl  text-white  hover:bg-red-800 bg-red-700 w-20"
 			:variant="'solid'"
 			size="md" >{{ t("button.Cancel") }}</Button>
 		</div>

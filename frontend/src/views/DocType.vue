@@ -44,6 +44,7 @@ import { App } from "@capacitor/app"
 import { Browser } from "@capacitor/browser";
 import { frappeSDK } from "@/utils/frappeSDK";
 onMounted(() => {
+  setTheme()
 	getDoctype()
 })
 const displayDoc = ref(null)
@@ -96,6 +97,16 @@ const handleRefresh = async (event: CustomEvent) => {
     console.error("Error refreshing user data:", error);
   }
 }
+
+const isDarkMode = ref(window.matchMedia('(prefers-color-scheme: dark)').matches)
+	const setTheme = () => {
+		const theme = localStorage.getItem("darkMode")
+		if(theme !== null) {
+			isDarkMode.value = JSON.parse(theme)
+			console.log(isDarkMode.value)
+			document.documentElement.classList.toggle('ion-palette-dark', isDarkMode.value)
+		} 
+	}
 </script>
 
 <style scoped>

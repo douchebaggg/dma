@@ -8,7 +8,7 @@
 		<ion-content :fullscreen="true" :scroll-events="true">
 			<div class="flex h-full flex-col justify-between">
 				<div v-if="user.data" class="m-6 flex flex-col">
-					<ion-card class=" rounded-xl border-1">
+					<ion-card class=" rounded-xl border-1 dark: border-zinc-500">
 						<div class="flex justify-end ion-margin">
 							<ion-icon
 								v-if="isDarkMode"
@@ -18,7 +18,7 @@
 							/>
 							<ion-icon
 								v-else
-								class="text-2xl cursor-pointer text-orange-300"
+								class="text-2xl cursor-pointer text-amber-500"
 								:icon="sunny"
 								@click="toggleTheme"
 							/>
