@@ -1,0 +1,45 @@
+diff --git a/node_modules/frappe-ui/src/components/TextEditor/TextEditor.vue b/node_modules/frappe-ui/src/components/TextEditor/TextEditor.vue
+index 0fbbf3e..38ad00f 100644
+--- a/node_modules/frappe-ui/src/components/TextEditor/TextEditor.vue
++++ b/node_modules/frappe-ui/src/components/TextEditor/TextEditor.vue
+@@ -32,7 +32,6 @@ import Typography from '@tiptap/extension-typography'
+ import TextStyle from '@tiptap/extension-text-style'
+ import Highlight from '@tiptap/extension-highlight'
+ import { Color } from '@tiptap/extension-color'
+-import { common, createLowlight } from 'lowlight'
+ import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight'
+ import CodeBlockComponent from './CodeBlockComponent.vue'
+ import configureMention from './mention'
+@@ -43,7 +42,6 @@ import EmojiExtension from './emoji-extension'
+ import { detectMarkdown, markdownToHTML } from '../../utils/markdown'
+ import { DOMParser } from 'prosemirror-model'
+ 
+-const lowlight = createLowlight(common)
+ 
+ export default {
+   name: 'TextEditor',
+@@ -164,7 +162,7 @@ export default {
+           addNodeView() {
+             return VueNodeViewRenderer(CodeBlockComponent)
+           },
+-        }).configure({ lowlight }),
++        }).configure(),
+         ImageExtension.configure({
+           uploadFunction: this.imageUploadFunction,
+         }),
+@@ -279,7 +277,6 @@ img.ProseMirror-selectednode {
+   top: 0;
+   bottom: 0;
+   pointer-events: none;
+-  background: theme('colors.blue.200');
+   opacity: 0.3;
+ }
+ 
+@@ -289,7 +286,6 @@ img.ProseMirror-selectednode {
+   top: 0;
+   bottom: -2px;
+   width: 4px;
+-  background-color: theme('colors.blue.200');
+   pointer-events: none;
+ }
+ 
