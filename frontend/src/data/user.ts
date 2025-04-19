@@ -1,16 +1,12 @@
 import router from "@/router";
 //import { createResource } from "frappe-ui";
 import { sessionUser } from "./session";
-import { FrappeApp } from "frappe-js-sdk";
 //import { ref } from "vue";
 //import axios from "axios";
 import { reactive } from "vue";
-import {isLocalNetwork,currentHost,apiPort} from "@/utils/checkIP";
+import { frappeSDK } from "@/utils/frappeSDK";
 const user_id = sessionUser()
 console.log(user_id)
- 
-const apiUrl = isLocalNetwork() ? `http://${currentHost}:${apiPort}` : `http://erp.alzo.io:10580`;
-const frappe = new FrappeApp(apiUrl);
 
 export interface UserResource {
     data: undefined | { first_name: string; full_name: string; user_image: string };
@@ -18,7 +14,7 @@ export interface UserResource {
     reset: () => void;
 }
 
-const db = frappe.db();
+const { db }= frappeSDK();
 /*const getUserData = async (userId: string) => {
     try {
         const userDoc = await db.getDoc('User', userId);
