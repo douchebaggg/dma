@@ -12,7 +12,7 @@
 			<ion-title class="ion-text-center ion-margin"> {{ t('pallets.header') }} </ion-title>
 
 		<!-- input -->
-		<ion-card class="rounded-xl m-2 pb-14 border-1 border-zinc-500"> 
+		<Card class="rounded-xl m-2 pb-14"> 
 		<div class="input-container m-4">
 			<div class=" flex justify-center">
 				<p class="py-5 text-sm">{{t('pallets.date_select')}}</p>
@@ -21,8 +21,8 @@
 					<ion-datetime :locale="getLocal()" presentation="date" id="date" :multiple="true" v-model="dateValue"></ion-datetime>
 				</ion-modal>
 			</div>
-				<div class=" flex justify-center">				
-					<ion-select class="py-2" aria-label="Doctype" v-model="doctypeSelector" interface="popover" :placeholder="t('basket.doctype_select')" fill="outline"
+				<div class=" flex justify-center space-x-5">				
+					<ion-select class="py-2 w-92 max-sm:w-40" aria-label="Doctype" v-model="doctypeSelector" interface="popover" :placeholder="t('basket.doctype_select')" fill="outline"
 					@ionChange="closePopover"
 					@ionCancel="closePopover"
 					@ionDismiss="closePopover"
@@ -31,6 +31,18 @@
 						:key="order.id "
 						:value="`${order.doc_name}|${order.work_order}`">
 						{{ order.work_order }}
+						</ion-select-option>
+					</ion-select>
+					<!-- Product Book-->
+					<ion-select class="py-2 w-92 max-sm:w-40" aria-label="Doctype" v-model="productBookSelector" interface="popover" :placeholder="t('basket.product_book_select')" fill="outline"
+					@ionChange="closePopover"
+					@ionCancel="closePopover"
+					@ionDismiss="closePopover"
+					>
+						<ion-select-option v-for="book in productBookList" 
+						:key="book.id "
+						:value="`${book.name}|${book.size}|${book.book_to}`">
+						{{ book.name }} / {{ book.book_to }}
 						</ion-select-option>
 					</ion-select>
 				</div>
@@ -62,9 +74,9 @@
 			</form-->
 			
 		</div>	
-		<div class="ion-text-center " ><!--v-if="displayPallet"-->
-		<ion-grid class="m-4 my-8 border-1" ><!--v-if="displayPallet?.palletized_products?.length"-->
-			<ion-row class="font-semibold">
+		<div class="ion-text-center " v-if="displayPallet">
+		<ion-grid class="m-2 border-1 bg-[#171717] text-white" v-if="displayPallet?.palletized_products?.length">
+			<ion-row class="font-semibold border-b-1">
 				<ion-col class="font-semibold border-r-1">{{ t("pallets.pallet_seq") }}</ion-col>
 				<ion-col class=" border-r-1">{{ t("pallets.pallet_no")}}</ion-col>
 				<ion-col class=" border-r-1">{{ t("pallets.code")}}</ion-col>
@@ -81,28 +93,28 @@
 				<ion-col>{{ row.qty }}</ion-col>
 			</ion-row>
       </ion-grid>
-	  <div class="flex justify-center space-x-5 ion-margin ion-padding-bottom" ><!--v-if="displayPallet?.palletized_products?.length > rowsPerPage"-->
+	  <div class="flex justify-center space-x-5 ion-margin-top ion-padding-bottom" v-if="displayPallet?.palletized_products?.length > rowsPerPage">
 			<Button 
-        		class="rounded-xl text-white hover:bg-[#383838] bg-[#171717] w-20 h-4"
+        		class="rounded-xl text-white bg-[#171717] w-14 h-4"
         		:variant="'solid'"
         		:disabled="currentPage === 1"
         		@click="firstPage"
         		size="sm"> {{ t("pagination.first") }} </Button>
       		<Button 
-        		class="rounded-xl text-white hover:bg-[#383838] bg-[#171717] w-12 h-4"
+        		class="rounded-xl text-white bg-[#171717] w-12 h-4"
         		:variant="'solid'"
         		:disabled="currentPage === 1"
         		@click="previousPage"
         		size="sm"> < </Button>
       		<span class="">{{ t("pagination.page") }} {{ currentPage }} / {{ totalPages }}</span>
       		<Button 
-        		class="rounded-xl text-white hover:bg-[#383838] bg-[#171717] w-12 h-4"
+        		class="rounded-xl text-white bg-[#171717] w-12 h-4"
         		:variant="'solid'"
         		:disabled="currentPage === totalPages"
         		@click="nextPage"
         		size="sm"> > </Button>
 			<Button 
-        		class="rounded-xl text-white hover:bg-[#383838] bg-[#171717] w-20 h-4"
+        		class="rounded-xl text-white bg-[#171717] w-14 h-4"
         		:variant="'solid'"
         		:disabled="currentPage === totalPages"
         		@click="lastPage"
@@ -111,25 +123,25 @@
 		</div>
 		<div class="m-4">
 			<ion-title class="ion-text-center">{{ t('pallets.time') }}</ion-title>
-			<ion-label>{{ t('pallets.start') }}</ion-label>
-			<Input class="rounded-xl py-1" type="time" style="outline: none; padding-left: 1rem; border: solid 1px grey;" />
-			<ion-label>{{ t('pallets.minute') }}</ion-label>
-			<Input class="rounded-xl py-1" type="time" style="outline: none; padding-left: 1rem; border: solid 1px grey;" />
+			<Input class="rounded-xl py-1" type="time"  :label="t('pallets.start')"               
+			  style="outline: none; padding-left: 1rem; border: solid 1px grey;" />
+			<Input class="rounded-xl py-1" type="time"  :label="t('pallets.minute')" 
+			  style="outline: none; padding-left: 1rem; border: solid 1px grey;" />
 		</div>
 		<div class="flex justify-center space-x-5 ion-margin-top">
 			<Button 
-			  class="rounded-xl text-white hover:bg-[#383838] bg-[#171717] w-20"
+			  class="rounded-xl text-white bg-[#171717] w-20"
               :variant="'solid'"
 			  @click="saveData"
               size="md"> {{ t("button.Save") }}</Button>
 
 			<Button
-			class="rounded-xl  text-white  hover:bg-red-800 bg-red-700 w-20"
+			class="rounded-xl  text-white  bg-red-600 w-20"
 			:variant="'solid'"
 			size="md" >{{ t("button.Cancel") }}</Button>
 		</div>
 
-		</ion-card>
+		</Card>
 
 		</ion-content>
 	</ion-page>
@@ -139,10 +151,9 @@
 <script setup lang="ts">
 import { IonPage,IonContent,IonHeader,IonToolbar,IonBackButton,
 IonButtons,IonTitle,IonButton,
-IonDatetime,IonDatetimeButton,
-IonSelect,IonSelectOption,IonCard,
+IonDatetime, IonDatetimeButton,
+IonSelect,IonSelectOption,
 IonModal,IonGrid,IonRow,IonCol,
-IonLabel
 } from "@ionic/vue";
 import { ref, watch, onMounted, computed} from "vue";
 import { useRouter } from "vue-router"
@@ -159,7 +170,9 @@ const workOrderList = ref<any>([])
 const basketTable = ref<any>([])
 const dateValue = ref<any>(null)
 const palletList = ref([])
-const doctypeSelector = ref<any>(workOrderList.value[0])
+const doctypeSelector = ref(workOrderList.value[0])
+const productBookList = ref<any>([])
+const productBookSelector = ref(productBookList.value[0])
 const selectCodeText = computed(() => `${selectCode.value.length} Items`);
 const modal = ref();
 const selectCode = ref<string[]>([]);
@@ -169,46 +182,70 @@ const currentPage = ref(1);
 const formattedBasketItems = computed(() => {
 	const [docNameFromSelector, selectWorkOrder] = doctypeSelector.value.split("|")
 	const items = basketTable.value
-	.filter((item:any) => item.is_palletized === 0 && item.baskets === selectWorkOrder) 
-	.map((item:any, index:number )=> ({
-		value: `${item.baskets}-${index}`,
-		text: `${t('labels.baskets_no')} ${item.basket_no} ${item.baskets} ${t('labels.amount')} ${item.qty} 
+	.filter((item:any)=> item.is_palletized === 0 && item.item_code === selectWorkOrder) 
+	.map((item:any, index:any )=> ({
+		value: `${item.item_code}-${index}`,
+		text: `${t('labels.baskets_no')} ${item.basket_no} ${item.item_code} ${t('labels.amount')} ${item.qty} 
 		${t('labels.date_of')} ${item.posting_date || 'N/A'}`,
 	}));
-	console.log('Formatted items filtered by is_palletized = 0 :', items);
+	//console.log('Formatted items filtered by is_palletized = 0 :', items);
 	return items;
 	});
 
 const updateSelectedCodes = async (selectedValues: string[]) => {
 	selectCode.value = selectedValues;
 	console.log("Selected Codes:", selectCode.value);
-
+	const [productBookName, productBookSize, productBookTo] = productBookSelector.value.split("|")
 	const selectedItems = selectedValues.map((code) => {
 	const match = code.match(/^(.+)-(\d+)$/); //regex to extract the baskets and index
-	return match ? { baskets: match[1], index: parseInt(match[2]) } : null;
+	return match ? { item_code: match[1], index: parseInt(match[2]) } : null;
 	}).filter(Boolean);
-	console.log("Selected Items:", selectedItems);
-
+	console.log("Product Book size", productBookSize);
+	const [docNameFromSelector, selectWorkOrder] = doctypeSelector.value.split("|");
+	const currentPalletSeq = await call.get('thai.thai.doctype.palletizing_entry.palletizing_entry.get_current_pallet_seq', {
+    item: selectWorkOrder,
+	});
+	const lastBookNo = await call.get('thai.thai.doctype.palletizing_entry.palletizing_entry.get_last_book_no', {
+    book_no: productBookName,
+	});
+	const newBookNo = parseInt(lastBookNo.message) + 1;
+	let pallet_seq = currentPalletSeq.message + 1;
+	console.log("Pallet seq ", pallet_seq, "New Book no", newBookNo)
 	try {
-		const basketsData = selectedItems.filter((item): item is { baskets: string; index: number } => item !== null).map(({ baskets, index }) => {
-		const filtered = basketTable.value.filter((it:any) => it.baskets === baskets);
+		const basketsData = selectedItems
+		  .filter((item): item is { item_code: string; index: number } => item !== null)
+		  .map(({ item_code, index }) => {
+		const filtered = basketTable.value.filter((it:any) => it.item_code === item_code);
 		const item = filtered[index];
 		return item ? {
 			basket_month: item.basket_month,
 			basket_no: item.basket_no,
-			item_code: item.baskets,
+			from_time: item.from_time,
+			time_in_mins: item.time_in_mins,
+			to_time: item.to_time,
+			item_code: item.item_code,
+			manufacturer: item.manufacturer,
+			manufacturer_part_no: item.manufacturer_part_no || "None",
+			batch_no: item.batch_no || "None",
 			qty: item.qty,
+			palletized_qty: item.palletized_qty,
+			posting_date: item.posting_date,
 			net_qty: item.net_qty || item.qty,
 			available_qty: item.available_qty || item.qty, 
-			palletized_qty: item.qty,
-
+			oneday: item.oneday,
+			incubate: item.incubate,
+			it: item.it,
+			sample: item.sample,
+			spoil: item.spoil,
+			leak: item.leak,
 		} : null;
 		}).filter(Boolean);
 		
 		console.log("Basket Data :", basketsData)
 
-		const palletizedProducts = basketsData.map((data:any, idx) => ({
-			pallet_no: 1200, //test only
+		/*const palletizedProducts = basketsData.map((data, idx) => ({
+			pallet_seq: 0, //for test 
+			pallet_no: `${productBookName}/${newBookNo}`, //test only
 			basket_month: data.basket_month,
 			item_code: data.item_code,
 			item_name: data.item_code,
@@ -216,27 +253,38 @@ const updateSelectedCodes = async (selectedValues: string[]) => {
 			qty: data.qty,
 			net_qty: data.net_qty || data.qty,
 			available_qty: data.available_qty || 0, 
-			palletized_qty: data.qty,
-			size: 200, //test only
+			palletized_qty: data.palletized_qty,
+			from_time: data.from_time,
+			time_in_mins: data.time_in_mins,
+			to_time: data.to_time,
+			size: productBookSize, //test only
 			baskets: JSON.stringify([data])
 		}));
-		console.log("Palletized Products:", palletizedProducts);
-
+		console.log("Palletized Products:", palletizedProducts);*/
 
 		const getPalletDoctype = await db.getDocList('Palletizing Entry', {
 		fields: ['name', 'palletized_products','posting_date','palletized_products'],
 		filters: [["posting_date", "=", getDate.value[0]]],
 		});
 		const palletizingEntry = getPalletDoctype[0];
+		console.log("palletizingEntry name", palletizingEntry.name)
+		const args = {
+			docname: palletizingEntry.name,
+			baskets_details: basketsData,
+			size: parseInt(productBookSize),
+		}
+		const response = await call.put('thai.thai.doctype.palletizing_entry.palletizing_entry.set_required_products_mobile', args
+		)
+		console.log("Response from set_required_products_test", response)
 		const currentProducts = palletizingEntry.palletized_products || [];
-		const updatedProducts = [...currentProducts, ...palletizedProducts];
-		//console.log("Current Products", palletizingEntry.palletized_products)
+		const updatedProducts = [...currentProducts, ...response.message];
+		/*console.log("Current Products", palletizingEntry.palletized_products)
 		const palletUpdate = await db.updateDoc("Palletizing Entry", palletizingEntry.name, {
 			palletized_products: updatedProducts,
 		});
-		console.log("Updated Products success", updatedProducts)
-		//await selectDoctype(); 
-		displayPallet.value = palletUpdate
+		await selectDoctype(); 
+		displayPallet.value = palletUpdate*/
+
 		currentPage.value = 1;
 	} catch (error) {
 		console.error("Error creating pallets:", error);
@@ -274,10 +322,23 @@ const selectDoctype = async (doctype?: string) => {
 			? basketPO.baskets.map((bk:any) => ({
 				basket_month: bk.basket_month,
 				basket_no: bk.basket_no, // Baskets No
-				baskets: bk.item_code, // Baskets Item Code
+				item_code: bk.item_code, // Baskets Item Code
+				from_time: bk.from_time,
+				time_in_mins: bk.time_in_mins,
+				to_time: bk.to_time,
+				manufacturer: bk.manufacturer,
+				manufacturer_part_no: bk.manufacturer_part_no,
+				batch_no: bk.batch_no,
 				qty: bk.qty, // Baskets qty
+				palletized_qty: bk.palletized_qty,
 				is_palletized: bk.is_palletized, // Baskets is palletized
 				posting_date: doc.posting_date,
+				oneday: bk.oneday,
+				incubate: bk.incubate,
+				it: bk.it,
+				sample: bk.sample,
+				spoil: bk.spoil,
+				leak: bk.leak,
 				doc_name: doc.name, // Basket Entry Doc Name
 				}))
 			: []
@@ -292,21 +353,47 @@ const selectDoctype = async (doctype?: string) => {
 		doc_name: wo.doc_name, // Basket Entry Doc Name
 		}))
 	);
+	//set basket data from basket entry child table
 	basketTable.value = basketList.value.flatMap((doc:any) =>
 		doc.baskets.map((bk:any) => ({
-		basket_month: bk.basket_month,
-		basket_no: bk.basket_no, // Baskets No
-		baskets: bk.baskets, // Baskets Item Code
-		qty: bk.qty, // Baskets qty
-		is_palletized: bk.is_palletized, // Baskets is palletized
-		posting_date: bk.posting_date,
-		doc_name: bk.doc_name, // Basket Entry Doc Name
+			basket_month: bk.basket_month,
+			basket_no: bk.basket_no, // Baskets No
+			item_code: bk.item_code, // Baskets Item Code
+			from_time: bk.from_time,
+			time_in_mins: bk.time_in_mins,
+			to_time: bk.to_time,
+			manufacturer: bk.manufacturer,
+			manufacturer_part_no: bk.manufacturer_part_no,
+			batch_no: bk.batch_no,
+			qty: bk.qty, // Baskets qty
+			palletized_qty: bk.palletized_qty,
+			is_palletized: bk.is_palletized, // Baskets is palletized
+			posting_date: doc.posting_date,
+			oneday: bk.oneday,
+			incubate: bk.incubate,
+			it: bk.it,
+			sample: bk.sample,
+			spoil: bk.spoil,
+			leak: bk.leak,
+			doc_name: doc.name, // Basket Entry Doc Name
 		}))
 	
 	);
 	//console.log("Work Order ", workOrderList.value)
 	//console.log("Baskets Table",)
 };
+
+const selectProductBook = async (doctype?:string) => {
+	const [docNameFromSelector, selectWorkOrder] = doctypeSelector.value.split("|")
+	console.log("Product book for ", selectWorkOrder)
+	const getProductBook = await db.getDocList('Product Books',{
+		fields: ['name', 'item', 'book_start','book_to','description','size'],
+		limit: 100, 
+		filters: [['item','=',selectWorkOrder]],
+		orderBy: { field: 'modified',order: 'desc',} 
+ 	})
+	productBookList.value = getProductBook
+}
 
 const getDate = computed(() => {
   if (!dateValue.value || dateValue.value.length === 0) {
@@ -373,6 +460,12 @@ watch(dateValue, (newDate) => {
   if (newDate) {
     selectDoctype();
     getLocal();
+	
+  }
+});
+watch(doctypeSelector, (newDoctype) => {
+  if (newDoctype) {
+	selectProductBook(newDoctype);
   }
 });
 
@@ -386,10 +479,6 @@ ion-datetime-button::part(native) {
   color: #171717;
   font-size: 14px;
 
-}
-.custom-alert .alert-button-group {
-  display: flex;
-  justify-content: center;
 }
 #select-code:hover{
 	cursor: pointer;
