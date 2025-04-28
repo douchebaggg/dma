@@ -2,7 +2,7 @@ labels:
   baskets: Basket Data
   baskets_no: Baskets No
   media: Pressure Steam Sterilizer
-  oem: OEM Product Data
+  seam: SEAM Input
   pallets: Pallet Data
   process_order: Process Order
   product_code: Product Code
@@ -18,6 +18,14 @@ labels:
   order: Order
   no_item: No Item to Display
   date_of: Date
+  items: Items
+  update_success: Doctype Update Success
+  update_fail: Doctype Update Fail
+  doctype: Doctype
+  after: has been updated
+  note: You can click on the doctype name to view details in Frappe
+  preview: Preview Basket Table data
+  
 greeting:
   hi: Hi
 nav:
@@ -37,7 +45,7 @@ dashboard:
   enter_data: 
     header: Production Data
   warehouse:
-    header: Warehouse Data
+    header: Warehouse & QC Data
   today:
     header: Today's Data
 button:
@@ -52,12 +60,8 @@ basket:
   date_select_header: You can select a date for the document list
   date_select: Select Date for Baskets List
   doctype_select: Select Product Code
-  update_sucess: Doctype Update Success
-  update_fail: Doctype Update Fail
-  doctype: Doctype
-  after: has been updated
-  note: You can click on the doctype name to view details in Frappe
-  preview: Preview Basket Table data
+  product_book_select: Select Product Book
+
 
 pallets:
   header: Palletizing Entry
@@ -74,7 +78,14 @@ pallets:
   minute: Minute
   select_code: Select Basket Code
   lang: en-EN
-  
+
+sterilizer:
+  header: Sterilizer Entry
+  date_select: Select Date Range for Sterilizer List
+  sterilizer_items: Baskets Ready for Sterilization
+  sterilizer_select: Select Sterilizer
+
+
 pagination:
   page: Page
   of: of

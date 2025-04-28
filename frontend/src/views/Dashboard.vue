@@ -19,7 +19,7 @@
 								</h3>
 							</ion-card>
 						</RouterLink>
-						<RouterLink :to="{ name: 'MediaEntry' }" v-slot="{ href }">
+						<RouterLink :to="{ name: 'Sterilizer' }" v-slot="{ href }">
 							<ion-card class="flex gap-3 flex-col justify-center items-center rounded-xl p-[14px] shadow-md h-34">
 								<FrappeIcons.Media />
 								
@@ -39,12 +39,12 @@
 					</h3>
 					
 					<div class="mt-3 grid grid-cols-2 gap-5">
-						<RouterLink :to="{ name: 'OEM_productsEntry' }" v-slot="{ href }">
+						<RouterLink :to="{ name: 'MediaEntry' }" v-slot="{ href }">
 							<ion-card class="flex gap-3 flex-col justify-center items-center rounded-xl p-[14px] shadow-md h-34">
 								<FrappeIcons.TicketIcon />
 								
 								<h3 class="text-sm font-medium text-center ">
-									{{ t("labels.oem") }}
+									{{ t("labels.seam") }}
 								</h3>
 								
 							</ion-card>

@@ -12,7 +12,7 @@
 			<ion-title class="ion-text-center ion-margin"> {{ t('pallets.header') }} </ion-title>
 
 		<!-- input -->
-		<Card class="rounded-xl m-2 pb-14"> 
+		<ion-card class="rounded-xl m-2 pb-14"> 
 		<div class="input-container m-4">
 			<div class=" flex justify-center">
 				<p class="py-5 text-sm">{{t('pallets.date_select')}}</p>
@@ -130,18 +130,18 @@
 		</div>
 		<div class="flex justify-center space-x-5 ion-margin-top">
 			<Button 
-			  class="rounded-xl text-white bg-[#171717] w-20"
+			  class="rounded-xl text-white hover:bg-[#383838] bg-[#171717] w-20"
               :variant="'solid'"
 			  @click="saveData"
               size="md"> {{ t("button.Save") }}</Button>
 
 			<Button
-			class="rounded-xl  text-white  bg-red-600 w-20"
+			class="rounded-xl  text-white  hover:bg-red-800 bg-red-700 w-20"
 			:variant="'solid'"
 			size="md" >{{ t("button.Cancel") }}</Button>
 		</div>
 
-		</Card>
+		</ion-card>
 
 		</ion-content>
 	</ion-page>
@@ -154,12 +154,13 @@ IonButtons,IonTitle,IonButton,
 IonDatetime, IonDatetimeButton,
 IonSelect,IonSelectOption,
 IonModal,IonGrid,IonRow,IonCol,
+IonCard
 } from "@ionic/vue";
 import { ref, watch, onMounted, computed} from "vue";
 import { useRouter } from "vue-router"
 import { useI18n } from "vue-i18n"
 import { frappeSDK } from "@/utils/frappeSDK";
-import AppTypeahead from "./AppTypeahead.vue";
+import AppTypeahead from "@/components/AppTypeahead.vue";
 const router = useRouter()
 const { t } = useI18n()
 const { db, call } = frappeSDK()

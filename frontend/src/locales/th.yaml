@@ -2,7 +2,7 @@ labels:
   baskets: ป้อนข้อมูลและรายงานตะแกรง
   baskets_no: เลขที่ตะแกรง
   media: บันทึกหม้อฆ่าเชื้อ
-  oem: ป้อนสินค้าเปลือย
+  seam: วัดค่า SEAM
   pallets: สร้างใบกำกับพาเลท
   Toggle Language: Toggle Language
   process_order: รายการ Process Order
@@ -17,7 +17,14 @@ labels:
   produced: ผลิตแล้ว
   order: สั่ง
   no_item: ไม่มีรายการ
-  date_of: ของวันที่
+  date_of: ของวันที่s
+  items: รายการ
+  update_success: อัปเดตเอกสารสำเร็จ
+  update_fail: อัปเดตเอกสารล้มเหลว
+  doctype: เอกสาร
+  after: อัปเดตแล้ว
+  note: คุณสามารถคลิ๊กที่ชื่อเอกสารสำหรับดูรายละเอียดที่ Frappe
+  preview: ตัวอย่างตารางข้อมูลตะแกรง  
 
 greeting:
   hi: สวัสดี
@@ -38,7 +45,7 @@ dashboard:
   enter_data: 
     header: ข้อมูลฝ่ายผลิต
   warehouse:
-    header: ข้อมูลโกดังสินค้า
+    header: ข้อมูลโกดังและควบคุมคุณภาพ
   today:
     header: ข้อมูลวันนี้
 button:
@@ -53,12 +60,8 @@ basket:
   date_select_header: คุณสามารถเลือกวันที่สำหรับรายการเอกสาร
   date_select: เลือกวันที่สำหรับรายการเอกสาร
   doctype_select: เลือก Product Code
-  update_sucess: อัปเดตเอกสารสำเร็จ
-  update_fail: อัปเดตเอกสารล้มเหลว
-  doctype: เอกสาร
-  after: อัปเดตแล้ว
-  note: คุณสามารถคลิ๊กที่ชื่อเอกสารสำหรับดูรายละเอียดที่ Frappe
-  preview: ตัวอย่างตารางข้อมูลตะแกรง  
+  product_book_select: เลือกเล่มที่
+
 
 pallets:
   header: สร้างใบกำกับพาเลต
@@ -75,6 +78,12 @@ pallets:
   minute: นาที
   select_code: เลือกเลขที่ตะแกรง
   lang: th-TH
+
+sterilizer:
+  header: บันทึกหม้อฆ่าเชื้อ
+  date_select: เลือกวันที่สำหรับรายการเอกสาร
+  sterilizer_items: ตะแกรงที่พร้อมบันทึกหม้อฆ่าเชื้อ
+  sterilizer_select: เลือกหม้อฆ่าเชื้อ
 
 pagination:
   first: หน้าแรก
