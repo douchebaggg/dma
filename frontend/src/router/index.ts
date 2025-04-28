@@ -10,7 +10,7 @@ import { session } from "../data/session"
 import { userResource } from "../data/user"
 import basketRoutes  from "./basket"
 import mediaRoutes from "./media"
-import oemProductsRoutes from "./oemProducts"
+import sterilizerRoutes from "./sterilizer"
 import palletsRoutes from "./pallets"
 import caseRoutes from "./cases"
 import docType from "./doctype"
@@ -56,7 +56,7 @@ const routes: Array<RouteRecordRaw> = [
 	...caseRoutes,
 	...basketRoutes,
 	...mediaRoutes,
-	...oemProductsRoutes,
+	...sterilizerRoutes,
 	...palletsRoutes,
 	...docType
 	
