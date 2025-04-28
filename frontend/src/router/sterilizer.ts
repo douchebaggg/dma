@@ -1,11 +1,11 @@
 import { RouteRecordRaw } from "vue-router"
-import Sterilizer_List from "@/views/sterilizer/Sterilizer.vue"
+import SterilizerPage from "@/views/sterilizer/Sterilizer.vue"
 
 const routes: Array<RouteRecordRaw> = [
 	{
-		name: "OEM_productsEntry",
-		path: "/oem_products",
-		component: Sterilizer_List,
+		name: "Sterilizer",
+		path: "/sterilizer",
+		component: SterilizerPage,
 	},
 ]
 
