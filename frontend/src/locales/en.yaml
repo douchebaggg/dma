@@ -25,7 +25,9 @@ labels:
   after: has been updated
   note: You can click on the doctype name to view details in Frappe
   preview: Preview Basket Table data
-  
+  warning: Sterilizer is not selected
+  fix: Please select a sterilizer for the basket before saving 
+
 greeting:
   hi: Hi
 nav:

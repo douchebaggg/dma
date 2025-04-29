@@ -15,7 +15,7 @@
 		<ion-card class="rounded-xl m-2 pb-14"> 
 		<div class="input-container m-4">
 			<div class=" flex justify-center">
-				<p class="py-5 text-sm">{{t('pallets.date_select')}}</p>
+				<p class="py-5 text-sm">{{t('sterilizer.date_select')}}</p>
 				<ion-datetime-button class="ion-padding " datetime="date"></ion-datetime-button>
 				<ion-modal :keep-contents-mounted="true">
 					<ion-datetime :locale="getLocal()" presentation="date" id="date" :multiple="true" v-model="dateValue"></ion-datetime>
@@ -47,7 +47,7 @@
 					</ion-select>
 				</div>
 				<div class=" flex justify-center">
-					<ion-button id="select-code" class =" w-dvw h-9 py-2 mt-4 mb-4">
+					<ion-button id="select-code" class =" w-dvw h-9 py-2 mt-4 mb-4 max-[412px]:text-[12px]">
 						{{ t('sterilizer.sterilizer_items')}} {{ selectCodeText }}
 					</ion-button>			
 				</div>
@@ -89,7 +89,7 @@ import { IonPage,IonContent,IonHeader,IonToolbar,IonBackButton,
 IonButtons,IonTitle,IonButton,
 IonSelect,IonSelectOption,
 IonDatetimeButton,IonDatetime,IonModal,
-IonCard
+IonCard,alertController
 } 
 from "@ionic/vue";
 
@@ -116,6 +116,21 @@ const selectCode = ref<string[]>([]);
 const selectCodeText = computed(() => `${selectCode.value.length} ${t('labels.items')}`);
 
 //functions
+const alertButtons = [
+    {
+      text: t('button.Ok'),
+      cssClass: 'alert-button-confirm',
+    }
+  ];
+const alertWarning = async () => {
+	const alert = await alertController.create({
+		cssClass: 'custom_alert',
+		header: t('labels.warning'),
+		message: t('labels.fix'),
+		buttons: alertButtons,
+	});
+	await alert.present();
+};
 const formattedBasketItems = computed(() => {
 	const [docNameFromSelector, selectWorkOrder] = doctypeSelector.value.split("|")
 	const items = basketTable.value
@@ -291,6 +306,10 @@ const selectSterilizer = async (doctype?:string) => {
 
 //save
 const saveData = async () => {
+	console.log(sterilizerSelector.value)
+	if(sterilizerSelector.value === undefined) {
+			alertWarning();
+		}
 	try {
 		const sterilizerName = sterilizerSelector.value
 		const [docNameFromSelector, selectWorkOrder] = doctypeSelector.value.split("|");
@@ -375,3 +394,20 @@ onMounted(() => {
   	selectDoctype(doctypeSelector.value);
 });
 </script>
+<style>
+  button.alert-button.alert-button-confirm {
+    background-color: #007BE0;
+    color: var(--ion-color-success-contrast);
+  }
+  .md button.alert-button.alert-button-confirm {
+	border-radius: 0.6rem;
+  }
+  .alert-title.sc-ion-alert-md {
+	text-align: center;
+	color: #CC2929;
+  }
+  ion-alert.custom_alert{
+	--backdrop-opacity: 0.7;
+	text-align: center;
+  }
+</style>
