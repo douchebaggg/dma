@@ -2,7 +2,7 @@
 	<ion-page>
 		<ion-content :fullscreen="true">
 			<div class="m-4 flex h-full flex-col justify-center">
-				<Card class="border-0 shadow-[3px_4px_14px_5px_rgba(0,_0,_0,_0.35)] ion-margin">
+				<ion-card class="border-0 shadow-[3px_4px_14px_5px_rgba(0,_0,_0,_0.35)] ion-margin">
 					<h1 class="pb-5 text-center text-xl font-bold text-gray-800">
 						Login to ALZO Mobile App
 					</h1>
@@ -42,7 +42,7 @@
 					</form>
 
 
-				</Card>
+				</ion-card>
 			</div>
 		</ion-content>
 	</ion-page>
@@ -51,14 +51,14 @@
 <script lang="ts" setup>
 import { inject, onMounted, ref, computed } from "vue";
 import { useI18n } from "vue-i18n";
-import { IonPage, IonContent } from "@ionic/vue";
+import { IonPage, IonContent, IonCard } from "@ionic/vue";
 import { sessionInjectionKey } from "@/typing/InjectionKeys";
 import { Browser } from "@capacitor/browser";
 import { url } from "@/utils/checkIP";
 import axios from 'axios'
 import router from "@/router";
 const { t } = useI18n();
-const session = inject(sessionInjectionKey);
+const session = inject(sessionInjectionKey) as any;
 const loginFailed = computed(() => session.login.error); 
 const api = url;
 async function submit(e: Event) {

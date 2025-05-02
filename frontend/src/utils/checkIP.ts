@@ -9,6 +9,6 @@ export function isLocalNetwork() {
            hostname.endsWith('.local'); // Bonjour/mDNS addresses
 }
 export const currentHost = window.location.hostname;
-export const apiPort = 8080; 
-export const urlPort = isLocalNetwork() ? `http://${currentHost}:${apiPort}` : import.meta.env.VITE_API_URL
+export const port = 8000; // Default port for local development
+export const urlPort = isLocalNetwork() ? `http://${currentHost}:${port}` : import.meta.env.VITE_API_URL
 export const url = isLocalNetwork() ? `http://192.168.10.105` : import.meta.env.VITE_API_URL
