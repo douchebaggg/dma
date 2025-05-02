@@ -3,11 +3,7 @@
 		<ion-content :fullscreen="true">
 			<div class="m-4 flex h-full flex-col justify-center">
 				<ion-card class="border-0 shadow-[3px_4px_14px_5px_rgba(0,_0,_0,_0.35)] ion-margin">
-<<<<<<< HEAD
-					<h1 class="pb-5 text-center text-xl font-bold text-gray-800">
-=======
-					<h1 class="pb-5 text-center text-xl font-bold "> eqsawcedwaf
->>>>>>> f35a647 (fix some code and run build cmd)
+					<h1 class="pb-5 text-center text-xl font-bold ">
 						Login to ALZO Mobile App
 					</h1>
 					<form class="flex flex-col space-y-3 ion-margin" @submit.prevent="submit">
@@ -65,6 +61,15 @@ const { t } = useI18n();
 const session = inject(sessionInjectionKey) as any;
 const loginFailed = computed(() => session.login.error); 
 const api = url;
+const isDarkMode = ref(window.matchMedia('(prefers-color-scheme: dark)').matches)
+	const setTheme = () => {
+		const theme = localStorage.getItem("darkMode")
+		if(theme !== null) {
+			isDarkMode.value = JSON.parse(theme)
+			console.log(isDarkMode.value)
+			document.documentElement.classList.toggle('ion-palette-dark', isDarkMode.value)
+		} 
+	}
 async function submit(e: Event) {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
@@ -89,6 +94,7 @@ const oauthLogin = async () => {
     };
     onMounted(() => {
       handleOAuth();
+      setTheme();
     });
   const handleOAuth = async () =>{
     const urlParams = new URLSearchParams(window.location.search);
