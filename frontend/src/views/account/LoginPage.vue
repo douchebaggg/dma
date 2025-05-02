@@ -3,7 +3,11 @@
 		<ion-content :fullscreen="true">
 			<div class="m-4 flex h-full flex-col justify-center">
 				<ion-card class="border-0 shadow-[3px_4px_14px_5px_rgba(0,_0,_0,_0.35)] ion-margin">
+<<<<<<< HEAD
 					<h1 class="pb-5 text-center text-xl font-bold text-gray-800">
+=======
+					<h1 class="pb-5 text-center text-xl font-bold "> eqsawcedwaf
+>>>>>>> f35a647 (fix some code and run build cmd)
 						Login to ALZO Mobile App
 					</h1>
 					<form class="flex flex-col space-y-3 ion-margin" @submit.prevent="submit">
