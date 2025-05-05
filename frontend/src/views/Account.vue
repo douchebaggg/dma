@@ -28,7 +28,7 @@
 							  	:shape="'square'"
 							  	:ref_for="true"
 								size="xl"
-								class="bg-gray-200 h-24 w-24"
+								class=" h-24 w-24 border-1 rounded-full border-zinc-500 "
 								:image="`${user.data.user_image}?t=${Date.now()}`"
 								:label="user.data.full_name"
 							/>
@@ -106,7 +106,7 @@ const user = <any>inject(userResourceInjectionKey)
 const { call } = frappeSDK();
 const appVersion = ref(null)
 const getApp = async() => {
-	const res = await call.get('frappe.api.get_app_version');
+	const res = await call.get('dma.api.get_app_version');
 	appVersion.value = res.message
 }
 /*const appVersion = createResource({
