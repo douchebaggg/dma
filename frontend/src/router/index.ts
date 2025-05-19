@@ -14,7 +14,7 @@ import sterilizerRoutes from "./sterilizer"
 import palletsRoutes from "./pallets"
 import caseRoutes from "./cases"
 import docType from "./doctype"
-
+import saleRotes from "./sales"
 
 const routes: Array<RouteRecordRaw> = [
 	{
@@ -58,7 +58,8 @@ const routes: Array<RouteRecordRaw> = [
 	...mediaRoutes,
 	...sterilizerRoutes,
 	...palletsRoutes,
-	...docType
+	...docType,
+	...saleRotes
 	
 ]
 

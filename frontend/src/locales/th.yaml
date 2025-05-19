@@ -17,7 +17,7 @@ labels:
   produced: ผลิตแล้ว
   order: สั่ง
   no_item: ไม่มีรายการ
-  date_of: ของวันที่s
+  date_of: ของวันที่
   items: รายการ
   update_success: อัปเดตเอกสารสำเร็จ
   update_fail: อัปเดตเอกสารล้มเหลว
@@ -25,8 +25,8 @@ labels:
   after: อัปเดตแล้ว
   note: คุณสามารถคลิ๊กที่ชื่อเอกสารสำหรับดูรายละเอียดที่ Frappe
   preview: ตัวอย่างตารางข้อมูลตะแกรง  
-  warning: หม้อฆ่าเชื้อไม่ได้ถูกเลือก
-  fix: กรุณาเลือกหม้อฆ่าเชื้อสำหรับตะแกรงก่อนบันทึก
+  buy: การซื้อ
+  sale: การขาย
 
 greeting:
   hi: สวัสดี
@@ -63,6 +63,12 @@ basket:
   date_select: เลือกวันที่สำหรับรายการเอกสาร
   doctype_select: เลือก Product Code
   product_book_select: เลือกเล่มที่
+  one_day: Oneday
+  incubate: Incubate
+  IT: IT
+  example: ตัวอย่าง
+  spoil: บุบ
+  leak: รั่ว 
 
 
 pallets:
@@ -79,6 +85,11 @@ pallets:
   start: เริ่ม
   minute: นาที
   select_code: เลือกเลขที่ตะแกรง
+  pallet_qty: จำนวนที่จัดพาเลต
+  size: ขนาดพาเลต
+  hold: Hold
+  reason: สาเหตุการ Hold
+  full: เต็มพาเลต
   lang: th-TH
 
 sterilizer:
@@ -86,6 +97,13 @@ sterilizer:
   date_select: เลือกวันที่สำหรับรายการเอกสาร
   sterilizer_items: ตะแกรงที่พร้อมบันทึกหม้อฆ่าเชื้อ
   sterilizer_select: เลือกหม้อฆ่าเชื้อ
+  round: รอบที่
+  select_round: เลือกรอบที่
+
+selling:
+  services: บริการ 
+  add: เพิ่มรายการ
+
 
 pagination:
   first: หน้าแรก

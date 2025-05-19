@@ -25,9 +25,9 @@ labels:
   after: has been updated
   note: You can click on the doctype name to view details in Frappe
   preview: Preview Basket Table data
-  warning: Sterilizer is not selected
-  fix: Please select a sterilizer for the basket before saving 
-
+  buy: Buying
+  sale: Selling
+  
 greeting:
   hi: Hi
 nav:
@@ -63,6 +63,12 @@ basket:
   date_select: Select Date for Baskets List
   doctype_select: Select Product Code
   product_book_select: Select Product Book
+  one_day: Oneday
+  incubate: Incubate
+  IT: IT
+  example: Example
+  spoil: Spoil
+  leak: Leak
 
 
 pallets:
@@ -79,13 +85,25 @@ pallets:
   start: Start
   minute: Minute
   select_code: Select Basket Code
+  pallet_qty: Palletized Qty
+  size: Size
+  hold: Hold
+  reason: Reason to Hold
+  full: Full Pallet
   lang: en-EN
+
 
 sterilizer:
   header: Sterilizer Entry
   date_select: Select Date Range for Sterilizer List
   sterilizer_items: Baskets Ready for Sterilization
   sterilizer_select: Select Sterilizer
+  round: Round
+  select_round: Select Round
+
+selling:
+  services: Service
+  add: Add Selling Item
 
 
 pagination:

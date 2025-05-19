@@ -9,7 +9,7 @@
           <ion-button color="secondary" @click="confirmChanges()">{{ t('button.Ok') }}</ion-button>
         </ion-buttons>
       </ion-toolbar>
-        <ion-searchbar class="custom" @ionInput="searchbarInput($event)"></ion-searchbar>
+        <ion-searchbar class="custom mt-2 mb-2" @ionInput="searchbarInput($event)"></ion-searchbar>
 
     </ion-header>
   
@@ -101,8 +101,7 @@
 
 <style scoped>
 ion-searchbar.custom {
-  --background: #f0f0f0;
-  --color: #000;
+  --background: var(--ion-color-dark);
   --border-radius: 12px;
 }
 </style>

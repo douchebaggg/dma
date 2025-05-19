@@ -25,10 +25,10 @@
 						</div>
 						<div class="flex items-center justify-center py-5">
 							<Avatar
-							  	:shape="'square'"
+							  	:shape="'circle'"
 							  	:ref_for="true"
 								size="xl"
-								class=" h-24 w-24 border-1 rounded-full border-zinc-500 "
+								class=" h-24 w-24 border-1 border-zinc-500 "
 								:image="`${user.data.user_image}?t=${Date.now()}`"
 								:label="user.data.full_name"
 							/>

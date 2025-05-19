@@ -74,7 +74,7 @@
 
 				<div class="flex flex-col gap-[2px]">
 						<RouterLink
-							:to="{ name: 'Entitlement RequestList' }"
+							:to="{ name: 'Sale' }"
 							v-slot="{ href }"
 						>
 							<ion-card class="flex items-center justify-between gap-3 rounded-t-xl  p-[14px] shadow-md">
@@ -82,7 +82,7 @@
 									<FeatherIcon name="clipboard" class="h-6 w-6 text-gray-700" />
 									
 									<h3 class="text-sm font-medium ">
-										{{ t("labels.process_order") }}
+										{{ t("labels.buy") }}
 									</h3>
 									
 								</div>
@@ -93,7 +93,7 @@
 							</ion-card>
 						</RouterLink>
 						<RouterLink
-							:to="{ name: 'Awareness Camp RecordList' }"
+							:to="{ name: 'Sale' }"
 							v-slot="{ href }"
 						>
 							<ion-card class="flex items-center justify-between gap-3 rounded-b-xl  p-[14px] shadow-md">
@@ -101,7 +101,7 @@
 									<FrappeIcons.AwarenessCampIcon class="h-6 w-6" />
 									
 									<h3 class="text-sm font-medium ">
-										{{ t("labels.product_code") }}
+										{{ t("labels.sale") }}
 									</h3>
 									
 								</div>

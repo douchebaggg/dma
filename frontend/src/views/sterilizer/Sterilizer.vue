@@ -15,14 +15,14 @@
 		<ion-card class="rounded-xl m-2 pb-14"> 
 		<div class="input-container m-4">
 			<div class=" flex justify-center">
-				<p class="py-5 text-sm">{{t('sterilizer.date_select')}}</p>
+				<p class="py-5 text-sm">{{t('pallets.date_select')}}</p>
 				<ion-datetime-button class="ion-padding " datetime="date"></ion-datetime-button>
 				<ion-modal :keep-contents-mounted="true">
 					<ion-datetime :locale="getLocal()" presentation="date" id="date" :multiple="true" v-model="dateValue"></ion-datetime>
 				</ion-modal>
 			</div>
-				<div class=" flex justify-center space-x-5">				
-					<ion-select class="py-2 w-92 max-sm:w-40" aria-label="Doctype" v-model="doctypeSelector" interface="popover" :placeholder="t('basket.doctype_select')" fill="outline"
+				<div class=" flex justify-center space-x-5 max-sm:flex-col">				
+					<ion-select class="py-2 mt-3 w-92 max-sm:w-full" aria-label="Doctype" v-model="doctypeSelector" interface="popover" :placeholder="t('basket.doctype_select')" fill="outline"
 					@ionChange="closePopover"
 					@ionCancel="closePopover"
 					@ionDismiss="closePopover"
@@ -34,20 +34,32 @@
 						</ion-select-option>
 					</ion-select>
 					<!-- Product Book-->
-					<ion-select class="py-2 w-92 max-sm:w-40" aria-label="Doctype" v-model="sterilizerSelector" interface="popover" :placeholder="t('sterilizer.sterilizer_select')" fill="outline"
+					<ion-select class="py-2 w-92 mt-3 max-sm:w-full" aria-label="Doctype" v-model="sterilizerSelector" interface="popover" :placeholder="t('sterilizer.sterilizer_select')" fill="outline"
 					@ionChange="closePopover"
 					@ionCancel="closePopover"
 					@ionDismiss="closePopover"
 					>
 						<ion-select-option v-for="ster in sterilizerList" 
 						:key="ster.id "
-						:value="ster.name">
+						:value="`${ster.name}/${roundSelector[0].name}`">
 						{{ ster.name }}
+						</ion-select-option>
+					</ion-select>
+					<ion-select class="custom-select py-2 w-92 mt-3 max-sm:w-full" aria-label="Doctype" 
+					interface="action-sheet"
+					:cancel-text="t('button.Cancel')"
+					:placeholder="t('sterilizer.round')" 
+					:interface-options="customActionSheet"
+					fill="outline">
+						<ion-select-option v-for="round in roundSelector" 
+						:key="round.id "
+						:value="round.name">
+						{{ round.name }}
 						</ion-select-option>
 					</ion-select>
 				</div>
 				<div class=" flex justify-center">
-					<ion-button id="select-code" class =" w-dvw h-9 py-2 mt-4 mb-4 max-[412px]:text-[12px]">
+					<ion-button id="select-code" class =" w-dvw h-9 py-2 mt-4 mb-4">
 						{{ t('sterilizer.sterilizer_items')}} {{ selectCodeText }}
 					</ion-button>			
 				</div>
@@ -73,7 +85,7 @@
               size="md"> {{ t("button.Save") }}</Button>
 
 			<Button
-			class="rounded-xl  text-white  hover:bg-red-800 bg-red-700 w-20"
+			class="rounded-xl text-white hover:bg-red-800 bg-red-700 w-20"
 			:variant="'solid'"
 			size="md" >{{ t("button.Cancel") }}</Button>
 		</div>
@@ -85,12 +97,8 @@
 </template>
 
 <script setup lang="ts">
-import { IonPage,IonContent,IonHeader,IonToolbar,IonBackButton,
-IonButtons,IonTitle,IonButton,
-IonSelect,IonSelectOption,
-IonDatetimeButton,IonDatetime,IonModal,
-IonCard,alertController
-} 
+import { IonPage,IonContent,IonHeader,IonToolbar,IonBackButton,IonButtons,IonTitle,IonButton,
+IonSelect,IonSelectOption,IonDatetimeButton,IonDatetime,IonModal,IonCard } 
 from "@ionic/vue";
 
 import { ref, watch, onMounted, computed} from "vue";
@@ -115,85 +123,24 @@ const modal = ref();
 const selectCode = ref<string[]>([]);
 const selectCodeText = computed(() => `${selectCode.value.length} ${t('labels.items')}`);
 
-//functions
-const alertButtons = [
-    {
-      text: t('button.Ok'),
-      cssClass: 'alert-button-confirm',
-    }
-  ];
-const alertWarning = async () => {
-	const alert = await alertController.create({
-		cssClass: 'custom_alert',
-		header: t('labels.warning'),
-		message: t('labels.fix'),
-		buttons: alertButtons,
-	});
-	await alert.present();
+const roundSelector = [
+	{ id: 1, name: "1" },
+	{ id: 2, name: "2" },
+	{ id: 3, name: "3" },
+	{ id: 4, name: "4" },
+	{ id: 5, name: "5" },
+	{ id: 6, name: "6" },
+	{ id: 7, name: "7" },
+	{ id: 8, name: "8" },
+	{ id: 9, name: "9" },
+	{ id: 10, name: "10" },
+];
+const customActionSheet = {
+	header: t('sterilizer.round'),
+	subHeader: t('sterilizer.select_round'),
 };
-const formattedBasketItems = computed(() => {
-	const [docNameFromSelector, selectWorkOrder] = doctypeSelector.value.split("|")
-	const items = basketTable.value
-	.filter((item:any) => item.item_code === selectWorkOrder && item.is_sterilized === 0) 
-	.map((item:any, index:any )=> ({
-		value: `${item.item_code}-${index}`,
-		text: `${t('labels.baskets_no')} ${item.basket_no} ${item.item_code} ${t('labels.amount')} ${item.qty} 
-		${t('labels.date_of')} ${item.posting_date || 'N/A'}`,
-	}));
-	//console.log("Work Order", selectWorkOrder)
-	//console.log('Formatted items filtered by is_palletized and is_sterilized = 0 :', items);
-	return items;
-});
 
-//update selected codes
-const updateSelectedCodes = async (selectedValues: string[]) => {
-	selectCode.value = selectedValues;
-	console.log("Selected Codes:", selectCode.value);
-
-	const selectedItems = selectedValues.map((code) => {
-	const match = code.match(/^(.+)-(\d+)$/); //regex to extract the baskets and index
-	return match ? { item_code: match[1], index: parseInt(match[2]) } : null;
-	}).filter(Boolean);
-
-	try {
-		const basketsData = selectedItems.map(({ item_code, index }:any) => {
-		const filtered = basketTable.value.filter((it:any) => it.item_code === item_code && it.is_sterilized === 0);
-		const item = filtered[index];
-		return item ? {
-			name: item.name,
-			basket_month: item.basket_month,
-			basket_no: item.basket_no,
-			from_time: item.from_time,
-			time_in_mins: item.time_in_mins,
-			to_time: item.to_time,
-			item_code: item.item_code,
-			manufacturer: item.manufacturer,
-			manufacturer_part_no: item.manufacturer_part_no,
-			batch_no: item.batch_no,
-			qty: item.qty,
-			palletized_qty: item.palletized_qty,
-			is_palletized: item.is_palletized,
-			is_sterilized: 1,
-			sterilizer_no: sterilizerSelector.value,
-			posting_date: item.posting_date,
-			net_qty: item.net_qty || item.qty,
-			available_qty: item.available_qty || item.qty, 
-			oneday: item.oneday,
-			incubate: item.incubate,
-			it: item.it,
-			sample: item.sample,
-			spoil: item.spoil,
-			leak: item.leak,
-		} : null;
-		}).filter(Boolean);
-		sterilizerUpdate.value = basketsData
-		console.log("Sterilizer To Update :", sterilizerUpdate.value)
-	} catch (error) {
-		console.error("Error creating pallets:", error);
-	}
-	modal.value?.$el.dismiss();
-
-	};
+//functions
 
 const selectDoctype = async (doctype?: string) => {
 	const getBasket = await db.getDocList('Basket Entry',{
@@ -304,42 +251,106 @@ const selectSterilizer = async (doctype?:string) => {
 	console.log("Sterilizer List", sterilizerList.value)
 }
 
+const formattedBasketItems = computed(() => {
+	const [docNameFromSelector, selectWorkOrder] = doctypeSelector.value.split("|")
+	const items = basketTable.value
+	.filter((item:any) => item.item_code === selectWorkOrder && item.is_sterilized === 0) 
+	.map((item:any, index:any )=> ({
+		value: `${item.item_code}-${index}`,
+		text: `${t('labels.baskets_no')} ${item.basket_no} ${item.item_code} ${t('labels.amount')} ${item.qty} 
+		${t('labels.date_of')} ${item.posting_date || 'N/A'}`,
+	}));
+	//console.log("Work Order", selectWorkOrder)
+	console.log('Formatted items filtered is_sterilized = 0 :', items);
+	return items;
+});
+
+//update selected codes
+const updateSelectedCodes = async (selectedValues: string[]) => {
+	selectCode.value = selectedValues;
+	console.log("Selected Codes:", selectCode.value);
+
+	const selectedItems = selectedValues.map((code) => {
+	const match = code.match(/^(.+)-(\d+)$/); //regex to extract the baskets and index
+	return match ? { item_code: match[1], index: parseInt(match[2]),} : null;
+	}).filter(Boolean);
+
+	try {
+		const basketsData = selectedItems.map(({ item_code, index, }:any) => {
+		const filtered = basketTable.value.filter((it:any) => it.item_code === item_code && it.is_sterilized === 0);
+		const item = filtered[index];
+		return item ? {
+			name: item.name,
+			basket_month: item.basket_month,
+			basket_no: item.basket_no,
+			from_time: item.from_time,
+			time_in_mins: item.time_in_mins,
+			to_time: item.to_time,
+			item_code: item.item_code,
+			manufacturer: item.manufacturer,
+			manufacturer_part_no: item.manufacturer_part_no,
+			batch_no: item.batch_no,
+			qty: item.qty,
+			palletized_qty: item.palletized_qty,
+			is_palletized: item.is_palletized,
+			is_sterilized: 1,
+			sterilizer_no: sterilizerSelector.value,
+			posting_date: item.posting_date,
+			net_qty: item.net_qty || item.qty,
+			available_qty: item.available_qty || item.qty, 
+			oneday: item.oneday,
+			incubate: item.incubate,
+			it: item.it,
+			sample: item.sample,
+			spoil: item.spoil,
+			leak: item.leak,
+			doc_name: item.doc_name,
+		} : null;
+		}).filter(Boolean);
+		sterilizerUpdate.value = basketsData
+		console.log("Sterilizer To Update :", sterilizerUpdate.value)
+	} catch (error) {
+		console.error("Error creating sterilizer:", error);
+	}
+	modal.value?.$el.dismiss();
+
+	};
+
 //save
 const saveData = async () => {
-	console.log(sterilizerSelector.value)
-	if(sterilizerSelector.value === undefined) {
-			alertWarning();
-		}
 	try {
-		const sterilizerName = sterilizerSelector.value
-		const [docNameFromSelector, selectWorkOrder] = doctypeSelector.value.split("|");
-		console.log("Sterilizer Name", sterilizerName)
-		const currentBasket = await db.getDoc("Basket Entry", docNameFromSelector);
+		const updateBaskets = ref<any>()
+		const sterilizerName = sterilizerSelector.value;
+		const groupedByDocname = sterilizerUpdate.value.reduce((acc: any, item: any) => {
+		if (!acc[item.doc_name]) acc[item.doc_name] = [];
+		acc[item.doc_name].push(item);
+		return acc;
+		}, {});
+
+		for (const docname in groupedByDocname) {
+		const currentBasket = await db.getDoc("Basket Entry", docname);
 		const baskets_table = currentBasket.baskets || [];
-		sterilizerUpdate.value.forEach((newBasket:any) => {
-			const checkBasketUniqueField = baskets_table.findIndex((basket:any) => basket.name === newBasket.name);
-			//find unique basket name then change is_strilizer to 1 and add sterilizer no
-			if (checkBasketUniqueField >= 0) {
-				baskets_table[checkBasketUniqueField] = {
-					...baskets_table[checkBasketUniqueField],
-					...newBasket, 
-					is_sterilized: 1, 
-					sterilizer_no: sterilizerName,
-				};
-			} /*else {
-				baskets_table.push({
-					...newBasket,
-					is_sterilized: 1,
-					sterilizer_no: sterilizerName,
-				});
-			}*/
+		const updates = groupedByDocname[docname];
+
+		updates.forEach((newBasket: any) => {
+			const index = baskets_table.findIndex((b:any) => b.name === newBasket.name);
+			if (index >= 0) {
+			baskets_table[index] = {
+				...baskets_table[index],
+				...newBasket,
+				is_sterilized: 1,
+				sterilizer_no: sterilizerName,
+			};
+			}
 		});
 
-    console.log("Updated Baskets Table", baskets_table);
-	const updateBaskets = db.updateDoc("Basket Entry", docNameFromSelector, {
-		baskets: baskets_table,
-	});
-	displaySterilizer.value = updateBaskets
+		console.log(`Updated Basket Entry [${docname}]`, baskets_table);
+
+		updateBaskets.value = await db.updateDoc("Basket Entry", docname, {
+			baskets: baskets_table,
+		});
+		}
+		displaySterilizer.value = updateBaskets.value
 
 	} catch (error) {
 		console.error("Error saving data:", error);
@@ -395,19 +406,23 @@ onMounted(() => {
 });
 </script>
 <style>
-  button.alert-button.alert-button-confirm {
-    background-color: #007BE0;
-    color: var(--ion-color-success-contrast);
-  }
-  .md button.alert-button.alert-button-confirm {
-	border-radius: 0.6rem;
-  }
-  .alert-title.sc-ion-alert-md {
+.action-sheet-title.sc-ion-action-sheet-md{
+	font-size: 1rem;
 	text-align: center;
-	color: #CC2929;
-  }
-  ion-alert.custom_alert{
-	--backdrop-opacity: 0.7;
-	text-align: center;
-  }
+}
+.action-sheet-wrapper.sc-ion-action-sheet-md {
+	padding-top: 25dvh;
+	width: 75dvw;
+	height: 100dvh;
+}
+.action-sheet-group.sc-ion-action-sheet-md:first-child {
+	border-radius: 20px;
+	margin-bottom: 15px;
+}
+.action-sheet-group.sc-ion-action-sheet-md:last-child {
+	border-radius: 20px;
+}
+.action-sheet-button-inner.sc-ion-action-sheet-md {
+	justify-content: center;
+}
 </style>
