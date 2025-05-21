@@ -1,5 +1,5 @@
 <template>
-	<ion-tab-bar slot="bottom" class=" pt-[10px] shadow-[1px_-3px_6px_0px_rgba(0,_0,_0,_0.1)]">
+	<ion-tab-bar slot="bottom" class=" pt-[10px] mb-3 shadow-[1px_-3px_6px_0px_rgba(0,_0,_0,_0.1)]">
 		<ion-tab-button
 			class="rounded-l-md "
 			tab="dashboardTab"
