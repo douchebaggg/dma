@@ -1,7 +1,7 @@
 import { CapacitorConfig } from "@capacitor/cli"
 
 const config: CapacitorConfig = {
-	appId: "io.frappe.dma",
+	appId: "com.frappe.dma",
 	appName: "DMA",
 	webDir: "../dma/public/frontend",
 	plugins: {

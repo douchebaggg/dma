@@ -52,9 +52,8 @@ const displayWorkOrder = ref(null)
 const { db } = frappeSDK()
 const message = ref('');
 
-
 const getDoctype = async () => {
-  const allDoctype = await db.getDocList('Testing Doctype', { 
+  const allDoctype = await db.getDocList('Purchase Order', { 
 	fields: ['name', 'creation'],
 	limit: 10, 
   //filters: [['name','=','BK202409-012']],
@@ -62,7 +61,7 @@ const getDoctype = async () => {
 });
   let docNameWithProducts = null;
   for (const doc of allDoctype) {
-    const docType = await db.getDoc('Testing Doctype', doc.name);
+    const docType = await db.getDoc('Purchase Order', doc.name);
     if (docType.items && docType.items.length > 0) {
       docNameWithProducts = doc.name;
       displayDoc.value = docType.items;

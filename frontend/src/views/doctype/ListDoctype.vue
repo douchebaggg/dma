@@ -65,11 +65,11 @@ import { frappeSDK } from '@/utils/frappeSDK';
 const { db } = frappeSDK()
 const basketDisplay = ref<any>([])
 const palletDisplay = ref<any>([])
-const doctypeOptions = ref(['Testing Doctype', 'Sales Order']);
+const doctypeOptions = ref(['Purchase Order', 'Sales Order']);
 const selectedDoctype = ref(basketDisplay.value[0]);
 const date = ref()
 const displayDoctype = async (doctype: string) => {
-  const getBasket = await db.getDocList('Testing Doctype',{
+  const getBasket = await db.getDocList('Purchase Order',{
   fields: ['name', 'creation'],
 	limit: 10, 
   //filters: [['name','=','BK202409-012']],

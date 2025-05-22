@@ -125,6 +125,17 @@ const toggleTheme = () => {
 	localStorage.setItem("darkMode", JSON.stringify(isDarkMode.value))
 }
 
+const updateThemeColor = () => {
+  const themeColor = isDarkMode.value ? '#222428' : '#f4f5f6';
+  let metaThemeColor = document.querySelector('meta[name="theme-color"]');
+  if (!metaThemeColor) {
+    metaThemeColor = document.createElement('meta');
+    metaThemeColor.setAttribute('name', 'theme-color');
+    document.head.appendChild(metaThemeColor);
+  }
+  metaThemeColor.setAttribute('content', themeColor);
+};
+
 onMounted(() => {
 	setDefaultLanguage()
 	refreshUser()
@@ -141,7 +152,9 @@ onMounted(() => {
 watch(locale, (newLocale) => {
 	localStorage.setItem("preferredLanguage", newLocale)
 })
-
+watch(isDarkMode, () => {
+  updateThemeColor();
+});
 const refreshUser = async () => {
 	if(user.data.first_name === ""){
 		await userResource.reload()

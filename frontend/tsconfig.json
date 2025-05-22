@@ -13,7 +13,6 @@
     "baseUrl": ".",
     "forceConsistentCasingInFileNames": true,
     "types": [
-      "webpack-env",
       "jest",
       "vite/client",
     ],

@@ -3,6 +3,9 @@
 *.egg-info
 *.swp
 .env
+.vite/
 tags
 node_modules
+dist/
+dma/public/frontend
 __pycache__

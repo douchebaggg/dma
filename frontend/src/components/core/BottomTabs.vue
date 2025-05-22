@@ -1,7 +1,7 @@
 <template>
-	<ion-tab-bar slot="bottom" class=" pt-[10px] mb-3 shadow-[1px_-3px_6px_0px_rgba(0,_0,_0,_0.1)]">
+	<ion-tab-bar slot="bottom" class=" pt-4 shadow-[1px_-3px_6px_0px_rgba(0,_0,_0,_0.1)]">
 		<ion-tab-button
-			class="rounded-l-md "
+			class="rounded-l-md mb-4 "
 			tab="dashboardTab"
 			href="/tabs/dashboard"
 		>
@@ -14,7 +14,7 @@
 			<p class=" py-1">{{ t("nav.dashboard") }}</p>
 		</ion-tab-button>
 		<ion-tab-button
-			class="rounded-r-md "
+			class="rounded-r-md mb-4"
 			tab="DocTab"
 			href="/tabs/docType"
 		>
@@ -26,7 +26,7 @@
 		<p class=" py-1">{{ t("nav.document") }}</p>
 		</ion-tab-button>
 		<ion-tab-button
-			class="rounded-r-md "
+			class="rounded-r-md mb-4"
 			tab="AccountTab"
 			href="/tabs/account"
 		>

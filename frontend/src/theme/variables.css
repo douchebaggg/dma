@@ -82,7 +82,13 @@ http://ionicframework.com/docs/theming/ */
 	--ion-color-light-shade: #d7d8da;
 	--ion-color-light-tint: #f5f6f9;
 }
+ion-tab-bar {
+  font-family: "Anuphan", sans-serif !important;
+}
 
+ion-tab-button {
+  font-family: "Anuphan", sans-serif !important;
+}
 .ion-palette-dark.md {
 	--ion-card-background: #222428;
 	--ion-card-color:#f4f5f8;
