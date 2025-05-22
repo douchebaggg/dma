@@ -3,31 +3,37 @@ import { defineConfig } from "vite"
 import vue from '@vitejs/plugin-vue'
 import { VitePWA } from 'vite-plugin-pwa'
 import VueI18nPlugin from "@intlify/unplugin-vue-i18n/vite"
+import { lucideIcons } from 'frappe-ui/vite/lucideIcons.js'
 //import { webserver_port } from "../../../sites/common_site_config.json"
 export default defineConfig({
 	plugins: [
 		vue(),
+		...lucideIcons(),
 		VitePWA({ 
 			registerType: 'autoUpdate',
 			workbox: {
-				globPatterns: ["**/*.{js,css,html,png,svg,ico,json}"],
+				globPatterns: ["**/*.{js,css,html,png,svg,ico,json,yaml}"],
 			},
 			manifest: {
 				name: "DMA App",
 				short_name: "DMA App",
-				display: "standalone",
+  				start_url: "/dma?source=pwa",
+  				scope: "/dma",
+				display: "fullscreen",
 				background_color: "#ffffff",
 				theme_color: "#42b883",
 				icons: [
 				  {
 					src: "/assets/icon/corn-icon-192.png",
 					sizes: "192x192",
-					type: "image/png"
+					type: "image/png",
+					purpose: "maskable"
 				  },
 				  {
 					src: "/assets/icon/corn-icon-512.png",
 					sizes: "512x512",
-					type: "image/png"
+					type: "image/png",
+					purpose: "maskable"
 				}
 				]
 			},
@@ -50,9 +56,6 @@ export default defineConfig({
 	resolve: {
 		alias: {
 			"@": path.resolve(__dirname, "src"),
-			"highlight.js": path.resolve(__dirname, "node_modules/highlight.js/lib/core"),
-			"lowlight": path.resolve(__dirname, "node_modules/lowlight"),
-			
 		},
 	},
 	optimizeDeps: {
@@ -60,12 +63,9 @@ export default defineConfig({
 			"frappe-ui > feather-icons",
 			"showdown",
 			"engine.io-client",
-			"lowlight"
-
-		],
-		exclude: [
-			"highlight.js",
-
+			"lowlight",
+			"highlight.js/lib/core",
+			
 		],
 	},
 	build: {
