@@ -17,8 +17,8 @@ export default defineConfig({
 			manifest: {
 				name: "DMA App",
 				short_name: "DMA App",
-  				start_url: "/dma?source=pwa",
-  				scope: "/dma",
+  				start_url: "/dma/",
+  				scope: "/dma/",
 				display: "fullscreen",
 				background_color: "#ffffff",
 				theme_color: "#f4f5f6",
@@ -89,6 +89,13 @@ export default defineConfig({
 						type: "image/png",
 						purpose: "any"
 					},
+				],
+				screenshots: [
+					{
+						src: "/assets/screenshot/screenshot-1.png",
+						sizes: "1290x2796",
+						type: "image/png",
+					}
 				]
 			},
 			includeAssets: [
