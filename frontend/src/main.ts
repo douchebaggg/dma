@@ -44,8 +44,6 @@ import {
 } from "./typing/InjectionKeys"
 
 import { createI18n } from "vue-i18n"
-import VueDatePicker from '@vuepic/vue-datepicker';
-import '@vuepic/vue-datepicker/dist/main.css'
 // Import messages from yaml files
 import messages from "@intlify/unplugin-vue-i18n/messages"
 const i18n = createI18n({
@@ -66,7 +64,6 @@ app.component("Badge", Badge)
 app.component("Input", Input)
 app.component("Card", Card)
 app.component("Select",Select)
-app.component('VueDatePicker', VueDatePicker);
 app.use(router)
 app.use(IonicVue, { mode: "md" })
 
