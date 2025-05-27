@@ -6,6 +6,6 @@
 .vite/
 tags
 node_modules
-dist/
+dev-dist/
 dma/public/frontend
 __pycache__
