@@ -15,6 +15,7 @@ declare module 'vue' {
     BasketsIcon: typeof import('./src/components/icons/BasketsIcon.vue')['default']
     Beneficiary: typeof import('./src/components/icons/Beneficiary.vue')['default']
     BottomTabs: typeof import('./src/components/core/BottomTabs.vue')['default']
+    Buying: typeof import('./src/components/icons/Buying.vue')['default']
     Dashboard: typeof import('./src/components/icons/Dashboard.vue')['default']
     Document: typeof import('./src/components/icons/Document.vue')['default']
     FormField: typeof import('./src/components/core/FormField.vue')['default']
@@ -26,10 +27,12 @@ declare module 'vue' {
     NewTicket: typeof import('./src/components/icons/NewTicket.vue')['default']
     PalletsIcon: typeof import('./src/components/icons/PalletsIcon.vue')['default']
     PhotoAttach: typeof import('./src/components/PhotoAttach.vue')['default']
+    Product: typeof import('./src/components/icons/Product.vue')['default']
     Profile: typeof import('./src/components/icons/Profile.vue')['default']
     Rescue: typeof import('./src/components/icons/Rescue.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    Selling: typeof import('./src/components/icons/Selling.vue')['default']
     Ticket: typeof import('./src/components/icons/Ticket.vue')['default']
   }
 }

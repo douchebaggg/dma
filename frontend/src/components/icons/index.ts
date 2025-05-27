@@ -10,6 +10,8 @@ import Baskets from "@/components/icons/BasketsIcon.vue"
 import Pallets from "@/components/icons/PalletsIcon.vue"
 import Media from "@/components/icons/MediaIcon.vue"
 import Document from "./Document.vue"
+import Selling from "./Selling.vue"
+import Buying from "./Buying.vue"
 export const FrappeIcons = {
 	BeneficiaryIcon,
 	RescueIcon,
@@ -22,5 +24,7 @@ export const FrappeIcons = {
 	Document,
 	Baskets,
 	Pallets,
-	Media
+	Media,
+	Buying,
+	Selling
 }
