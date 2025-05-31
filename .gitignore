@@ -7,5 +7,4 @@
 tags
 node_modules
 dev-dist/
-dma/public/frontend
 __pycache__
