@@ -7,4 +7,7 @@
 tags
 node_modules
 dev-dist/
+dma/public/frontend/assets/*.css
+dma/public/frontend/assets/*.js
+dma/public/frontend/*.js
 __pycache__
