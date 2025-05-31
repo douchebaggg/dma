@@ -4,5 +4,6 @@
       "VITE_BUILD_PATH": "dma/public/frontend"
     }
   },
+  "root": "frontend",
   "outputDirectory": "dma/public/frontend"
 }
