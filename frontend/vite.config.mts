@@ -13,6 +13,7 @@ export default defineConfig({
 			registerType: 'autoUpdate',
 			workbox: {
 				globPatterns: ["**/*.{js,css,html,png,svg,ico,json,yaml}"],
+				maximumFileSizeToCacheInBytes: 3000000,
 			},
 			manifest: {
 				name: "DMA App",

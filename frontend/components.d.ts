@@ -27,7 +27,6 @@ declare module 'vue' {
     NewTicket: typeof import('./src/components/icons/NewTicket.vue')['default']
     PalletsIcon: typeof import('./src/components/icons/PalletsIcon.vue')['default']
     PhotoAttach: typeof import('./src/components/PhotoAttach.vue')['default']
-    Product: typeof import('./src/components/icons/Product.vue')['default']
     Profile: typeof import('./src/components/icons/Profile.vue')['default']
     Rescue: typeof import('./src/components/icons/Rescue.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
