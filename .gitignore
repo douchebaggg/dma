@@ -1,0 +1,11 @@
+.DS_Store
+*.pyc
+*.egg-info
+*.swp
+.env
+.vite/
+tags
+node_modules
+dev-dist/
+dma/public/frontend
+__pycache__
