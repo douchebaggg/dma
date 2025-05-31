@@ -1,2 +1,0 @@
-import{a as n}from"./index-D7vsvXlJ.js";const r=()=>{const{locale:e}=n(),t=[{value:"en",label:"English"},{value:"th",label:"Thai"}],a=navigator.language.split("-")[0],l=localStorage.getItem("preferredLanguage")||(t.some(g=>g.value===a)?a:"en");e.value=l,localStorage.setItem("preferredLanguage",l),console.log(e.value),localStorage.getItem("preferredLanguage")==="th"?e.value="th":e.value="en"};export{r as s};
-//# sourceMappingURL=devices-DAYGDfQU.js.map

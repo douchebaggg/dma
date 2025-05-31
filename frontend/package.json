@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "vite",
-    "build": "vite build --base=/assets/dma/frontend/ && yarn copy-html-entry",
+    "build": "vite build --base=/ && yarn copy-html-entry",
+    "build-frappe": "vite build --base=/assets/dma/frontend/ && yarn copy-html-entry",
     "copy-html-entry": "cp ../dma/public/frontend/index.html ../dma/www/dma.html",
     "ionic:build": "npm run build",
     "ionic:serve": "vite dev --host",
