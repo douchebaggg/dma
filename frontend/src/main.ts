@@ -3,18 +3,8 @@ import App from "./App.vue"
 import router from "./router"
 import { session } from "./data/session"
 import dayjs from "@/utils/dayjs"
-import {
-	Button,
-	Badge,
-	setConfig,
-	frappeRequest,
-	pageMetaPlugin,
-	resourcesPlugin,
-	Card,
-	Select
-} from "frappe-ui"
+import { Button } from "frappe-ui"
 import  Input  from "./components/Input.vue"
-//import TextInput from "../node_modules/frappe-ui/src/components/TextInput.vue"
 import { IonicVue } from "@ionic/vue"
 
 /* Core CSS required for Ionic components to work properly */
@@ -56,14 +46,8 @@ const i18n = createI18n({
 const app = createApp(App)
 
 // FrappeUI Config
-setConfig("resourceFetcher", frappeRequest)
-app.use(resourcesPlugin)
-app.use(pageMetaPlugin)
 app.component("Button", Button)
-app.component("Badge", Badge)
 app.component("Input", Input)
-app.component("Card", Card)
-app.component("Select",Select)
 app.use(router)
 app.use(IonicVue, { mode: "md" })
 

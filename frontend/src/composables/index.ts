@@ -35,12 +35,12 @@ export class FileAttachmentUploader {
 	fileObj: File
 
 	// base64 file contents
-	fileContents: string
+	fileContents: string = ""
 
 	// File Name
 	fileName: string
 
-	constructor(fileObj) {
+	constructor(fileObj: File) {
 		this.fileObj = fileObj
 		this.fileName = fileObj.name
 	}
@@ -51,7 +51,7 @@ export class FileAttachmentUploader {
 		fieldName?: string,
 		successHandler?: () => void
 	) {
-		const reader = getFileReader()
+		const reader = getFileReader() as any
 		const uploader = createResource({
 			url: "dma.api.upload_base64_file",
 			onSuccess: successHandler,

@@ -2,17 +2,12 @@ import { createRouter, createWebHistory } from "@ionic/vue-router"
 import { RouteRecordRaw } from "vue-router"
 import Home from "../views/Home.vue"
 import accountRoutes from "./account"
-import rescueRoutes from "./rescue"
-import beneficiaryRoutes from "./beneficiary"
-import entitlementRoutes from "./entitlement"
-import awarenessCampRoutes from "./awarenessCamp"
 import { session } from "../data/session"
 import { userResource } from "../data/user"
 import basketRoutes  from "./basket"
 import mediaRoutes from "./media"
 import sterilizerRoutes from "./sterilizer"
 import palletsRoutes from "./pallets"
-import caseRoutes from "./cases"
 import docType from "./doctype"
 import saleRotes from "./sales"
 
@@ -49,11 +44,6 @@ const routes: Array<RouteRecordRaw> = [
 		],
 	},
 	...accountRoutes,
-	...rescueRoutes,
-	...beneficiaryRoutes,
-	...entitlementRoutes,
-	...awarenessCampRoutes,
-	...caseRoutes,
 	...basketRoutes,
 	...mediaRoutes,
 	...sterilizerRoutes,
