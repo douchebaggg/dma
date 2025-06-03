@@ -121,9 +121,7 @@
 	import { IonPage, IonContent,IonCard,IonText } from "@ionic/vue"
 	import { FrappeIcons } from "@/components/icons"
 	import { userResourceInjectionKey } from "@/typing/InjectionKeys"
-	import { createDocumentResource, FeatherIcon, ListView } from "frappe-ui"
-	import { DocumentResource } from "@/typing/resource"
-	import { Beneficiary } from "@/../types/FrappeChangemakers/Beneficiary"
+	import { FeatherIcon} from "frappe-ui"
 	import { setDefaultLanguage } from "@/locales/devices"
 
 	onMounted(() => {
@@ -141,25 +139,4 @@
 			document.documentElement.classList.toggle('ion-palette-dark', isDarkMode.value)
 		} 
 	}
-
-
-	/*const beneficiaryDoc: DocumentResource<Beneficiary> = createDocumentResource({
-		doctype: "Beneficiary",
-		name: "BENE-2022-12-00002",
-	});*/
-
-	//for ion-select handle
-
-	//beneficiaryDoc.reload();
 </script>
-
-<script lang="ts">
-	import { IonDatetime, IonDatetimeButton, IonModal } from '@ionic/vue';
-	import { defineComponent } from 'vue';
-
-	export default defineComponent({
-		components: { IonDatetime, IonDatetimeButton, IonModal, },
-	}); 
-</script>
-<style scoped>
-</style>
