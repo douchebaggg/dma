@@ -140,7 +140,6 @@ onMounted(() => {
 	setDefaultLanguage()
 	refreshUser()
 	getApp()
-
 	// Load from localStorage
 	const savedMode = localStorage.getItem("darkMode")
 	if (savedMode !== null) {

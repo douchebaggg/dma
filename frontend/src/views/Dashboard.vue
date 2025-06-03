@@ -67,7 +67,7 @@
 					<div class="flex items-center">
 					
 					<ion-text class="text-xl font-semibold  w-36">
-						{{ t("dashboard.today.header",) }}
+						{{ t("dashboard.today.header") }}
 					</ion-text>				
 						
 				</div>
@@ -126,17 +126,19 @@
 
 	onMounted(() => {
 	setDefaultLanguage()
-	setTheme()
+	setDefaultTheme()
 })
 	const user = inject(userResourceInjectionKey) as any
 	const { t } = useI18n()
 	const isDarkMode = ref(window.matchMedia('(prefers-color-scheme: dark)').matches)
-	const setTheme = () => {
-		const theme = localStorage.getItem("darkMode")
-		if(theme !== null) {
-			isDarkMode.value = JSON.parse(theme)
-			console.log(isDarkMode.value)
-			document.documentElement.classList.toggle('ion-palette-dark', isDarkMode.value)
-		} 
-	}
+	const setDefaultTheme = () => {
+		const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+		if (isDarkMode.value = prefersDarkScheme.matches) {
+			document.documentElement.classList.toggle('ion-palette-dark', isDarkMode.value);
+			localStorage.setItem("darkMode", JSON.stringify(isDarkMode.value))
+		} else {
+			document.documentElement.classList.remove('ion-palette-dark');
+			localStorage.setItem("darkMode", JSON.stringify(isDarkMode.value))
+		}
+	};
 </script>
