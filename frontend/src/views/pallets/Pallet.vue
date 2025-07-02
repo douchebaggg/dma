@@ -137,6 +137,12 @@
 			  @click="saveData"
               size="md"> {{ t("button.Save") }}</Button>
 
+			<Button 
+			class="rounded-xl text-white bg-[#171717] w-20"
+			:variant="'solid'"
+			@click="palletPrint(palletName)"
+			size="md">{{ t("button.Print") }}</Button>
+
 			<Button
 			class="rounded-xl text-white hover:bg-red-800 bg-red-700 w-20"
 			:variant="'solid'"
@@ -155,7 +161,7 @@ import { IonPage,IonContent,IonHeader,IonToolbar,IonBackButton,
 IonButtons,IonTitle,IonButton,IonTextarea,IonInput,IonLabel,
 IonDatetime, IonDatetimeButton,
 IonSelect,IonSelectOption,IonCheckbox,
-IonModal,IonGrid,IonRow,IonCol,toastController,IonCard
+IonModal,IonGrid,IonRow,IonCol,toastController,IonCard, alertController
 } from "@ionic/vue";
 import { ref, watch, onMounted, computed} from "vue";
 import { useRouter } from "vue-router";
@@ -184,6 +190,7 @@ const holdReason = ref("");
 const isFull = ref(false);
 const fromTime = ref("");
 const timeInMins = ref(0);
+const palletName = ref<string>("");
 let size = ref<number>(0)
 const storedInputs = ref<{
   [key: string]: { one_day: number; incubate: number; IT: number; example: number; spoil: number; leak: number };
@@ -402,6 +409,7 @@ const saveData = async () => {
 	console.log("Display Pallet", displayPallet.value)
 	//console.log("Test length", displayPallet.value.length)
 	await selectDoctype(); 
+	await fetchLatestPallet();
 	currentPage.value = 1;
 	} catch (error:any) {
 		presentToast(error.exception || error.message);
@@ -424,6 +432,33 @@ const getDate = computed(() => {
   return [firstDate, lastDate]; // Return as an array for between
 });
 
+const fetchLatestPallet = async () => {
+	const getPallet = await db.getDocList('Pallets',{
+		fields: ['name'],
+		orderBy: {
+			field: 'creation',
+			order: 'desc',
+  },
+		});
+	palletName.value = getPallet[0]?.name || "";
+	console.log("Pallet Name", palletName.value)
+}
+const palletPrint = async (docname: string) => {
+  const printFormat = "th_Pallets";
+  const docType = "Pallets";
+  if(docname === "") {
+	const alert = await alertController.create({
+	  header: t('pallets.print_error'),
+	  message: t('pallets.print_error_message'),
+	  buttons: [t('button.Ok')],
+	});
+	alert.present();
+    return;
+  } else {
+  const printUrl = `https://ov.alzo.app/api/method/frappe.utils.print_format.download_pdf?doctype=${docType}&name=${docname}&format=${printFormat}&no_letterhead=0`;
+  window.open(printUrl, "_blank");
+  }
+};
 
 const getLocal = () => {
 	const local = localStorage.getItem('preferredLanguage');
@@ -566,4 +601,15 @@ ion-checkbox::part(container) {
     border-radius: 4px;
     border: 1px solid #171717;
   }
+.alert-head.sc-ion-alert-md, .alert-message.sc-ion-alert-md{
+	text-align: center;
+}
+.alert-button.sc-ion-alert-md {
+	border-radius: 12px;
+	background-color: #0ea5e9;
+	color: white;
+}
+.alert-button.sc-ion-alert-md:hover {
+	background-color: #0369a1
+}
 </style>
