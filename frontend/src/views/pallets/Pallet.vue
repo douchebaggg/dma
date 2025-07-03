@@ -223,16 +223,9 @@ const updateSelectedCodes = async (payload: {
 	return match ? { item_code: match[1], index: parseInt(match[2]) } : null;
 	}).filter(Boolean);
 	console.log("Product Book size", productBookSize);
-	const [docNameFromSelector, selectWorkOrder] = doctypeSelector.value.split("|");
-	const currentPalletSeq = await call.get('thai.thai.doctype.palletizing_entry.palletizing_entry.get_current_pallet_seq', {
-    item: selectWorkOrder,
-	});
-	const lastBookNo = await call.get('thai.thai.doctype.palletizing_entry.palletizing_entry.get_last_book_no', {
-    book_no: productBookName,
-	});
-	const newBookNo = parseInt(lastBookNo.message) + 1;
-	let pallet_seq = currentPalletSeq.message + 1;
-	console.log("Pallet seq ", pallet_seq, "New Book no", newBookNo)
+
+
+
 	try {
 		const basketsData = selectedItems.map(({ item_code, index }:any, idx) => {
 		const filtered = basketTable.value.filter((it:any) => it.item_code === item_code && it.is_palletized === 0);
@@ -251,7 +244,7 @@ const updateSelectedCodes = async (payload: {
 			manufacturer_part_no: item.manufacturer_part_no || "None",
 			batch_no: item.batch_no || "None",
 			qty: item.qty,
-			palletized_qty: item.palletized_qty,
+			palletized_qty: 0,
 			posting_date: item.posting_date,
 			net_qty: item.net_qty || item.qty,
 			available_qty: item.available_qty,
@@ -388,6 +381,17 @@ const saveData = async () => {
 		filters: [["manufacturing_from_date", "between", getDate.value]],
 		});
 	const palletizingEntry = getPalletDoctype[0];
+	const [productBookName, productBookSize, productBookTo] = productBookSelector.value.split("|")
+	const [docNameFromSelector, selectWorkOrder] = doctypeSelector.value.split("|");
+	const lastBookNo = await call.get('thai.thai.doctype.palletizing_entry.palletizing_entry.get_last_book_no', {
+    book_no: productBookName,
+	});
+	const currentPalletSeq = await call.get('thai.thai.doctype.palletizing_entry.palletizing_entry.get_current_pallet_seq', {
+    item: selectWorkOrder,
+	});
+	const newBookNo = parseInt(lastBookNo.message) + 1;
+	let pallet_seq = currentPalletSeq.message + 1;
+	console.log("Pallet seq ", pallet_seq, "New Book no", newBookNo)
 	console.log("palletizingEntry name", palletizingEntry.name)
 	if(isHold.value === true){
 		basketToPalletized.value.forEach((basket:any) => {
@@ -398,6 +402,7 @@ const saveData = async () => {
 	const args = {
 			docname: palletizingEntry.name,
 			baskets_details: basketToPalletized.value,
+			lastBookNo,
 			size: Number(size)
 		}
 	console.log("Args to backend", args)
@@ -406,10 +411,8 @@ const saveData = async () => {
 	//get full doctype
 	const getCurrentPallet = await db.getDoc('Palletizing Entry', palletizingEntry.name);
 	displayPallet.value = getCurrentPallet
-	console.log("Display Pallet", displayPallet.value)
-	//console.log("Test length", displayPallet.value.length)
-	await selectDoctype(); 
 	await fetchLatestPallet();
+	await selectDoctype(); 
 	currentPage.value = 1;
 	} catch (error:any) {
 		presentToast(error.exception || error.message);
@@ -455,7 +458,7 @@ const palletPrint = async (docname: string) => {
 	alert.present();
     return;
   } else {
-  const printUrl = `https://ov.alzo.app/api/method/frappe.utils.print_format.download_pdf?doctype=${docType}&name=${docname}&format=${printFormat}&no_letterhead=0`;
+  const printUrl = `http://192.168.10.105/api/method/frappe.utils.print_format.download_pdf?doctype=${docType}&name=${docname}&format=${printFormat}&no_letterhead=0`;
   window.open(printUrl, "_blank");
   }
 };
