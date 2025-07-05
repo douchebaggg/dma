@@ -35,18 +35,16 @@
 						</div>
 						<div class="flex-col items-start justify-start ion-margin">
 							<ion-label>{{ t('preferences.language') }}</ion-label>
-							<Input
-								class="rounded-xl py-2"
-								type="select"
-								:options="availableLanguages"
-								v-model="locale"
-								style="
-								padding-left: 1rem;
-								outline: none; 
-								background-image: none; 
-								border: solid 1px grey;
-								"
-							/>
+							<ion-select class=" py-4 w-full" interface="popover" :placeholder="t('preferences.select_language')" v-model="locale" fill="outline">
+								<ion-select-option
+									v-for="lang in availableLanguages"
+									:key="lang.value"
+									:value="lang.value"
+									:selected="locale === lang.value"
+								>
+									{{ lang.label }}
+								</ion-select-option>
+							</ion-select>
 						</div>
 					</ion-card>
 					<Button
@@ -82,6 +80,7 @@
 import { inject, watch, onMounted, ref } from "vue"
 import { useI18n } from "vue-i18n"
 import { Avatar, createResource, Button } from "frappe-ui"
+import { IonSelect,IonSelectOption } from "@ionic/vue"
 import {
 	sessionInjectionKey,
 	userResourceInjectionKey,
