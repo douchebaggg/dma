@@ -190,6 +190,9 @@ const checkboxChange = (event: CheckboxCustomEvent) => {
 </script>
 <style scoped>
 ion-searchbar.custom {
+  --border-radius: 12px;
+}
+.dark ion-searchbar.custom {
   --background: var(--ion-color-dark);
   --border-radius: 12px;
 }
