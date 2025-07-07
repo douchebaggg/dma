@@ -140,7 +140,7 @@
 			<Button 
 			class="rounded-xl text-white bg-[#171717] w-20"
 			:variant="'solid'"
-			@click="palletPrint(palletName)"
+			@click="palletPrint(palletName,t)"
 			size="md">{{ t("button.Print") }}</Button>
 
 			<Button
@@ -168,6 +168,7 @@ import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import { frappeSDK } from "@/utils/frappeSDK";
 import AppTypeahead from "@/components/AppTypeaheadCustom.vue";
+import { palletPrint } from "@/utils/PalletPrint";
 const router = useRouter();
 const { t } = useI18n();
 const { db, call } = frappeSDK();
@@ -391,7 +392,7 @@ const saveData = async () => {
 	});
 	const newBookNo = parseInt(lastBookNo.message) + 1;
 	let pallet_seq = currentPalletSeq.message + 1;
-	console.log("Pallet seq ", pallet_seq, "New Book no", newBookNo)
+	console.log("Pallet seq ", pallet_seq, "New Book no", newBookNo, 'Product Book Name', productBookName)
 	console.log("palletizingEntry name", palletizingEntry.name)
 	if(isHold.value === true){
 		basketToPalletized.value.forEach((basket:any) => {
@@ -402,7 +403,7 @@ const saveData = async () => {
 	const args = {
 			docname: palletizingEntry.name,
 			baskets_details: basketToPalletized.value,
-			lastBookNo,
+			book_no: productBookName,
 			size: Number(size)
 		}
 	console.log("Args to backend", args)
@@ -446,22 +447,6 @@ const fetchLatestPallet = async () => {
 	palletName.value = getPallet[0]?.name || "";
 	console.log("Pallet Name", palletName.value)
 }
-const palletPrint = async (docname: string) => {
-  const printFormat = "th_Pallets";
-  const docType = "Pallets";
-  if(docname === "") {
-	const alert = await alertController.create({
-	  header: t('pallets.print_error'),
-	  message: t('pallets.print_error_message'),
-	  buttons: [t('button.Ok')],
-	});
-	alert.present();
-    return;
-  } else {
-  const printUrl = `http://192.168.10.105/api/method/frappe.utils.print_format.download_pdf?doctype=${docType}&name=${docname}&format=${printFormat}&no_letterhead=0`;
-  window.open(printUrl, "_blank");
-  }
-};
 
 const getLocal = () => {
 	const local = localStorage.getItem('preferredLanguage');

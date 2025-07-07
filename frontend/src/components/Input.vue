@@ -2,7 +2,7 @@
     <label :class="[type == 'checkbox' ? 'flex' : 'block', $attrs.class]">
       <span
         v-if="label && type != 'checkbox'"
-        class="mb-2 block text-sm leading-4 text-gray-700"
+        class="mb-2 block text-sm leading-4 "
       >
         {{ label }}
       </span>
