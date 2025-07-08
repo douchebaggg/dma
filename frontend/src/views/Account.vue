@@ -35,7 +35,7 @@
 						</div>
 						<div class="flex-col items-start justify-start ion-margin">
 							<ion-label>{{ t('preferences.language') }}</ion-label>
-							<ion-select class=" py-4 w-full" interface="popover" :placeholder="t('preferences.select_language')" v-model="locale" fill="outline">
+							<ion-select class=" py-4 w-full" interface="popover" :placeholder="t('preferences.language')" v-model="locale" fill="outline">
 								<ion-select-option
 									v-for="lang in availableLanguages"
 									:key="lang.value"

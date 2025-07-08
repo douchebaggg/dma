@@ -2,7 +2,7 @@ import { FrappeApp } from "frappe-js-sdk";
 import { urlPort, url } from "./checkIP";
 
 export const frappeSDK = () => {
-    const frappe = new FrappeApp(urlPort)
+    const frappe = new FrappeApp(url)
     return {
         auth: frappe.auth(),
         db: frappe.db(),

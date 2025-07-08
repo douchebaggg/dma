@@ -60,10 +60,10 @@
 					<app-typeahead
 					:items="formattedBasketItems"
 					:selected-items="selectCode"
-        			:title= "t('pallets.select_code')"
+					:title= "t('pallets.select_code')"
 					:initial-inputs="storedInputs"
 					@selection-cancel="modal.$el.dismiss()"
-        			@selection-change="updateSelectedCodes"
+					@selection-change="updateSelectedCodes"
 					@input-change="handleInputChange"
 					>
 					</app-typeahead>
@@ -87,34 +87,34 @@
 				<ion-col class="border-r-1">{{ row.size }}</ion-col>
 				<ion-col>{{ row.qty }}</ion-col>
 			</ion-row>
-      </ion-grid>
+	  </ion-grid>
 	  <div class="flex justify-center space-x-5 ion-margin-top ion-padding-bottom" v-if="displayPallet.palletized_products?.length > rowsPerPage">
 			<Button 
-        		class="rounded-xl text-white bg-[#171717] w-14 h-4"
-        		:variant="'solid'"
-        		:disabled="currentPage === 1"
-        		@click="firstPage"
-        		size="sm"> {{ t("pagination.first") }} </Button>
-      		<Button 
-        		class="rounded-xl text-white bg-[#171717] w-12 h-4"
-        		:variant="'solid'"
-        		:disabled="currentPage === 1"
-        		@click="previousPage"
-        		size="sm"> < </Button>
-      		<span class="">{{ t("pagination.page") }} {{ currentPage }} / {{ totalPages }}</span>
-      		<Button 
-        		class="rounded-xl text-white bg-[#171717] w-12 h-4"
-        		:variant="'solid'"
-        		:disabled="currentPage === totalPages"
-        		@click="nextPage"
-        		size="sm"> > </Button>
+				class="rounded-xl text-white bg-[#171717] w-14 h-4"
+				:variant="'solid'"
+				:disabled="currentPage === 1"
+				@click="firstPage"
+				size="sm"> {{ t("pagination.first") }} </Button>
 			<Button 
-        		class="rounded-xl text-white bg-[#171717] w-14 h-4"
-        		:variant="'solid'"
-        		:disabled="currentPage === totalPages"
-        		@click="lastPage"
-        		size="sm"> {{ t("pagination.last") }} </Button>
-    	</div>
+				class="rounded-xl text-white bg-[#171717] w-12 h-4"
+				:variant="'solid'"
+				:disabled="currentPage === 1"
+				@click="previousPage"
+				size="sm"> < </Button>
+			<span class="">{{ t("pagination.page") }} {{ currentPage }} / {{ totalPages }}</span>
+			<Button 
+				class="rounded-xl text-white bg-[#171717] w-12 h-4"
+				:variant="'solid'"
+				:disabled="currentPage === totalPages"
+				@click="nextPage"
+				size="sm"> > </Button>
+			<Button 
+				class="rounded-xl text-white bg-[#171717] w-14 h-4"
+				:variant="'solid'"
+				:disabled="currentPage === totalPages"
+				@click="lastPage"
+				size="sm"> {{ t("pagination.last") }} </Button>
+		</div>
 		</div>
 		<div class="m-4 flex flex-col">
 			<ion-title class="ion-text-center">{{ t('pallets.time') }}</ion-title>
@@ -133,9 +133,9 @@
 		<div class="flex justify-center space-x-5 ion-margin-top">
 			<Button 
 			  class="rounded-xl text-white hover:bg-[#383838] bg-[#171717] w-20"
-              :variant="'solid'"
+			  :variant="'solid'"
 			  @click="saveData"
-              size="md"> {{ t("button.Save") }}</Button>
+			  size="md"> {{ t("button.Save") }}</Button>
 
 			<Button 
 			class="rounded-xl text-white bg-[#171717] w-20"
@@ -146,6 +146,7 @@
 			<Button
 			class="rounded-xl text-white hover:bg-red-800 bg-red-700 w-20"
 			:variant="'solid'"
+			@click="clearData"
 			size="md" >{{ t("button.Cancel") }}</Button>
 		</div>
 
@@ -231,7 +232,7 @@ const updateSelectedCodes = async (payload: {
 		const basketsData = selectedItems.map(({ item_code, index }:any, idx) => {
 		const filtered = basketTable.value.filter((it:any) => it.item_code === item_code && it.is_palletized === 0);
 		const code = payload.selected[idx]; // Get the original code (e.g., "item1-0") from payload.selected
-     	const inputValues = storedInputs.value[code]
+		const inputValues = storedInputs.value[code]
 		const item = filtered[index];
 		return item ? {
 			name: item.name,
@@ -274,7 +275,7 @@ const selectDoctype = async (doctype?: string) => {
 		limit: 100, 
 		filters: [['posting_date', 'between', getDate.value]],
 		orderBy: { field: 'posting_date',order: 'desc',} 
- 	})
+	})
   
 	//map to full doctype to get child table data
 	basketList.value = await Promise.all(
@@ -369,7 +370,7 @@ const selectProductBook = async (doctype?:string) => {
 		limit: 100, 
 		filters: [['item','=',selectWorkOrder]],
 		orderBy: { field: 'modified',order: 'desc',} 
- 	})
+	})
 	productBookList.value = getProductBook
 	size = productBookList.value[0].size
 }
@@ -385,10 +386,10 @@ const saveData = async () => {
 	const [productBookName, productBookSize, productBookTo] = productBookSelector.value.split("|")
 	const [docNameFromSelector, selectWorkOrder] = doctypeSelector.value.split("|");
 	const lastBookNo = await call.get('thai.thai.doctype.palletizing_entry.palletizing_entry.get_last_book_no', {
-    book_no: productBookName,
+	book_no: productBookName,
 	});
 	const currentPalletSeq = await call.get('thai.thai.doctype.palletizing_entry.palletizing_entry.get_current_pallet_seq', {
-    item: selectWorkOrder,
+	item: selectWorkOrder,
 	});
 	const newBookNo = parseInt(lastBookNo.message) + 1;
 	let pallet_seq = currentPalletSeq.message + 1;
@@ -424,8 +425,8 @@ const saveData = async () => {
 
 const getDate = computed(() => {
   if (!dateValue.value || dateValue.value.length === 0) {
-    const today = new Date().toISOString().split("T")[0];
-    return [today, today];
+	const today = new Date().toISOString().split("T")[0];
+	return [today, today];
   }
 
   const sortedDates = dateValue.value.map((date:any) => new Date(date)).sort((a:any, b:any) => a.getTime() - b.getTime());
@@ -500,8 +501,8 @@ const handleInputChange = (payload: {
 //watch and on Mounted
 watch(dateValue, (newDate) => {
   if (newDate) {
-    selectDoctype();
-    getLocal();
+	selectDoctype();
+	getLocal();
   }
 });
 watch(doctypeSelector, (newDoctype) => {
@@ -513,67 +514,85 @@ watch(doctypeSelector, (newDoctype) => {
 watch(
   storedInputs,
   (newInputs) => {
-    Object.entries(newInputs).forEach(([code, inputValues]) => {
-      const match = code.match(/^(.+)-(\d+)$/);
-      if (!match) return;
+	Object.entries(newInputs).forEach(([code, inputValues]) => {
+	  const match = code.match(/^(.+)-(\d+)$/);
+	  if (!match) return;
 
-      const item_code = match[1];
-      const index = parseInt(match[2]);
-      const filtered = basketTable.value.filter((it:any) => it.item_code === item_code && it.is_palletized === 0);
-      const item = filtered[index];
+	  const item_code = match[1];
+	  const index = parseInt(match[2]);
+	  const filtered = basketTable.value.filter((it:any) => it.item_code === item_code && it.is_palletized === 0);
+	  const item = filtered[index];
 	  console.log("Item", item)
-      if (!item) return;
+	  if (!item) return;
 
-      const originalQty = item.net_qty || item.qty; 
-      const inputCheck = Object.values(inputValues).every(
-        (v) => !v && v !== 0 // null, undefined 
-      );
-      let available_qty = originalQty;
-      let new_value = 0;
+	  const originalQty = item.net_qty || item.qty; 
+	  const inputCheck = Object.values(inputValues).every(
+		(v) => !v && v !== 0 // null, undefined 
+	  );
+	  let available_qty = originalQty;
+	  let new_value = 0;
 	  let palletized_qty = 0;
-      if (!inputCheck) {
-        
-        new_value =
-          Number(inputValues.one_day || 0) +
-          Number(inputValues.incubate || 0) +
-          Number(inputValues.IT || 0) +
-          Number(inputValues.example || 0) +
-          Number(inputValues.spoil || 0) +
-          Number(inputValues.leak || 0);
+	  if (!inputCheck) {
+		
+		new_value =
+		  Number(inputValues.one_day || 0) +
+		  Number(inputValues.incubate || 0) +
+		  Number(inputValues.IT || 0) +
+		  Number(inputValues.example || 0) +
+		  Number(inputValues.spoil || 0) +
+		  Number(inputValues.leak || 0);
 
-        available_qty = originalQty - new_value; 
+		available_qty = originalQty - new_value; 
 		palletized_qty = originalQty - new_value;
-      }
-      basketTable.value = basketTable.value.map((bt:any) =>
-        bt.name === item.name && bt.doc_name === item.doc_name
-          ? {
-              ...bt,
-              qty: available_qty, 
-              available_qty, 
-              net_qty: originalQty,
+	  }
+	  basketTable.value = basketTable.value.map((bt:any) =>
+		bt.name === item.name && bt.doc_name === item.doc_name
+		  ? {
+			  ...bt,
+			  qty: available_qty, 
+			  available_qty, 
+			  net_qty: originalQty,
 			  palletized_qty 
-            }
-          : bt
-      );
-    });
+			}
+		  : bt
+	  );
+	});
   },
   { deep: true }
 );
 
 //toast
 const presentToast = async (message: string) => {
-    const toast = await toastController.create({
-        message,
-        duration: 5000,
-        position: "bottom",
-        color: "danger",
-    });
-    await toast.present();
+	const toast = await toastController.create({
+		message,
+		duration: 5000,
+		position: "bottom",
+		color: "danger",
+	});
+	await toast.present();
 };
 
 onMounted(() => {
-  	selectDoctype(doctypeSelector.value);
+  selectDoctype(doctypeSelector.value);
 });
+
+const clearData = () => {
+  dateValue.value = null;
+  doctypeSelector.value = workOrderList.value[0];
+  productBookSelector.value = productBookList.value[0];
+  size.value = 0;
+  selectCode.value = [];
+  storedInputs.value = {};
+  basketToPalletized.value = [];
+  displayPallet.value = [];
+  currentPage.value = 1;
+  isHold.value = false;
+  holdReason.value = "";
+  isFull.value = false;
+  fromTime.value = "";
+  timeInMins.value = 0;
+  palletName.value = "";
+}
 </script>
 <style>
 ion-datetime-button::part(native) {
@@ -586,8 +605,8 @@ ion-datetime-button::part(native) {
 	cursor: pointer;
 }
 ion-checkbox::part(container) {
-    border-radius: 4px;
-    border: 1px solid #171717;
+	border-radius: 4px;
+	border: 1px solid #171717;
   }
 .alert-head.sc-ion-alert-md, .alert-message.sc-ion-alert-md{
 	text-align: center;
