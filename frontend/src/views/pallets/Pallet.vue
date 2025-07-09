@@ -193,7 +193,7 @@ const isFull = ref(false);
 const fromTime = ref("");
 const timeInMins = ref(0);
 const palletName = ref<string>("");
-let size = ref<number>(0)
+const size = ref<number>(0)
 const storedInputs = ref<{
   [key: string]: { one_day: number; incubate: number; IT: number; example: number; spoil: number; leak: number };
 }>({});
@@ -372,7 +372,11 @@ const selectProductBook = async (doctype?:string) => {
 		orderBy: { field: 'modified',order: 'desc',} 
 	})
 	productBookList.value = getProductBook
-	size = productBookList.value[0].size
+	watch(productBookSelector, (newProductBook) => {
+		if (newProductBook) {
+			size.value = productBookList.value[0]?.size ?? 0;
+		}
+	});
 }
 
 //save
@@ -405,7 +409,7 @@ const saveData = async () => {
 			docname: palletizingEntry.name,
 			baskets_details: basketToPalletized.value,
 			book_no: productBookName,
-			size: Number(size)
+			size: size.value
 		}
 	console.log("Args to backend", args)
 	const response = await call.post('thai.thai.doctype.palletizing_entry.palletizing_entry.set_required_products_mobile', args)
@@ -418,7 +422,7 @@ const saveData = async () => {
 	currentPage.value = 1;
 	} catch (error:any) {
 		presentToast(error.exception || error.message);
-		console.error("Error palletized :", error.exception);
+		console.error("Error palletized :", error.message);
 	}
 
 }
@@ -508,6 +512,7 @@ watch(dateValue, (newDate) => {
 watch(doctypeSelector, (newDoctype) => {
   if (newDoctype) {
 	selectProductBook(newDoctype);
+	size.value = 0; // Reset size when doctype changes
   }
 });
 
@@ -572,12 +577,11 @@ const presentToast = async (message: string) => {
 	await toast.present();
 };
 
-onMounted(() => {
-  selectDoctype(doctypeSelector.value);
-});
 
 const clearData = () => {
   dateValue.value = null;
+  workOrderList.value = [];
+  productBookList.value = [];
   doctypeSelector.value = workOrderList.value[0];
   productBookSelector.value = productBookList.value[0];
   size.value = 0;
