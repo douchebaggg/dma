@@ -69,28 +69,10 @@
 					</app-typeahead>
 				</ion-modal>
 		</div>	
-		<div class="ion-text-center " v-if="displayPallet">
-		<ion-grid class="m-4 border-1 bg-[#171717] text-white" v-if="displayPallet.palletized_products?.length">
-			<ion-row class="font-semibold border-b-1">
-				<ion-col class="font-semibold border-r-1">{{ t("pallets.pallet_seq") }}</ion-col>
-				<ion-col class=" border-r-1">{{ t("pallets.pallet_no")}}</ion-col>
-				<ion-col class=" border-r-1">{{ t("pallets.code")}}</ion-col>
-				<ion-col class="font-semibold border-r-1">{{ t("pallets.product_name") }}</ion-col>
-				<ion-col class="font-semibold border-r-1">#{{ t("pallets.hash_pallet") }}</ion-col>
-				<ion-col class="font-semibold">{{ t("pallets.pallet_qty") }}</ion-col>
-			</ion-row>
-			<ion-row  v-for="(row, index) in paginatedPallet" :key="index">
-				<ion-col class="border-r-1">{{ row.pallet_seq }}</ion-col>
-				<ion-col class="border-r-1">{{ row.pallet_no }}</ion-col>
-				<ion-col class="border-r-1">{{ row.item_code }}</ion-col>
-				<ion-col class="border-r-1">{{ row.item_name }}</ion-col>
-				<ion-col class="border-r-1">{{ row.size }}</ion-col>
-				<ion-col>{{ row.qty }}</ion-col>
-			</ion-row>
-	  </ion-grid>
-	  <div class="flex justify-center space-x-5 ion-margin-top ion-padding-bottom" v-if="displayPallet.palletized_products?.length > rowsPerPage">
+	  <div v-if="tableHtml" class=" flex justify-center" v-html="displayPallet.palletized_products.at(-1).baskets_html"></div>
+	  <div class="flex justify-center space-x-5 ion-margin-top ion-padding-bottom" v-if="pageButton">
 			<Button 
-				class="rounded-xl text-white bg-[#171717] w-14 h-4"
+				class="rounded-xl text-white bg-[#171717] w-20 h-4"
 				:variant="'solid'"
 				:disabled="currentPage === 1"
 				@click="firstPage"
@@ -109,12 +91,11 @@
 				@click="nextPage"
 				size="sm"> > </Button>
 			<Button 
-				class="rounded-xl text-white bg-[#171717] w-14 h-4"
+				class="rounded-xl text-white bg-[#171717] w-20 h-4"
 				:variant="'solid'"
 				:disabled="currentPage === totalPages"
 				@click="lastPage"
 				size="sm"> {{ t("pagination.last") }} </Button>
-		</div>
 		</div>
 		<div class="m-4 flex flex-col">
 			<ion-title class="ion-text-center">{{ t('pallets.time') }}</ion-title>
@@ -194,6 +175,8 @@ const fromTime = ref("");
 const timeInMins = ref(0);
 const palletName = ref<string>("");
 const size = ref<number>(0)
+const tableHtml = ref(false);
+const pageButton = ref(false);
 const storedInputs = ref<{
   [key: string]: { one_day: number; incubate: number; IT: number; example: number; spoil: number; leak: number };
 }>({});
@@ -204,10 +187,10 @@ const formattedBasketItems = computed(() => {
 	.filter((item:any) => item.is_palletized === 0 && item.item_code === selectWorkOrder) 
 	.map((item:any, index:number )=> ({
 		value: `${item.item_code}-${index}`,
-		text: `${t('labels.baskets_no')} ${item.basket_no} ${t('pallets.pallet_qty')} ${item.qty} 
-		${t('labels.date_of')} ${item.posting_date || 'N/A'}`,
+		text: `${t('labels.hash_basket_no')} ${item.basket_no} ${t('pallets.pallet_qty')} ${ item.remain_qty} 
+		${item.manufacturer_part_no} ${item.batch_no || ''}`,
+		qty: `${Number(item.remain_qty)}`
 	}));
-	//console.log('Formatted items filtered by is_palletized = 0 :', items);
 	return items;
 });
 
@@ -225,43 +208,42 @@ const updateSelectedCodes = async (payload: {
 	return match ? { item_code: match[1], index: parseInt(match[2]) } : null;
 	}).filter(Boolean);
 	console.log("Product Book size", productBookSize);
-
-
-
 	try {
 		const basketsData = selectedItems.map(({ item_code, index }:any, idx) => {
-		const filtered = basketTable.value.filter((it:any) => it.item_code === item_code && it.is_palletized === 0);
-		const code = payload.selected[idx]; // Get the original code (e.g., "item1-0") from payload.selected
-		const inputValues = storedInputs.value[code]
-		const item = filtered[index];
-		return item ? {
-			name: item.name,
-			basket_month: item.basket_month,
-			basket_no: item.basket_no,
-			from_time: item.from_time,
-			time_in_mins: item.time_in_mins,
-			to_time: item.to_time,
-			item_code: item.item_code,
-			manufacturer: item.manufacturer,
-			manufacturer_part_no: item.manufacturer_part_no || "None",
-			batch_no: item.batch_no || "None",
-			qty: item.qty,
-			palletized_qty: 0,
-			posting_date: item.posting_date,
-			net_qty: item.net_qty || item.qty,
-			available_qty: item.available_qty,
-			is_full: 0,
-			is_hold: 0, 
-			hold_reason: holdReason.value,
-			oneday: Number(inputValues.one_day),
-			incubate: Number(inputValues.incubate),
-			it: Number(inputValues.IT),
-			sample: Number(inputValues.example),
-			spoil: Number(inputValues.spoil),
-			leak: Number(inputValues.leak),
-		} : null;
-		}).filter(Boolean);
-		console.log("Basket Data :", basketsData)
+			const filtered = basketTable.value.filter((it:any) => it.item_code === item_code && it.is_palletized === 0);
+			const code = payload.selected[idx]; // Get the original code (e.g., "item1-0") from payload.selected
+			const inputValues = storedInputs.value[code]
+			const item = filtered[index];
+			return item ? {
+				name: item.name,
+				basket_month: item.basket_month,
+				basket_no: item.basket_no,
+				item_code: item.item_code,
+				manufacturer: item.manufacturer,
+				manufacturer_part_no: item.manufacturer_part_no || "None",
+				batch_no: item.batch_no || "None",
+				qty: item.qty,
+				from_time: item.from_time,
+				time_in_mins: item.time_in_mins,
+				to_time: item.to_time,
+				palletized_qty: 0,
+				posting_date: item.posting_date,
+				net_qty: item.net_qty || item.qty,
+				available_qty: item.available_qty,
+				is_full: 0,
+				is_hold: 0, 
+				hold_reason: holdReason.value,
+				oneday: Number(inputValues.one_day),
+				incubate: Number(inputValues.incubate),
+				it: Number(inputValues.IT),
+				sample: Number(inputValues.example),
+				spoil: Number(inputValues.spoil),
+				leak: Number(inputValues.leak),
+				pallet_time: fromTime.value,
+				pallet_min: timeInMins.value
+			} : null;
+			}).filter(Boolean);
+			console.log("Basket Data :", basketsData)
 		basketToPalletized.value = basketsData
 	} catch (error) {
 		console.error("Error creating pallets:", error);
@@ -346,6 +328,7 @@ const selectDoctype = async (doctype?: string) => {
 			batch_no: bk.batch_no,
 			qty: bk.qty, // Baskets qty
 			palletized_qty: bk.palletized_qty,
+			remain_qty: bk.qty - bk.palletized_qty,
 			is_palletized: bk.is_palletized, // Baskets is palletized
 			posting_date: doc.posting_date,
 			oneday: bk.oneday,
@@ -359,7 +342,7 @@ const selectDoctype = async (doctype?: string) => {
 	
 	);
 	//console.log("Work Order ", workOrderList.value)
-	//console.log("Baskets Table",)
+	//console.log("Baskets Table",basketTable.value)
 };
 
 const selectProductBook = async (doctype?:string) => {
@@ -405,11 +388,17 @@ const saveData = async () => {
 			basket.hold_reason = holdReason.value;
 		});
 	}
+	if(fromTime.value && timeInMins.value){
+		basketToPalletized.value.forEach((bk:any) => {
+			bk.pallet_time = fromTime.value;
+			bk.pallet_min = timeInMins.value;
+		});
+	}
 	const args = {
 			docname: palletizingEntry.name,
 			baskets_details: basketToPalletized.value,
 			book_no: productBookName,
-			size: size.value
+			size: Number(size.value)
 		}
 	console.log("Args to backend", args)
 	const response = await call.post('thai.thai.doctype.palletizing_entry.palletizing_entry.set_required_products_mobile', args)
@@ -417,12 +406,16 @@ const saveData = async () => {
 	//get full doctype
 	const getCurrentPallet = await db.getDoc('Palletizing Entry', palletizingEntry.name);
 	displayPallet.value = getCurrentPallet
+	if(displayPallet){
+		tableHtml.value = true
+		console.log(tableHtml.value)
+	}
 	await fetchLatestPallet();
 	await selectDoctype(); 
 	currentPage.value = 1;
 	} catch (error:any) {
 		presentToast(error.exception || error.message);
-		console.error("Error palletized :", error.message);
+		console.error("Error palletized :", error.message, error);
 	}
 
 }
@@ -527,10 +520,10 @@ watch(
 	  const index = parseInt(match[2]);
 	  const filtered = basketTable.value.filter((it:any) => it.item_code === item_code && it.is_palletized === 0);
 	  const item = filtered[index];
-	  console.log("Item", item)
+	  //console.log("Item", item)
 	  if (!item) return;
 
-	  const originalQty = item.net_qty || item.qty; 
+	  const originalQty = item.net_qty || item.remain_qty; 
 	  const inputCheck = Object.values(inputValues).every(
 		(v) => !v && v !== 0 // null, undefined 
 	  );
@@ -554,7 +547,7 @@ watch(
 		bt.name === item.name && bt.doc_name === item.doc_name
 		  ? {
 			  ...bt,
-			  qty: available_qty, 
+			  remain_qty: available_qty, 
 			  available_qty, 
 			  net_qty: originalQty,
 			  palletized_qty 
@@ -566,6 +559,9 @@ watch(
   { deep: true }
 );
 
+onMounted(async()=>{
+
+})
 //toast
 const presentToast = async (message: string) => {
 	const toast = await toastController.create({
@@ -596,6 +592,7 @@ const clearData = () => {
   fromTime.value = "";
   timeInMins.value = 0;
   palletName.value = "";
+  tableHtml.value = false;
 }
 </script>
 <style>
@@ -622,5 +619,18 @@ ion-checkbox::part(container) {
 }
 .alert-button.sc-ion-alert-md:hover {
 	background-color: #0369a1
+}
+.table{
+	margin: 16px;
+	width: 90dvw;
+}
+.custom{
+	border: solid 1px;
+	padding: 5px 5px 0px 5px;
+}
+.ion-palette-dark ion-checkbox::part(container) {
+  border: 1px solid var(--ion-color-dark-tint);
+  --checkbox-background-checked: var(--ion-color-light);
+  --checkmark-color: var(--color-black)
 }
 </style>
