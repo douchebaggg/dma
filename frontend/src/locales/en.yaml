@@ -27,6 +27,7 @@ labels:
   preview: Preview Basket Table data
   buy: Buying
   sale: Selling
+  hash_basket_no: Basket#
   
 greeting:
   hi: Hi
@@ -63,6 +64,9 @@ basket:
   date_select_header: You can select a date for the document list
   date_select: Select Date for Baskets List
   doctype_select: Select Product Code
+  manufacturer: Manufacturer
+  manufacturer_part: Manufacturer Part 
+  batch_no: Raw Material Lot
   product_book_select: Select Product Book
   one_day: Oneday
   incubate: Incubate
@@ -94,6 +98,7 @@ pallets:
   lang: en-en
   print_error: Print Error
   print_error_message: Please save a document before printing
+  pallet_total: Total Palletized Qty
 
 sterilizer:
   header: Sterilizer Entry

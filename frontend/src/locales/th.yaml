@@ -8,7 +8,7 @@ labels:
   process_order: รายการ Process Order
   product_code: รายการ Product Code
   start_time: เวลาเริ่มต้น
-  duration: ระยะเวลา (นาที)
+  duration: ระยะเวลา
   end_time: เวลาสิ้นสุด
   amount: จำนวน
   code: Code
@@ -27,6 +27,7 @@ labels:
   preview: ตัวอย่างตารางข้อมูลตะแกรง  
   buy: การซื้อ
   sale: การขาย
+  hash_basket_no: ตะแกรง#
 
 greeting:
   hi: สวัสดี
@@ -63,6 +64,9 @@ basket:
   date_select_header: คุณสามารถเลือกวันที่สำหรับรายการเอกสาร
   date_select: เลือกวันที่สำหรับรายการเอกสาร
   doctype_select: เลือก Product Code
+  manufacturer: รหัสพันธุ์
+  manufacturer_part: ชื่อพันธุ์
+  batch_no: Raw Material Lot
   product_book_select: เลือกเล่มที่
   one_day: Oneday
   incubate: Incubate
@@ -86,14 +90,15 @@ pallets:
   start: เริ่ม
   minute: นาที
   select_code: เลือกเลขที่ตะแกรง
-  pallet_qty: จำนวนที่จัดพาเลต
+  pallet_qty: ขึ้นพาเลต
   size: ขนาดพาเลต
   hold: Hold
   reason: สาเหตุการ Hold
   full: เต็มพาเลต
   lang: th-TH
   print_error: พิมพ์ไม่สำเร็จ
-  print_error_message: กรุณาเลือกบันทึกเอกสารก่อนพิมพ์
+  print_error_message: กรุณาบันทึกเอกสารก่อนพิมพ์
+  pallet_total: จำนวนที่จัดพาเลตทั้งหมด
 
 sterilizer:
   header: บันทึกหม้อฆ่าเชื้อ
