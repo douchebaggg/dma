@@ -9,10 +9,13 @@
         <ion-button color="secondary" @click="confirmChanges()">{{ t('button.Ok') }}</ion-button>
       </ion-buttons>
     </ion-toolbar>
-    <ion-searchbar class="custom mt-2 mb-2" @ionInput="searchbarInput($event)"></ion-searchbar>
+    <ion-searchbar class="custom-search py-2 " @ionInput="searchbarInput($event)"></ion-searchbar>
+    <div class="ion-text-center pb-2">
+      <ion-label>{{ t('pallets.pallet_total') }} : {{ remainingQty }}</ion-label>
+    </div>
   </ion-header>
 
-  <div class="ion-padding h-90 overflow-y-auto">
+  <div class="h-90 overflow-y-auto">
     <ion-list id="modal-list" :inset="true">
       <ion-item v-for="(item, index) in filteredItems" :key="item.value + '-' + index">
         <div class="flex flex-col w-full">
@@ -23,19 +26,21 @@
           >
             {{ item.text }}
           </ion-checkbox>
-          <div class="flex justify-between ion-text-center max-[620px]:flex-col">
-            <Input
-              v-for="input in inputConfigs"
-              :key="input.key"
-              v-if="workingSelectedValues.includes(item.value) && inputValues[item.value]"
-              v-model="inputValues[item.value][input.key as InputKey]"
-              class="rounded-xl py-1 mb-2 w-16"
-              type="number"
-              :label="t(input.label)"
-              inputmode="numeric"
-              style="outline: none; padding-left: 1rem; border: solid 1px grey;"
-            />
-          </div>
+<div v-if="workingSelectedValues.includes(item.value)" class="mt-2 mb-2">
+  <div class="grid grid-cols-6 content-center gap-5 text-center w-fit max-[620px]:grid-cols-3">
+    <Input
+      v-for="input in inputConfigs"
+      :key="input.key"
+      v-model="inputValues[item.value][input.key as InputKey]"
+      class="rounded-xl py-1 w-full "
+      type="number"
+      :label="t(input.label)"
+      inputmode="numeric"
+      style="outline: none; padding-left: 1rem; border: solid 1px grey;"
+    />
+  </div>
+</div>
+
         </div>
       </ion-item>
       <ion-item v-if="filteredItems.length === 0">
@@ -53,7 +58,7 @@ import {
   IonItem, IonList, IonTitle, IonSearchbar, IonToolbar,
 } from '@ionic/vue';
 import type { CheckboxCustomEvent, SearchbarCustomEvent } from '@ionic/vue';
-import { ref, watch, onMounted } from 'vue';
+import { ref, watch, onMounted, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
@@ -69,9 +74,8 @@ const inputConfigs: { key: InputKey; label: string }[] = [
   { key: 'spoil', label: 'basket.spoil' },
   { key: 'leak', label: 'basket.leak' },
 ];
-
 const props = defineProps<{
-  items: { value: string; text: string }[];
+  items: { value: string; text: string; qty: number }[];
   selectedItems: string[];
   initialInputs?: { [key: string]: { one_day: number; incubate: number; IT: number; example: number; spoil: number; leak: number } };
   title?: string;
@@ -94,6 +98,20 @@ const workingSelectedValues = ref([...props.selectedItems]);
 const inputValues = ref<{
   [key: string]: { one_day: number; incubate: number; IT: number; example: number; spoil: number; leak: number };
 }>({});
+
+const totalSelectedQty = computed(() => {
+  return workingSelectedValues.value.reduce((total, value) => {
+    const item = props.items.find((i) => i.value === value);
+    if (!item) return total;
+    const qty = Number(item.qty);
+    return total + qty;
+  }, 0);
+});
+
+const remainingQty = computed(() => {
+  return totalSelectedQty.value 
+});
+
 
 onMounted(() => {
   workingSelectedValues.value.forEach((value) => {
@@ -189,11 +207,17 @@ const checkboxChange = (event: CheckboxCustomEvent) => {
 };
 </script>
 <style scoped>
-ion-searchbar.custom {
+ion-searchbar.custom-search {
   --border-radius: 12px;
 }
-.dark ion-searchbar.custom {
-  --background: var(--ion-color-dark);
+.ion-palette-dark ion-searchbar.custom-search {
+  --background: var(--ion-color-dark-shade);
   --border-radius: 12px;
+}
+.ion-palette-dark ion-checkbox::part(container) {
+  border: 1px solid var(--ion-color-dark-tint);
+  --checkbox-background-checked: var(--ion-color-light);
+  --checkmark-width: 5px;
+  --checkmark-color: var(--color-black)
 }
 </style>
