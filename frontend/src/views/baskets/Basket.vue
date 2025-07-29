@@ -35,21 +35,46 @@
               </ion-select>
 
 			<form>
-			<ion-label>{{ t('labels.baskets_no') }}</ion-label>
-			<Input class="rounded-xl py-1" name="startTime" type="number" inputmode="numeric" v-model="basketNo"
+			<Input class="rounded-xl py-1" :label="t('labels.baskets_no')" type="number" inputmode="numeric" v-model="basketNo"
 				style="outline: none; padding-left: 1rem; border: solid 1px grey;" />
-			<ion-label>{{ t('labels.start_time') }}</ion-label>
-			<Input class="rounded-xl py-1" name="startTime" type="time" v-model="startTime"
+			<!--Select Manufacturer-->
+			<div class="grid grid-cols-1 text-center sm:grid-cols-3 gap-4 mt-4">
+			<ion-select class=" w-full" v-model="manufacturerSelect" interface="popover" :placeholder="t('basket.manufacturer')" fill="outline"
+              @ionChange="closePopover"
+			  @ionCancel="closePopover"
+			  @ionDismiss="closePopover">
+                <ion-select-option v-for="manufacturer in manufacturerList" 
+				:key="manufacturer.name"
+				:value="manufacturer.value">
+                {{ manufacturer.value }}
+                </ion-select-option>
+              </ion-select>
+			<ion-input class="rounded-xl w-full max-sm:text-left" v-model="manufacturerName" :label="t('basket.manufacturer_part')" label-placement="stacked" fill="outline"  ></ion-input>
+			<ion-select class=" w-full" v-model="rawMateriaSelect" interface="popover" :placeholder="t('basket.batch_no')" fill="outline"
+              @ionChange="closePopover"
+			  @ionCancel="closePopover"
+			  @ionDismiss="closePopover">
+                <ion-select-option v-for="raw in rawMaterialList" 
+				:value="raw.batch_no">
+                {{ raw.batch_no }}
+                </ion-select-option>
+              </ion-select>
+			</div>
+
+			<!-- Time input-->
+		<div class="grid grid-cols-3 gap-3 text-center mt-4">
+			<Input class="rounded-xl py-1 max-sm:w-24" 
+			:label="t('labels.start_time')" type="time" v-model="startTime"
 				style="outline: none; padding-left: 1rem; border: solid 1px grey;" />
-			<ion-label>{{ t('labels.duration') }}</ion-label>
-			<Input class="rounded-xl py-1" name="timeInmins" type="number" inputmode="numeric" v-model="timeInMins"
+			<Input class="rounded-xl h-[30.3px] py-1 max-sm:w-24 max-sm:h-[27.5px]" :label="t('labels.duration')" type="number" inputmode="numeric" v-model="timeInMins"
 				style="outline: none; padding-left: 1rem; border: solid 1px grey;" />
-			<ion-label>{{ t('labels.end_time') }}</ion-label>
-			<Input class="rounded-xl py-1" name="endTime" type="time" v-model="endTime"
+			<Input class="rounded-xl py-1 max-sm:w-24" :label="t('labels.end_time')" type="time" v-model="endTime"
 				style="outline: none; padding-left: 1rem; border: solid 1px grey;" />
-			<ion-label>{{ t('labels.amount') }}</ion-label>
-			<Input class="rounded-xl py-1" name="amount" type="number" v-model="amount" inputmode="numeric"
+
+			</div>
+			<Input class="rounded-xl py-1 w-full" :label="t('labels.amount')" type="number" v-model="amount" inputmode="numeric"
 				style="outline: none; padding-left: 1rem; border: solid 1px grey;" />
+				
 			</form>
 		</div>	
 		<div class="flex justify-center space-x-5 ion-margin-top">
@@ -67,10 +92,10 @@
 		</div>
 		</ion-card>
 		<div class="ion-text-center " v-if="displayDoctype">
-			<h3>{{ t("basket.update_sucess") }}</h3>
-			<p>{{ t("basket.doctype") }} <a class="font-semibold text-sky-600 text-lg" href="#" @click="dynamicLink">{{ displayDoctype.name }}</a> {{ t("basket.after") }}</p>
-			<p>{{ t("basket.note") }}</p>
-			<h4 v-if="displayDoctype?.baskets?.length">{{ t("basket.preview") }}</h4>
+			<h3>{{ t("labels.update_success") }}</h3>
+			<p>{{ t("labels.doctype") }} <a class="font-semibold text-sky-600 text-lg" href="#" @click="dynamicLink">{{ displayDoctype.name }}</a> {{ t("labels.after") }}</p>
+			<p>{{ t("labels.note") }}</p>
+			<h4 v-if="displayDoctype?.baskets?.length">{{ t("labels.preview") }}</h4>
 		
 		<ion-grid class="m-2 border-1 bg-[#171717] text-white" v-if="displayDoctype?.baskets?.length">
 			<ion-row class="font-semibold border-b-1">
@@ -131,7 +156,7 @@ IonTitle,
 IonRow,IonGrid,IonCol, 
 IonSelect,IonSelectOption,
 IonDatetime, IonDatetimeButton,
-IonModal,IonCard,IonLabel
+IonModal,IonCard,IonLabel,IonInput
 } from "@ionic/vue";
 import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
@@ -145,12 +170,58 @@ const basketNo = ref<number | any>('')
 const dateValue = ref<any>(null)
 const router = useRouter()
 const { db } = frappeSDK()
+const { call } = frappeSDK()
+const manufacturerList = ref<any>([])
+const manufacturerSelect = ref(manufacturerList.value[0])
+const rawMaterialList = ref<any>([])
+const rawMateriaSelect = ref(rawMaterialList.value[0])
+let manufacturerName = ref<string>('')
 let displayDoctype = ref<any>(null)
 const basketList = ref<any>([])
 const workOrderList = ref<any>([])
 const doctypeSelector = ref(workOrderList.value[0]);
 const rowsPerPage = 5;
 const currentPage = ref(1);
+
+manufacturerList.value = [
+	{
+		name: 1,
+		value: '011'
+	},
+	{
+		name: 2,
+		value: '012'
+	},
+	{
+		name: 3,
+		value: '013'
+	},
+	{
+		name: 4,
+		value: '014'
+	},
+		{
+		name: 5,
+		value: '015'
+	},
+		{
+		name: 6,
+		value: '016'
+	},
+		{
+		name: 7,
+		value: '017'
+	},
+		{
+		name: 8,
+		value: '018'
+	},
+		{
+		name: 9,
+		value: '019'
+	},
+	
+]
 
 const timeCalculate = (): void => {
   if (!startTime.value || !timeInMins.value) {
@@ -229,12 +300,29 @@ const getDate = computed(() => {
 
 });
 
+const getManufacturer = async () => {
+	const manufacturerDoc = await db.getDoc('Manufacturer',manufacturerSelect.value)
+	manufacturerName.value = manufacturerDoc.notes
+	const args = {
+		posting_date: getDate.value,
+		manufacturer: manufacturerSelect.value
+	}
+	const res =  await call.get('thai.thai.doctype.update_documents.update_documents.get_rm_batch_no',args)
+	rawMaterialList.value = res.message
+}
+
 watch(dateValue, (newDate) => {
   if (newDate) {
     selectDoctype();
     getLocal();
   }
 });
+watch(manufacturerSelect, (newValue)=>{
+	if(newValue) {
+		getManufacturer()
+	}
+})
+
 onMounted(() => {
   selectDoctype();
   getLocal();
@@ -258,7 +346,10 @@ const saveData = async () => {
       time_in_mins: timeInMins.value,
       qty: amount.value,
       to_time: endTime.value,
-	  item_code: selectWorkOrder
+	  item_code: selectWorkOrder,
+	  manufacturer: manufacturerSelect.value,
+	  manufacturer_part_no: manufacturerName.value,
+	  batch_no: rawMateriaSelect.value
     });
     const doc = await db.updateDoc("Basket Entry", docNameFromSelector, {
 		baskets: baskets_table,
