@@ -5,7 +5,7 @@ import accountRoutes from "./account"
 import { session } from "../data/session"
 import { userResource } from "../data/user"
 import basketRoutes  from "./basket"
-import mediaRoutes from "./media"
+import seamRoutes from "./seam"
 import sterilizerRoutes from "./sterilizer"
 import palletsRoutes from "./pallets"
 import docType from "./doctype"
@@ -45,7 +45,7 @@ const routes: Array<RouteRecordRaw> = [
 	},
 	...accountRoutes,
 	...basketRoutes,
-	...mediaRoutes,
+	...seamRoutes,
 	...sterilizerRoutes,
 	...palletsRoutes,
 	...docType,

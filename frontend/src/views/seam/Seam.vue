@@ -5,14 +5,14 @@
 				<ion-buttons slot="start">
 					<ion-back-button defaultHref="" @click="router.back()"></ion-back-button>
 				</ion-buttons>
-				<ion-title>Media</ion-title>
+				<ion-title>Seam</ion-title>
 			</ion-toolbar>
 		</ion-header>
 		<ion-content>
 			<h2 class="ion-text-center ion-margin">Process Order </h2>
 
 		<!-- input -->
-		<Card class="rounded-xl m-2 pb-14"> 
+		<ion-card class="rounded-xl m-2 pb-14"> 
 		<div class="input-container m-4">
 			<form>
 			<Input class="rounded-xl py-1" :label="t('labels.code')"               
@@ -38,14 +38,14 @@
 			:variant="'solid'"
 			size="md" >{{ t("button.Cancel") }}</Button>
 		</div>
-		</Card>
+		</ion-card>
 		</ion-content>
 	</ion-page>
 	
 </template>
 
 <script setup lang="ts">
-import { IonPage,IonContent,IonHeader,IonToolbar,IonBackButton,IonButtons,IonTitle,IonButton,IonInput } from "@ionic/vue";
+import { IonPage,IonContent,IonHeader,IonToolbar,IonBackButton,IonButtons,IonTitle,IonButton,IonInput, IonCard } from "@ionic/vue";
 import { useRouter } from "vue-router"
 import { useI18n } from "vue-i18n"
 const { t } = useI18n()
