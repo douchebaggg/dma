@@ -17,7 +17,7 @@
 			<p class="ion-text-center pb-3">{{ t('basket.date_select_header') }}</p>
 			<div class=" flex justify-center">
 				<p class="py-5 text-sm">{{t('basket.date_select')}}</p>
-				<ion-datetime-button class="ion-padding " datetime="date"></ion-datetime-button>
+				<ion-datetime-button class="ion-padding " datetime="date" v-model="dateButton"></ion-datetime-button>
 				<ion-modal :keep-contents-mounted="true">
 					<ion-datetime :locale="getLocal()" presentation="date" id="date" v-model="dateValue"></ion-datetime>
 				</ion-modal>
@@ -94,7 +94,6 @@
 		<div class="ion-text-center " v-if="displayDoctype">
 			<h3>{{ t("labels.update_success") }}</h3>
 			<p>{{ t("labels.doctype") }} <a class="font-semibold text-sky-600 text-lg" href="#" @click="dynamicLink">{{ displayDoctype.name }}</a> {{ t("labels.after") }}</p>
-			<p>{{ t("labels.note") }}</p>
 			<h4 v-if="displayDoctype?.baskets?.length">{{ t("labels.preview") }}</h4>
 		
 		<ion-grid class="m-2 border-1 bg-[#171717] text-white" v-if="displayDoctype?.baskets?.length">
@@ -108,33 +107,33 @@
 			<ion-row  v-for="(row, index) in paginatedBaskets" :key="index">
 				<ion-col class="border-r-1">{{ row.basket_no }}</ion-col>
 				<ion-col class="border-r-1">{{ row.from_time }}</ion-col>
-				<ion-col class="border-r-1">{{ row.to_time }}</ion-col>
-				<ion-col class="border-r-1">{{ row.time_in_mins }} min</ion-col>
+				<ion-col class="border-r-1">{{ row.time_in_mins }} {{ t("pallets.minute") }}</ion-col>
+				<ion-col class="border-r-1">{{ row.to_time   }}</ion-col>
 				<ion-col>{{ row.qty }}</ion-col>
 			</ion-row>
       </ion-grid>
 	  <div class="flex justify-center space-x-5 ion-margin-top ion-padding-bottom" v-if="displayDoctype?.baskets?.length > rowsPerPage">
 			<Button 
-        		class="rounded-xl text-white bg-[#171717] w-14 h-4"
+        		class="rounded-xl text-white hover:bg-[#383838] bg-[#171717] w-18 h-4"
         		:variant="'solid'"
         		:disabled="currentPage === 1"
         		@click="firstPage"
         		size="sm"> {{ t("pagination.first") }} </Button>
       		<Button 
-        		class="rounded-xl text-white bg-[#171717] w-12 h-4"
+        		class="rounded-xl text-white hover:bg-[#383838] bg-[#171717] w-12 h-4"
         		:variant="'solid'"
         		:disabled="currentPage === 1"
         		@click="previousPage"
         		size="sm"> < </Button>
       		<span class="">{{ t("pagination.page") }} {{ currentPage }} / {{ totalPages }}</span>
       		<Button 
-        		class="rounded-xl text-white bg-[#171717] w-12 h-4"
+        		class="rounded-xl text-white hover:bg-[#383838] bg-[#171717] w-12 h-4"
         		:variant="'solid'"
         		:disabled="currentPage === totalPages"
         		@click="nextPage"
         		size="sm"> > </Button>
 			<Button 
-        		class="rounded-xl text-white bg-[#171717] w-14 h-4"
+        		class="rounded-xl text-white hover:bg-[#383838] bg-[#171717] w-18 h-4"
         		:variant="'solid'"
         		:disabled="currentPage === totalPages"
         		@click="lastPage"
@@ -156,7 +155,7 @@ IonTitle,
 IonRow,IonGrid,IonCol, 
 IonSelect,IonSelectOption,
 IonDatetime, IonDatetimeButton,
-IonModal,IonCard,IonLabel,IonInput
+IonModal,IonCard,IonInput
 } from "@ionic/vue";
 import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
@@ -168,6 +167,7 @@ const endTime = ref<string>('')
 const amount = ref<number | any>('')
 const basketNo = ref<number | any>('')
 const dateValue = ref<any>(null)
+const dateButton = ref<any>(null)
 const router = useRouter()
 const { db } = frappeSDK()
 const { call } = frappeSDK()
@@ -322,7 +322,6 @@ watch(manufacturerSelect, (newValue)=>{
 		getManufacturer()
 	}
 })
-
 onMounted(() => {
   selectDoctype();
   getLocal();
@@ -365,11 +364,18 @@ const saveData = async () => {
 };
 
 const clearData = () => {
+	const today = new Date().toISOString().split("T")[0];
 	startTime.value = ''
 	timeInMins.value = ''
 	endTime.value = ''
 	amount.value = ''
 	basketNo.value = ''
+	manufacturerName.value = ''
+	doctypeSelector.value = []
+	manufacturerSelect.value = []
+	rawMateriaSelect.value = []
+	dateValue.value = today
+	dateButton.value = today
 }
 const getLocal = () => {
 	const local = localStorage.getItem('preferredLanguage');
