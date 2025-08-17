@@ -94,3 +94,6 @@ ion-tab-button {
 	--ion-card-color:#f4f5f8;
 	--ion-card-border: solid 1px #383a3e;
   }
+ion-modal {
+	--border-radius: 8px;
+}
