@@ -127,6 +127,7 @@ export default defineConfig({
 			"engine.io-client",
 			"lowlight",
 			"highlight.js/lib/core",
+			"grid-layout-plus"
 			
 		],
 	},
