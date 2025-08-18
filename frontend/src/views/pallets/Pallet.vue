@@ -52,7 +52,7 @@
 					v-model="size"></ion-input>
 				</div>
 				<div class=" flex justify-center">
-					<ion-button id="select-code" class =" w-dvw h-9 py-2">
+					<ion-button id="select-code" class =" w-dvw h-9 py-2 max-sm:text-sm">
 						{{ t('pallets.doctype_select')}} {{ selectCodeText }}
 					</ion-button>			
 				</div>
@@ -72,26 +72,26 @@
 	  <div v-if="tableHtml" class=" flex justify-center" v-html="displayPallet.palletized_products.at(-1).baskets_html"></div>
 	  <div class="flex justify-center space-x-5 ion-margin-top ion-padding-bottom" v-if="pageButton">
 			<Button 
-				class="rounded-xl text-white bg-[#171717] w-20 h-4"
+				class="rounded-lg text-white bg-[#171717] w-20 h-4"
 				:variant="'solid'"
 				:disabled="currentPage === 1"
 				@click="firstPage"
 				size="sm"> {{ t("pagination.first") }} </Button>
 			<Button 
-				class="rounded-xl text-white bg-[#171717] w-12 h-4"
+				class="rounded-lg text-white bg-[#171717] w-12 h-4"
 				:variant="'solid'"
 				:disabled="currentPage === 1"
 				@click="previousPage"
 				size="sm"> < </Button>
 			<span class="">{{ t("pagination.page") }} {{ currentPage }} / {{ totalPages }}</span>
 			<Button 
-				class="rounded-xl text-white bg-[#171717] w-12 h-4"
+				class="rounded-lg text-white bg-[#171717] w-12 h-4"
 				:variant="'solid'"
 				:disabled="currentPage === totalPages"
 				@click="nextPage"
 				size="sm"> > </Button>
 			<Button 
-				class="rounded-xl text-white bg-[#171717] w-20 h-4"
+				class="rounded-lg text-white bg-[#171717] w-20 h-4"
 				:variant="'solid'"
 				:disabled="currentPage === totalPages"
 				@click="lastPage"
@@ -100,32 +100,31 @@
 		<div class="m-4 flex flex-col">
 			<ion-title class="ion-text-center">{{ t('pallets.time') }}</ion-title>
 			<ion-label>{{ t('pallets.start') }}</ion-label>
-			<Input class="rounded-xl py-1" type="time" v-model="fromTime"               
-			  style="outline: none; padding-left: 1rem; border: solid 1px grey;" />
+			<TextInput id="time" class="rounded-lg py-1" type="time" v-model="fromTime" />
 			<ion-label>{{ t('pallets.minute') }}</ion-label>
-			<Input class="rounded-xl py-1" inputmode="numeric" v-model="timeInMins"
+			<Input class="rounded-lg py-1" inputmode="numeric" v-model="timeInMins"
 			  style="outline: none; padding-left: 1rem; border: solid 1px grey;" />
 			<ion-checkbox class="py-1" label-placement="end" v-model="isHold">{{ t('pallets.hold') }}</ion-checkbox>
-			<ion-textarea class="rounded-xl py-1 h-20 mb-2" :label="t('pallets.reason')" fill="outline" v-if="isHold"
+			<ion-textarea class="rounded-lg py-1 h-20 mb-2" :label="t('pallets.reason')" fill="outline" v-if="isHold"
 			  label-placement="stacked" v-model="holdReason">
 			</ion-textarea>
 			<ion-checkbox class="py-1" label-placement="end" v-model="isFull">{{ t('pallets.full') }}</ion-checkbox>
 		</div>
 		<div class="flex justify-center space-x-5 ion-margin-top">
 			<Button 
-			  class="rounded-xl text-white hover:bg-[#383838] bg-[#171717] w-20"
+			  class="rounded-lg text-white hover:bg-[#383838] bg-[#171717] w-20"
 			  :variant="'solid'"
 			  @click="saveData"
 			  size="md"> {{ t("button.Save") }}</Button>
 
 			<Button 
-			class="rounded-xl text-white bg-[#171717] w-20"
+			class="rounded-lg text-white bg-[#171717] w-20"
 			:variant="'solid'"
 			@click="palletPrint(palletName,t)"
 			size="md">{{ t("button.Print") }}</Button>
 
 			<Button
-			class="rounded-xl text-white hover:bg-red-800 bg-red-700 w-20"
+			class="rounded-lg text-white hover:bg-red-800 bg-red-700 w-20"
 			:variant="'solid'"
 			@click="clearData"
 			size="md" >{{ t("button.Cancel") }}</Button>
@@ -151,6 +150,7 @@ import { useI18n } from "vue-i18n";
 import { frappeSDK } from "@/utils/frappeSDK";
 import AppTypeahead from "@/components/AppTypeaheadCustom.vue";
 import { palletPrint } from "@/utils/PalletPrint";
+import { TextInput } from "frappe-ui/src/components/TextInput";
 const router = useRouter();
 const { t } = useI18n();
 const { db, call } = frappeSDK();
@@ -596,12 +596,7 @@ const clearData = () => {
 }
 </script>
 <style>
-ion-datetime-button::part(native) {
-  background: #F3F3F3;
-  color: #171717;
-  font-size: 14px;
 
-}
 #select-code:hover{
 	cursor: pointer;
 }
@@ -623,10 +618,6 @@ ion-checkbox::part(container) {
 .table{
 	margin: 16px;
 	width: 90dvw;
-}
-.custom{
-	border: solid 1px;
-	padding: 5px 5px 0px 5px;
 }
 .ion-palette-dark ion-checkbox::part(container) {
   border: 1px solid var(--ion-color-dark-tint);

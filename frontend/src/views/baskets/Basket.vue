@@ -12,7 +12,7 @@
 			<h2 class="ion-text-center ion-margin">{{ t('basket.header')}}</h2>
 		<!-- input -->
 		
-		<ion-card class="rounded-xl m-2 pb-14 border-1 border-zinc-500">
+		<ion-card class="rounded-xl m-2 p-2 pb-14 border-1 border-zinc-500">
 		<div class="input-container m-4">
 			<p class="ion-text-center pb-3">{{ t('basket.date_select_header') }}</p>
 			<div class=" flex justify-center">
@@ -35,7 +35,7 @@
               </ion-select>
 
 			<form>
-			<Input class="rounded-xl py-1" :label="t('labels.baskets_no')" type="number" inputmode="numeric" v-model="basketNo"
+			<Input class="rounded-lg py-1" :label="t('labels.baskets_no')" type="number" inputmode="numeric" v-model="basketNo"
 				style="outline: none; padding-left: 1rem; border: solid 1px grey;" />
 			<!--Select Manufacturer-->
 			<div class="grid grid-cols-1 text-center sm:grid-cols-3 gap-4 mt-4">
@@ -49,7 +49,7 @@
                 {{ manufacturer.value }}
                 </ion-select-option>
               </ion-select>
-			<ion-input class="rounded-xl w-full max-sm:text-left" v-model="manufacturerName" :label="t('basket.manufacturer_part')" label-placement="stacked" fill="outline"  ></ion-input>
+			<ion-input class="rounded-lg w-full max-sm:text-left" v-model="manufacturerName" :label="t('basket.manufacturer_part')" label-placement="stacked" fill="outline"  ></ion-input>
 			<ion-select class=" w-full" v-model="rawMateriaSelect" interface="popover" :placeholder="t('basket.batch_no')" fill="outline"
               @ionChange="closePopover"
 			  @ionCancel="closePopover"
@@ -63,29 +63,30 @@
 
 			<!-- Time input-->
 		<div class="grid grid-cols-3 gap-3 text-center mt-4">
-			<Input class="rounded-xl py-1 max-sm:w-24" 
-			:label="t('labels.start_time')" type="time" v-model="startTime"
-				style="outline: none; padding-left: 1rem; border: solid 1px grey;" />
-			<Input class="rounded-xl h-[30.3px] py-1 max-sm:w-24 max-sm:h-[27.5px]" :label="t('labels.duration')" type="number" inputmode="numeric" v-model="timeInMins"
-				style="outline: none; padding-left: 1rem; border: solid 1px grey;" />
-			<Input class="rounded-xl py-1 max-sm:w-24" :label="t('labels.end_time')" type="time" v-model="endTime"
-				style="outline: none; padding-left: 1rem; border: solid 1px grey;" />
-
+			<ion-label>{{ t('labels.start_time')  }}
+				<TextInput id="time" class=" mt-0.5 rounded-lg " size="md" type="time" v-model="startTime" />
+			</ion-label>
+			<ion-label>{{ t('labels.duration') }}
+				<Input class=" mt-0.5 rounded-lg h-[2rem] max-sm:h-[2.12rem]" type="number" inputmode="numeric" v-model="timeInMins"
+					style="outline: none; padding-left: 1rem; border: solid 1px grey;" /> </ion-label>
+			<ion-label>{{ t('labels.end_time') }}
+				<TextInput id="time" class=" mt-0.5 rounded-lg" size="md" type="time" v-model="endTime" />
+			</ion-label>
 			</div>
-			<Input class="rounded-xl py-1 w-full" :label="t('labels.amount')" type="number" v-model="amount" inputmode="numeric"
+			<Input class="rounded-lg py-1 w-full" :label="t('labels.amount')" type="number" v-model="amount" inputmode="numeric"
 				style="outline: none; padding-left: 1rem; border: solid 1px grey;" />
 				
 			</form>
 		</div>	
 		<div class="flex justify-center space-x-5 ion-margin-top">
 			<Button 
-				class="rounded-xl text-white hover:bg-[#383838] bg-[#171717] w-20"
+				class="rounded-lg text-white hover:bg-[#383838] bg-[#171717] w-20"
               :variant="'solid'"
 				@click="saveData"
               size="md"> {{ t("button.Save") }}</Button>
 
 			<Button
-			class="rounded-xl  text-white hover:bg-red-800 bg-red-700 w-20"
+			class="rounded-lg  text-white hover:bg-red-800 bg-red-700 w-20"
 			:variant="'solid'"
 			@click="clearData()"
 			size="md" >{{ t("button.Cancel") }}</Button>
@@ -114,26 +115,26 @@
       </ion-grid>
 	  <div class="flex justify-center space-x-5 ion-margin-top ion-padding-bottom" v-if="displayDoctype?.baskets?.length > rowsPerPage">
 			<Button 
-        		class="rounded-xl text-white hover:bg-[#383838] bg-[#171717] w-18 h-4"
+        		class="rounded-lg text-white hover:bg-[#383838] bg-[#171717] w-18 h-4"
         		:variant="'solid'"
         		:disabled="currentPage === 1"
         		@click="firstPage"
         		size="sm"> {{ t("pagination.first") }} </Button>
       		<Button 
-        		class="rounded-xl text-white hover:bg-[#383838] bg-[#171717] w-12 h-4"
+        		class="rounded-lg text-white hover:bg-[#383838] bg-[#171717] w-12 h-4"
         		:variant="'solid'"
         		:disabled="currentPage === 1"
         		@click="previousPage"
         		size="sm"> < </Button>
       		<span class="">{{ t("pagination.page") }} {{ currentPage }} / {{ totalPages }}</span>
       		<Button 
-        		class="rounded-xl text-white hover:bg-[#383838] bg-[#171717] w-12 h-4"
+        		class="rounded-lg text-white hover:bg-[#383838] bg-[#171717] w-12 h-4"
         		:variant="'solid'"
         		:disabled="currentPage === totalPages"
         		@click="nextPage"
         		size="sm"> > </Button>
 			<Button 
-        		class="rounded-xl text-white hover:bg-[#383838] bg-[#171717] w-18 h-4"
+        		class="rounded-lg text-white hover:bg-[#383838] bg-[#171717] w-18 h-4"
         		:variant="'solid'"
         		:disabled="currentPage === totalPages"
         		@click="lastPage"
@@ -155,11 +156,12 @@ IonTitle,
 IonRow,IonGrid,IonCol, 
 IonSelect,IonSelectOption,
 IonDatetime, IonDatetimeButton,
-IonModal,IonCard,IonInput
+IonModal,IonCard,IonInput,IonLabel
 } from "@ionic/vue";
 import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import { frappeSDK } from "@/utils/frappeSDK";
+import { TextInput } from 'frappe-ui/src/components/TextInput'
 const { t } = useI18n();
 const startTime = ref<string>('')
 const timeInMins = ref<number | any>('')
@@ -447,11 +449,3 @@ const dynamicLink = async () =>{
 	}
 */
 </script>
-<style scoped>
-ion-datetime-button::part(native) {
-  background: #F3F3F3;
-  color: #171717;
-  font-size: 14px;
-
-}
-</style>

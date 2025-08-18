@@ -59,7 +59,7 @@
 					</ion-select>
 				</div>
 				<div class=" flex justify-center">
-					<ion-button id="select-code" class =" w-dvw h-9 py-2 mt-4 mb-4">
+					<ion-button id="select-code" class =" w-dvw py-2 mt-4 mb-4 max-sm:text-sm">
 						{{ t('sterilizer.sterilizer_items')}} {{ selectCodeText }}
 					</ion-button>			
 				</div>
