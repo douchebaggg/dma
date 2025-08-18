@@ -82,6 +82,9 @@ http://ionicframework.com/docs/theming/ */
 	--ion-color-light-shade: #d7d8da;
 	--ion-color-light-tint: #f5f6f9;
 }
+*{
+	font-size: 16px;
+}
 ion-tab-bar {
   font-family: "Anuphan", sans-serif !important;
 }
@@ -93,7 +96,25 @@ ion-tab-button {
 	--ion-card-background: #222428;
 	--ion-card-color:#f4f5f8;
 	--ion-card-border: solid 1px #383a3e;
+	
   }
 ion-modal {
 	--border-radius: 8px;
+}
+
+ion-datetime-button::part(native){
+  width: 100%;
+  font-size: 14px;
+  border: solid 1px grey;
+  background-color: #ffffff;
+}
+.ion-palette-dark ion-datetime-button::part(native){
+  background-color: #222428; /* dark mode */
+}
+#time {
+  border-radius: 8px;
+  margin-top: 2px;
+  padding-left: 1rem;
+  outline: none;
+  border: solid 1px grey;
 }
