@@ -136,9 +136,10 @@ const updateThemeColor = () => {
 };
 
 onMounted(() => {
-	setDefaultLanguage()
-	refreshUser()
-	getApp()
+	setDefaultLanguage();
+	refreshUser();
+	getApp();
+	updateThemeColor();
 	// Load from localStorage
 	const savedMode = localStorage.getItem("darkMode")
 	if (savedMode !== null) {
