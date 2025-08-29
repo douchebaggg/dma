@@ -100,6 +100,7 @@ import {
 import { moon, sunny } from "ionicons/icons"
 import { urlPort } from "@/utils/checkIP"
 import { frappeSDK } from "@/utils/frappeSDK"
+import { DarkMode, updateThemeColor } from "@/utils/themeHandle"
 const session = <any>inject(sessionInjectionKey)
 const user = <any>inject(userResourceInjectionKey)
 const { call } = frappeSDK();
@@ -112,7 +113,7 @@ const getApp = async() => {
 	url: "http://erp.alzo.io:10580/api/method/dma.api.get_app_version",
 	auto: true,
 })*/
-const isDarkMode = ref(window.matchMedia('(prefers-color-scheme: dark)').matches)
+const isDarkMode = DarkMode
 const { t, locale } = useI18n()
 const availableLanguages = [
 	{ label: "English", value: "en" },
@@ -123,17 +124,6 @@ const toggleTheme = () => {
 	document.documentElement.classList.toggle('ion-palette-dark', isDarkMode.value)
 	localStorage.setItem("darkMode", JSON.stringify(isDarkMode.value))
 }
-
-const updateThemeColor = () => {
-  const themeColor = isDarkMode.value ? '#222428' : '#f4f5f6';
-  let metaThemeColor = document.querySelector('meta[name="theme-color"]');
-  if (!metaThemeColor) {
-    metaThemeColor = document.createElement('meta');
-    metaThemeColor.setAttribute('name', 'theme-color');
-    document.head.appendChild(metaThemeColor);
-  }
-  metaThemeColor.setAttribute('content', themeColor);
-};
 
 onMounted(() => {
 	setDefaultLanguage();

@@ -123,22 +123,13 @@
 	import { userResourceInjectionKey } from "@/typing/InjectionKeys"
 	import { FeatherIcon} from "frappe-ui"
 	import { setDefaultLanguage } from "@/locales/devices"
-
+	import { updateThemeColor,setDefaultTheme } from "@/utils/themeHandle"
 	onMounted(() => {
 	setDefaultLanguage()
 	setDefaultTheme()
+	updateThemeColor()
 })
 	const user = inject(userResourceInjectionKey) as any
 	const { t } = useI18n()
-	const isDarkMode = ref(window.matchMedia('(prefers-color-scheme: dark)').matches)
-	const setDefaultTheme = () => {
-		const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
-		if (isDarkMode.value = prefersDarkScheme.matches) {
-			document.documentElement.classList.toggle('ion-palette-dark', isDarkMode.value);
-			localStorage.setItem("darkMode", JSON.stringify(isDarkMode.value))
-		} else {
-			document.documentElement.classList.remove('ion-palette-dark');
-			localStorage.setItem("darkMode", JSON.stringify(isDarkMode.value))
-		}
-	};
+
 </script>
