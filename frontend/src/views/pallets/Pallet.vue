@@ -97,13 +97,20 @@
 				@click="lastPage"
 				size="sm"> {{ t("pagination.last") }} </Button>
 		</div>
-		<div class="m-4 flex flex-col">
-			<ion-title class="ion-text-center">{{ t('pallets.time') }}</ion-title>
-			<ion-label>{{ t('pallets.start') }}</ion-label>
-			<TextInput id="time" class="rounded-lg py-1" type="time" v-model="fromTime" />
-			<ion-label>{{ t('pallets.minute') }}</ion-label>
-			<Input class="rounded-lg py-1" inputmode="numeric" v-model="timeInMins"
+		<div class="grid grid-cols-3 gap-3 text-center m-4">
+			<ion-label>{{ t('pallets.start') }}
+			<TextInput id="time" class="mt-0.5 rounded-lg " size="md" type="time" v-model="fromTime" />
+			</ion-label>
+			<ion-label>{{ t('pallets.minute') }}
+			<Input class="mt-0.5 rounded-lg h-[2rem] max-sm:h-[2.12rem]" inputmode="numeric" v-model="timeInMins"
 			  style="outline: none; padding-left: 1rem; border: solid 1px grey;" />
+			</ion-label>
+			<ion-label>{{ t('pallets.finished') }}
+			<TextInput id="time" class="mt-0.5 rounded-lg " size="md" type="time" v-model="toTime" />
+			</ion-label>
+
+		</div>
+		<div class="m-4 flex flex-col">
 			<ion-checkbox class="py-1" label-placement="end" v-model="isHold">{{ t('pallets.hold') }}</ion-checkbox>
 			<ion-textarea class="rounded-lg py-1 h-20 mb-2" :label="t('pallets.reason')" fill="outline" v-if="isHold"
 			  label-placement="stacked" v-model="holdReason">
@@ -172,7 +179,8 @@ const isHold = ref(false);
 const holdReason = ref("");
 const isFull = ref(false);
 const fromTime = ref("");
-const timeInMins = ref(0);
+const timeInMins = ref('');
+const toTime = ref("");
 const palletName = ref<string>("");
 const size = ref<number>(0)
 const tableHtml = ref(false);
@@ -240,7 +248,8 @@ const updateSelectedCodes = async (payload: {
 				spoil: Number(inputValues.spoil),
 				leak: Number(inputValues.leak),
 				pallet_time: fromTime.value,
-				pallet_min: timeInMins.value
+				pallet_min: timeInMins.value,
+				pallet_to_time: toTime.value
 			} : null;
 			}).filter(Boolean);
 			console.log("Basket Data :", basketsData)
@@ -392,6 +401,7 @@ const saveData = async () => {
 		basketToPalletized.value.forEach((bk:any) => {
 			bk.pallet_time = fromTime.value;
 			bk.pallet_min = timeInMins.value;
+			bk.pallet_to_time = toTime.value;
 		});
 	}
 	const args = {
@@ -460,6 +470,54 @@ const closePopover = () => {
   document.querySelectorAll('ion-popover').forEach((popover) => popover.dismiss());
 };
 
+//time calculate
+const timeCalculate = (): void => {
+  if (!fromTime.value || !timeInMins.value) {
+    toTime.value = ''; 
+    return;
+  }
+  const [hours, minutes] = fromTime.value.split(':').map(Number);
+  if (isNaN(hours) || isNaN(minutes)) {
+    toTime.value = '';
+    return;
+  }
+  const startDateTime = new Date();
+  startDateTime.setHours(hours);
+  startDateTime.setMinutes(minutes);
+  startDateTime.setMinutes(startDateTime.getMinutes() + parseInt(timeInMins.value));
+
+  const endHours = startDateTime.getHours().toString().padStart(2, '0');
+  const endMinutes = startDateTime.getMinutes().toString().padStart(2, '0');
+
+  toTime.value = `${endHours}:${endMinutes}`;
+};
+const calcMinutes = (): void => {
+  if (!fromTime.value || !toTime.value) {
+    timeInMins.value = "";
+    return;
+  }
+  const [startH, startM] = fromTime.value.split(":").map(Number);
+  const [endH, endM] = toTime.value.split(":").map(Number);
+
+  if ([startH, startM, endH, endM].some(isNaN)) {
+    timeInMins.value = "";
+    return;
+  }
+
+  const start = new Date();
+  start.setHours(startH, startM, 0, 0);
+  const end = new Date();
+  end.setHours(endH, endM, 0, 0);
+
+  if (end < start) {
+    end.setDate(end.getDate() + 1);
+  }
+
+  const diff = (end.getTime() - start.getTime()) / 60000;
+  timeInMins.value = diff.toString();
+};
+  watch([fromTime, toTime], calcMinutes);
+  watch([timeInMins, timeInMins], timeCalculate);
 //pagination
 const paginatedPallet = computed(() => {
   if (!displayPallet.value?.palletized_products) return [];
@@ -590,7 +648,8 @@ const clearData = () => {
   holdReason.value = "";
   isFull.value = false;
   fromTime.value = "";
-  timeInMins.value = 0;
+  timeInMins.value = '';
+  toTime.value = "";
   palletName.value = "";
   tableHtml.value = false;
 }
@@ -618,6 +677,9 @@ ion-checkbox::part(container) {
 .table{
 	margin: 16px;
 	width: 90dvw;
+}
+.custom {
+	border: solid 1px ;
 }
 .ion-palette-dark ion-checkbox::part(container) {
   border: 1px solid var(--ion-color-dark-tint);
