@@ -28,67 +28,67 @@ export default defineConfig({
 						src: "/assets/icon/corn-icon-64.png",
 						sizes: "64x64",
 						type: "image/png",
-						purpose: "any"
+						purpose: "maskable"
 					},
 					{
 						src:"/assets/icon/corn-icon-72.png",
 						sizes: "72x72",
 						type: "image/png",
-						purpose: "any"
+						purpose: "maskable"
 					},
 					{
 						src: "/assets/icon/corn-icon-96.png",
 						sizes: "96x96",
 						type: "image/png",
-						purpose: "any"
+						purpose: "maskable"
 					},
 					{
 						src: "/assets/icon/corn-icon-144.png",
 						sizes: "144x144",
 						type: "image/png",
-						purpose: "any"
+						purpose: "maskable"
 					},
 					{
 						src: "/assets/icon/corn-icon-152.png",
 						sizes: "152x152",
 						type: "image/png",
-						purpose: "any"
+						purpose: "maskable"
 					},
 					{
 						src: "/assets/icon/corn-icon-167.png",
 						sizes: "167x167",
 						type: "image/png",
-						purpose: " any"
+						purpose: "maskable"
 					},
 					{
 						src: "/assets/icon/corn-icon-180.png",
 						sizes: "180x180",
 						type: "image/png",
-						purpose: "any"
+						purpose: "maskable"
 					},
 					{
 						src: "/assets/icon/corn-icon-192.png",
 						sizes: "192x192",
 						type: "image/png",
-						purpose: "any"
+						purpose: "maskable"
 					},
 					{
 						src: "/assets/icon/corn-icon-256.png",
 						sizes: "256x256",
 						type: "image/png",
-						purpose: "any"
+						purpose: "maskable"
 					},
 					{
 						src: "/assets/icon/corn-icon-512.png",
 						sizes: "512x512",
 						type: "image/png",
-						purpose: "any"
+						purpose: "maskable"
 					},
 					{
 						src: "/assets/icon/corn-icon-1024.png",
 						sizes: "1024x1024",
 						type: "image/png",
-						purpose: "any"
+						purpose: "maskable"
 					},
 				],
 				screenshots: [
