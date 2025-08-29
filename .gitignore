@@ -11,3 +11,5 @@ dma/public/frontend/assets/*.css
 dma/public/frontend/assets/*.js
 dma/public/frontend/*.js
 __pycache__
+frontend/auto-imports.d.ts
+/frontend/components.d.ts
