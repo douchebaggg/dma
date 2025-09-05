@@ -41,7 +41,7 @@
 					>
 						<ion-select-option v-for="ster in sterilizerList" 
 						:key="ster.id "
-						:value="`${ster.name}/${roundSelector[0].name}`">
+						:value="`${ster.name}/${roundSelector.value}`">
 						{{ ster.name }}
 						</ion-select-option>
 					</ion-select>
@@ -50,8 +50,9 @@
 					:cancel-text="t('button.Cancel')"
 					:placeholder="t('sterilizer.round')" 
 					:interface-options="customActionSheet"
+					v-model="roundSelector"
 					fill="outline">
-						<ion-select-option v-for="round in roundSelector" 
+					<ion-select-option v-for="round in roundList" 
 						:key="round.id "
 						:value="round.name">
 						{{ round.name }}
@@ -79,16 +80,23 @@
 		</div>
 		<div class="flex justify-center space-x-5 ion-margin-top">
 			<Button 
-			  class="rounded-xl text-white hover:bg-[#383838] bg-[#171717] w-20"
+			  class="rounded-lg text-white hover:bg-[#383838] bg-[#171717] w-20"
               :variant="'solid'"
 			  @click="saveData"
               size="md"> {{ t("button.Save") }}</Button>
 
 			<Button
-			class="rounded-xl text-white hover:bg-red-800 bg-red-700 w-20"
+			class="rounded-lg text-white hover:bg-red-800 bg-red-700 w-20"
 			:variant="'solid'"
+			@click="clearData"
 			size="md" >{{ t("button.Cancel") }}</Button>
 		</div>
+		<ion-modal :is-open="showModal" backdrop-dismiss="false" animated="true">
+			<LoadingToSuccess 
+			v-model="showModal"
+			@confirmed="clearData"
+			ref="loadingSuccessRef" />
+		</ion-modal>
 
 		</ion-card>
 		</ion-content>
@@ -106,6 +114,10 @@ import { useRouter } from "vue-router"
 import { useI18n } from "vue-i18n"
 import AppTypeahead from "@/components/AppTypeahead.vue";
 import { frappeSDK } from "@/utils/frappeSDK";
+import LoadingToSuccess from "@/components/LoadingToSuccess.vue";
+const showModal = ref(false)
+const loadingSuccessRef = ref<InstanceType<typeof LoadingToSuccess> | null>(null)
+let isSave = false
 const { t } = useI18n()
 const router = useRouter()
 const { db, call } = frappeSDK()
@@ -119,11 +131,13 @@ const doctypeSelector = ref<any>(workOrderList.value[0] || "|")
 const sterilizerList = ref<any>([])
 const sterilizerSelector = ref<any>(sterilizerList.value[0])
 const sterilizerUpdate = ref<any>([])
+const roundList = ref<any>([])
+const roundSelector = ref(roundList.value[0])
 const modal = ref();
 const selectCode = ref<string[]>([]);
 const selectCodeText = computed(() => `${selectCode.value.length} ${t('labels.items')}`);
 
-const roundSelector = [
+roundList.value = [
 	{ id: 1, name: "1" },
 	{ id: 2, name: "2" },
 	{ id: 3, name: "3" },
@@ -350,13 +364,23 @@ const saveData = async () => {
 			baskets: baskets_table,
 		});
 		}
-		displaySterilizer.value = updateBaskets.value
-
+		isSave = true
+		if(isSave){
+			showModal.value = true
+          	await new Promise((resolve) => setTimeout(resolve, 50))
+          	loadingSuccessRef.value?.showAnimation()
+			setTimeout(() => {
+				displaySterilizer.value = updateBaskets.value
+			}, 1200);
+		}
 	} catch (error) {
 		console.error("Error saving data:", error);
 	}
 }
-
+const clearData = () => {
+	sterilizerSelector.value = sterilizerList.value[0]
+	roundSelector.value = roundList.value[0]
+}
 const getDate = computed(() => {
   if (!dateValue.value || dateValue.value.length === 0) {
     const today = new Date().toISOString().split("T")[0];

@@ -91,6 +91,12 @@
 			@click="clearData()"
 			size="md" >{{ t("button.Cancel") }}</Button>
 		</div>
+		<ion-modal :is-open="showModal" backdrop-dismiss="false" animated="true">
+			<LoadingToSuccess 
+			v-model="showModal"
+			@confirmed="clearData"
+			ref="loadingSuccessRef" />
+		</ion-modal>
 		</ion-card>
 		<div class="ion-text-center " v-if="displayDoctype">
 			<h3>{{ t("labels.update_success") }}</h3>
@@ -162,6 +168,10 @@ import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import { frappeSDK } from "@/utils/frappeSDK";
 import { TextInput } from 'frappe-ui/src/components/TextInput'
+import LoadingToSuccess from "@/components/LoadingToSuccess.vue";
+const showModal = ref(false)
+const loadingSuccessRef = ref<InstanceType<typeof LoadingToSuccess> | null>(null)
+let isSave = false
 const { t } = useI18n();
 const startTime = ref<string>('')
 const timeInMins = ref<number | any>('')
@@ -186,42 +196,15 @@ const rowsPerPage = 5;
 const currentPage = ref(1);
 
 manufacturerList.value = [
-	{
-		name: 1,
-		value: '011'
-	},
-	{
-		name: 2,
-		value: '012'
-	},
-	{
-		name: 3,
-		value: '013'
-	},
-	{
-		name: 4,
-		value: '014'
-	},
-		{
-		name: 5,
-		value: '015'
-	},
-		{
-		name: 6,
-		value: '016'
-	},
-		{
-		name: 7,
-		value: '017'
-	},
-		{
-		name: 8,
-		value: '018'
-	},
-		{
-		name: 9,
-		value: '019'
-	},
+	{name: 1,value: '011'},
+	{name: 2,value: '012'},
+	{name: 3,value: '013'},
+	{name: 4,value: '014'},
+	{name: 5,value: '015'},
+	{name: 6,value: '016'},
+	{name: 7,value: '017'},
+	{name: 8,value: '018'},
+	{name: 9,value: '019'},
 	
 ]
 
@@ -355,11 +338,16 @@ const saveData = async () => {
     const doc = await db.updateDoc("Basket Entry", docNameFromSelector, {
 		baskets: baskets_table,
     });
-
-    displayDoctype.value = doc; // Set response to be displayed
-	currentPage.value = 1;
-	console.log("docname is ", docNameFromSelector)
-	console.log(displayDoctype.value)
+	isSave = true
+	if(isSave){
+		showModal.value = true
+        await new Promise((resolve) => setTimeout(resolve, 50))
+        loadingSuccessRef.value?.showAnimation()
+		setTimeout(() => {
+			displayDoctype.value = 1; // Set response to be displayed
+			currentPage.value = 1;
+		}, 1200);
+	}
   } catch (error) {
     console.error(error);
   }

@@ -70,33 +70,6 @@
 				</ion-modal>
 		</div>	
 	  <div v-if="tableHtml" class=" flex justify-center" v-html="displayPallet.palletized_products.at(-1).baskets_html"></div>
-	  <div class="flex justify-center space-x-5 ion-margin-top ion-padding-bottom" v-if="pageButton">
-			<Button 
-				class="rounded-lg text-white bg-[#171717] w-20 h-4"
-				:variant="'solid'"
-				:disabled="currentPage === 1"
-				@click="firstPage"
-				size="sm"> {{ t("pagination.first") }} </Button>
-			<Button 
-				class="rounded-lg text-white bg-[#171717] w-12 h-4"
-				:variant="'solid'"
-				:disabled="currentPage === 1"
-				@click="previousPage"
-				size="sm"> < </Button>
-			<span class="">{{ t("pagination.page") }} {{ currentPage }} / {{ totalPages }}</span>
-			<Button 
-				class="rounded-lg text-white bg-[#171717] w-12 h-4"
-				:variant="'solid'"
-				:disabled="currentPage === totalPages"
-				@click="nextPage"
-				size="sm"> > </Button>
-			<Button 
-				class="rounded-lg text-white bg-[#171717] w-20 h-4"
-				:variant="'solid'"
-				:disabled="currentPage === totalPages"
-				@click="lastPage"
-				size="sm"> {{ t("pagination.last") }} </Button>
-		</div>
 		<div class="grid grid-cols-3 gap-3 text-center m-4">
 			<ion-label>{{ t('pallets.start') }}
 			<TextInput id="time" class="mt-0.5 rounded-lg " size="md" type="time" v-model="fromTime" />
@@ -136,7 +109,12 @@
 			@click="clearData"
 			size="md" >{{ t("button.Cancel") }}</Button>
 		</div>
-
+		<ion-modal :is-open="showModal" backdrop-dismiss="false" animated="true">
+			<LoadingToSuccess 
+			v-model="showModal"
+			@confirmed="clearData"
+			ref="loadingSuccessRef" />
+		</ion-modal>
 		</ion-card>
 
 		</ion-content>
@@ -149,7 +127,7 @@ import { IonPage,IonContent,IonHeader,IonToolbar,IonBackButton,
 IonButtons,IonTitle,IonButton,IonTextarea,IonInput,IonLabel,
 IonDatetime, IonDatetimeButton,
 IonSelect,IonSelectOption,IonCheckbox,
-IonModal,IonGrid,IonRow,IonCol,toastController,IonCard, alertController
+IonModal,toastController,IonCard,
 } from "@ionic/vue";
 import { ref, watch, onMounted, computed} from "vue";
 import { useRouter } from "vue-router";
@@ -158,6 +136,10 @@ import { frappeSDK } from "@/utils/frappeSDK";
 import AppTypeahead from "@/components/AppTypeaheadCustom.vue";
 import { palletPrint } from "@/utils/PalletPrint";
 import { TextInput } from "frappe-ui/src/components/TextInput";
+import LoadingToSuccess from "@/components/LoadingToSuccess.vue";
+const showModal = ref(false)
+const loadingSuccessRef = ref<InstanceType<typeof LoadingToSuccess> | null>(null)
+let isSave = false
 const router = useRouter();
 const { t } = useI18n();
 const { db, call } = frappeSDK();
@@ -173,7 +155,6 @@ const basketToPalletized = ref<any>([]);
 const selectCodeText = computed(() => `${selectCode.value.length} ${t('labels.items')}`);
 const modal = ref();
 const selectCode = ref<string[]>([]);
-const rowsPerPage = 5;
 const currentPage = ref(1);
 const isHold = ref(false);
 const holdReason = ref("");
@@ -184,7 +165,6 @@ const toTime = ref("");
 const palletName = ref<string>("");
 const size = ref<number>(0)
 const tableHtml = ref(false);
-const pageButton = ref(false);
 const storedInputs = ref<{
   [key: string]: { one_day: number; incubate: number; IT: number; example: number; spoil: number; leak: number };
 }>({});
@@ -415,14 +395,22 @@ const saveData = async () => {
 	console.log("Response from set_required_products", response)
 	//get full doctype
 	const getCurrentPallet = await db.getDoc('Palletizing Entry', palletizingEntry.name);
-	displayPallet.value = getCurrentPallet
-	if(displayPallet){
-		tableHtml.value = true
-		console.log(tableHtml.value)
+	isSave = true
+	if(isSave){
+		showModal.value = true
+        await new Promise((resolve) => setTimeout(resolve, 50))
+        loadingSuccessRef.value?.showAnimation()
+		setTimeout(() => {
+			displayPallet.value = getCurrentPallet
+			if(displayPallet){
+				tableHtml.value = true
+				console.log(tableHtml.value)
+			}
+		}, 1200);
 	}
 	await fetchLatestPallet();
 	await selectDoctype(); 
-	currentPage.value = 1;
+
 	} catch (error:any) {
 		presentToast(error.exception || error.message);
 		console.error("Error palletized :", error.message, error);
@@ -518,33 +506,6 @@ const calcMinutes = (): void => {
 };
   watch([fromTime, toTime], calcMinutes);
   watch([timeInMins, timeInMins], timeCalculate);
-//pagination
-const paginatedPallet = computed(() => {
-  if (!displayPallet.value?.palletized_products) return [];
-  const start = (currentPage.value - 1) * rowsPerPage;
-  const end = start + rowsPerPage;
-  return displayPallet.value.palletized_products.slice(start, end);
-});
-const totalPages = computed(() => {
-  return Math.ceil(displayPallet.value?.palletized_products?.length / rowsPerPage);
-});
-const nextPage = () => {
-  if (currentPage.value < totalPages.value) {
-	currentPage.value++;
-  }
-};
-const previousPage = () => {
-  if (currentPage.value > 1) {
-	currentPage.value--;
-  }
-};
-
-const firstPage = () => {
-  currentPage.value = 1;
-};
-const lastPage = () => {
-  currentPage.value = totalPages.value;
-};
 
 const handleInputChange = (payload: {
   selected: string[];
@@ -667,7 +628,7 @@ ion-checkbox::part(container) {
 	text-align: center;
 }
 .alert-button.sc-ion-alert-md {
-	border-radius: 12px;
+	border-radius: 8px;
 	background-color: #0ea5e9;
 	color: white;
 }
