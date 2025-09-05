@@ -122,7 +122,7 @@
 	import { FrappeIcons } from "@/components/icons"
 	import { userResourceInjectionKey } from "@/typing/InjectionKeys"
 	import { FeatherIcon} from "frappe-ui"
-	import { setDefaultLanguage } from "@/locales/devices"
+	import { setDefaultLanguage } from "@/utils/devices"
 	import { updateThemeColor,setDefaultTheme } from "@/utils/themeHandle"
 	onMounted(() => {
 	setDefaultLanguage()

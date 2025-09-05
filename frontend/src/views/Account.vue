@@ -86,7 +86,7 @@ import {
 	userResourceInjectionKey,
 } from "@/typing/InjectionKeys"
 import { userResource } from "../data/user"
-import { setDefaultLanguage } from "@/locales/devices"
+import { setDefaultLanguage } from "@/utils/devices"
 import {
 	IonPage,
 	IonHeader,
