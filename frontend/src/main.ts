@@ -35,7 +35,15 @@ import {
 
 import { createI18n } from "vue-i18n"
 // Import messages from yaml files
-import messages from "@intlify/unplugin-vue-i18n/messages"
+
+const messages = Object.fromEntries(
+  Object.entries(
+    import.meta.glob("./locales/*.{json,yml,yaml}", { eager: true })
+  ).map(([key, value]) => {
+    const locale = key.split("/").pop()?.replace(/\.(json|ya?ml)$/, "")
+    return [locale, (value as any).default ?? value]
+  })
+)
 const i18n = createI18n({
 	legacy: false,
 	locale: "en", // TODO: fetch from preferences later
