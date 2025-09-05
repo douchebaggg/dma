@@ -16,65 +16,88 @@
           <!-- Date & Time -->
           <div class="grid grid-cols-2 gap-4">
           <div>
-            <ion-label class="">{{ t('seam.date') }}
+            <ion-label class="text-sm">{{ t('seam.date') }}
             <ion-datetime-button class="mt-1.5" datetime="date" v-model="dateButton"></ion-datetime-button>
             <ion-modal :keep-contents-mounted="true">
-              <ion-datetime :locale="getLocal()" presentation="date" id="date" v-model="form.date" @ionChange="handleTimeChange"></ion-datetime>
+              <ion-datetime :locale="getLocal()" presentation="date" id="date" v-model="dateValue" @ionChange="handleTimeChange"></ion-datetime>
             </ion-modal>
             </ion-label>
               <p v-if="errors.date" class="text-red-500 text-sm mt-2">{{ errors.date }}</p>
             </div>
             <div>
-            <ion-label>{{ t('seam.time') }}
+            <ion-label class="text-sm">{{ t('seam.time') }}
             <TextInput id="time" type="time" v-model="form.time" size="md" :class="inputClass(errors.time)" :label="t('seam.time')" /> </ion-label>
               <p v-if="errors.time" class="text-red-500 text-sm mt-2">{{ errors.time }}</p>
             </div>
           </div>
           <!-- Can Code & Number -->
-          <div class="mt-4 grid grid-cols-2 md:grid-cols-2 gap-4">
+          <div class="mt-4 grid grid-cols-2 max-sm:grid-cols-2 gap-4">
             <div>
-              <Input id="canCode" type="text" v-model="form.canCode" :class="inputClass(errors.canCode)" :label="t('seam.can_code')"
-              style="outline: none; padding-left: 1rem; border: solid 1px grey;"
-              />
+              <span class="mb-2 block text-sm leading-4">{{ t('seam.can_code') }}</span>
+              <Select id="select" v-model="canCodeSelect" size="md" :class="inputClass(errors.canCode)"
+              :options="processList" /> 
               <p v-if="errors.canCode" class="text-red-500 text-sm mt-2">{{ errors.canCode }}</p>
             </div>
 
             <div>
-              <Input id="number" type="text" v-model="form.number" :class="inputClass(errors.number)" :label="t('seam.number')"
-              style="outline: none; padding-left: 1rem; border: solid 1px grey;"
-              />
+               <span class="mb-2 block text-sm leading-4">{{ t('seam.number') }}</span>
+              <Select id="select" type="text" v-model="selectSeamNo" size="md" :class="inputClass(errors.number)"
+              :options="seamerList" />
               <p v-if="errors.number" class="text-red-500 text-sm mt-2">{{ errors.number }}</p>
             </div>
-          <!-- Supplier & Batch No -->
-          <div>
-              <Input id="supplier" type="text" v-model="form.supplier" :class="inputClass(errors.supplier)" :label="t('seam.supplier')"
-              style="outline: none; padding-left: 1rem; border: solid 1px grey;"
-              />
-              <p v-if="errors.supplier" class="text-red-500 text-sm mt-2">{{ errors.supplier }}</p>
-            </div>
-            <div>
+
+          </div>
+         <div class="mt-3">
               <Input id="batchNo" type="text" v-model="form.batchNo" :class="inputClass(null)" :label="t('seam.batch_no')"
               style="outline: none; padding-left: 1rem; border: solid 1px grey;"
               />
-            </div>
           </div>
-
-        <!-- Manufacturer Select -->
-          <div class="py-4">
-            <label for="manufacturer" class="text-sm mt-2 font-medium block">
-              
-            </label>
+                  <!-- seamSpecification Select -->
+          <div class="py-3">
             <ion-select
-              id="manufacturer"
+              id="seamSpecification"
               v-model="seamSpec"
               class="w-full"
-              interface="popover" :placeholder="t('seam.select_manufacturer')" fill="outline" >
+              interface="popover" :placeholder="t('seam.select_seam')" fill="outline" >
               <ion-select-option v-for="item in seamSpecList" :key="item.idx" :value="item.name">
                 {{ item.name }}
               </ion-select-option>
             </ion-select>
           </div>
+          <div>
+              <Input id="supplier" type="text" v-model="form.supplier" :class="inputClass(errors.supplier)" :label="t('seam.supplier')"
+              style="outline: none; padding-left: 1rem; border: solid 1px grey;"
+              />
+              <p v-if="errors.supplier" class="text-red-500 text-sm mt-2">{{ errors.supplier }}</p>
+          </div>
+        <!-- Can size DIA & height TB TE-->  
+          <div class="mt-3 grid grid-cols-4 gap-3 max-sm:grid-cols-2">
+          <div>
+              <Input id="supplier" type="text" v-model="form.canSize" :class="inputClass(errors.supplier)" :label="t('seam.can_size')"
+              style="outline: none; padding-left: 1rem; border: solid 1px grey;"
+              />
+              <p v-if="errors.supplier" class="text-red-500 text-sm mt-2">{{ errors.supplier }}</p>
+          </div>
+          <div>
+              <Input id="batchNo" type="text" v-model="form.canDIA" :class="inputClass(null)" :label="t('seam.can_dia')"
+              style="outline: none; padding-left: 1rem; border: solid 1px grey;"
+              />
+          </div>
+          <div>
+              <Input id="supplier" type="text" v-model="form.tb" :class="inputClass(errors.supplier)" :label="t('seam.tb')"
+              style="outline: none; padding-left: 1rem; border: solid 1px grey;"
+              />
+              <p v-if="errors.supplier" class="text-red-500 text-sm mt-2">{{ errors.supplier }}</p>
+          </div>
+          <div>
+              <Input id="batchNo" type="text" v-model="form.te" :class="inputClass(null)" :label="t('seam.te')"
+              style="outline: none; padding-left: 1rem; border: solid 1px grey;"
+              />
+          </div>
+          </div>
+
           <!-- Measurement Fields -->
+           <h2 class="text-center">{{ t('seam.seam_enter') }}</h2>
           <div class=" grid grid-cols-4 gap-4 text-center max-sm:grid-cols-2">
             <div v-for="field in numericFields" :key="field.name">
               <!--<label :for="field.name" class="text-sm mt-2 font-medium block">{{ field.label }}</label>-->
@@ -121,17 +144,22 @@
           <!-- Buttons -->
           <div class="flex justify-center space-x-5 ion-margin-top">
             <Button 
-              class="rounded-lg  text-white hover:bg-[#383838] bg-[#171717] w-20"
+              class=" rounded-lg  text-white hover:bg-[#383838] bg-[#171717] w-20"
               :variant="'solid'"
-              @click="onSubmit"
+              type="submit"
               size="md"> {{ t("button.Save") }}</Button>
             <Button
-            class="rounded-lg text-white hover:bg-red-800 bg-red-700 w-20"
+            class=" rounded-lg text-white hover:bg-red-800 bg-red-700 w-20"
             :variant="'solid'"
             @click="onCancel"
             size="md" >{{ t("button.Cancel") }}</Button>
-		      </div>
-
+         </div>
+          <ion-modal :is-open="showModal" backdrop-dismiss="false" animated="true">
+            <LoadingToSuccess 
+            v-model="showModal"
+            @confirmed="clearNumericFields"  
+            ref="loadingSuccessRef" />
+          </ion-modal>
           <!-- Submitted Preview -->
           <transition name="fade" mode="out-in">
             <div v-if="submitted" class="mt-6 p-4 border rounded bg-green-50 text-green-700">
@@ -146,7 +174,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref, onMounted, watch } from 'vue'
+import { reactive, ref, onMounted, watch, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { IonPage, IonContent, IonToolbar, IonButtons, IonBackButton, 
 IonTitle, IonCard, IonHeader,IonLabel,
@@ -155,15 +183,38 @@ IonSelect,IonSelectOption,IonDatetime,IonDatetimeButton,IonTextarea,IonModal
 import { frappeSDK } from '@/utils/frappeSDK'
 import { useI18n } from 'vue-i18n'
 import { TextInput } from 'frappe-ui/src/components/TextInput'
+import Select from 'frappe-ui/src/components/Select/Select.vue'
+import { seamerList } from './seamerList'
+import LoadingToSuccess from "@/components/LoadingToSuccess.vue"
+
 const seamSpecList = ref<any>([])
 const seamSpec = ref(seamSpecList.value[0])
+const selectSeamNo = ref<string>('')
 const dateButton = ref<any>(null)
+const processList = ref<any>([])
+const canCodeSelect = ref(processList.value[0])
+const dateValue = ref<any>(null)
+let defaultQC = ref({})
+let checkDoubleSeamDoc = false
+let description = ''
+const showModal = ref(false)
+const loadingSuccessRef = ref<InstanceType<typeof LoadingToSuccess> | null>(null)
 const getCurrentTime = () => {
   const d = new Date();
   const hh = String(d.getHours()).padStart(2, "0");
   const mm = String(d.getMinutes()).padStart(2, "0");
   return `${hh}:${mm}`;
 }
+const getDate = computed(() => {
+	if(dateValue.value === undefined ){ 
+		const today = new Date().toISOString().split("T")[0];
+		return today;
+	}
+	else {
+		return dateValue.value ? dateValue.value.split("T")[0] : "";
+	}
+
+});
 const time = ref<any>(getCurrentTime())
 const router = useRouter()
 const { t } = useI18n()
@@ -171,15 +222,25 @@ const submitted = ref(false)
 const errors = reactive<any>({})
 const { db } = frappeSDK()
 
+
 // Form
 const form = reactive<any>({
-  date: new Date().toISOString().substring(0, 10),
+  get date() {
+    return getDate.value
+  },
+  set date(val: string) {
+    dateValue.value = val
+  },
   time: time,
-  canCode: '',
+  canCode: canCodeSelect.value,
   number: '',
   supplier: '',
   batchNo: '',
-  manufacturer: seamSpec.value,
+  seamSpecification: seamSpec.value,
+  canSize: '',
+  canDIA : '',
+  tb: null,
+  te: null,
   countersinkDepth: null,
   seamLength: null,
   seamThickness: null,
@@ -192,14 +253,14 @@ const form = reactive<any>({
   comment: '',
 })
 const numericFields = reactive<any[]>([
-  { name: 'countersinkDepth', label: t('seam.countersink_depth'), placeholder: '-', step: 0.01, min: 4.65, max: 5.00 },
-  { name: 'seamLength', label: t('seam.seam_length'), placeholder: '-', step: 0.01, min: 2.90, max: 5.20 },
-  { name: 'seamThickness', label: t('seam.seam_thickness'), placeholder: '-', step: 0.01, min: 1.05, max: 1.25 },
-  { name: 'bodyHook', label: t('seam.body_hook'), placeholder: '-', step: 0.01, min: 2.00, max: 2.50 },
-  { name: 'coverHook', label: t('seam.cover_hook'), placeholder: '-', step: 0.01, min: 1.85, max: 2.15 },
-  { name: 'actualOverlap', label: t('seam.actual_overlap'), placeholder: '-', step: 0.01, min: 1.02 },
-  { name: 'percentOverlap', label: `% ${t('seam.percent_overlap')}`, placeholder: '-', step: 0.1, min: 45 },
-  { name: 'percentBodyHookButting', label: `% ${t('seam.percent_body_hook_butting')}`, placeholder: '-', step: 0.1, min: 70 },
+  { name: 'countersinkDepth', label: t('seam.countersink_depth'), placeholder: '-',},
+  { name: 'seamLength', label: t('seam.seam_length'), placeholder: '-', },
+  { name: 'seamThickness', label: t('seam.seam_thickness'), placeholder: '-',},
+  { name: 'bodyHook', label: t('seam.body_hook'), placeholder: '-', },
+  { name: 'coverHook', label: t('seam.cover_hook'), placeholder: '-', },
+  { name: 'actualOverlap', label: t('seam.actual_overlap'), placeholder: '-',},
+  { name: 'percentOverlap', label: `% ${t('seam.percent_overlap')}`, placeholder: '-', },
+  { name: 'percentBodyHookButting', label: `% ${t('seam.percent_body_hook_butting')}`, placeholder: '-',},
 ])
 
 // Input Class
@@ -207,6 +268,22 @@ const inputClass = (error: any) =>
   `w-full rounded-lg py-1 focus:outline-none focus:ring-2 ${
     error ? '' : 'border-gray-300 focus:ring-indigo-500'
   }`
+
+// Get Process order
+const getProcessOrder = async () => {
+  	const getBasket = await db.getDocList('Process Order',{
+		fields: ['name','process_name', 'dsi', 'qty','material_transferred_for_manufacturing','produced_qty'],
+		limit: 10, 
+    	filters: [['custom_actual_start_date','=', getDate.value],['status','=','In Process']],
+		orderBy: { field: 'modified',order: 'desc',} 
+  })
+  processList.value = getBasket.map(item => ({
+    ...item,
+    label: item.process_name, 
+    value: `${item.name}|${item.process_name}|${item.dsi}`
+  }))
+  //console.log(processList.value)
+}
 
 // Get Seam Spec Doctype  
 const getSeamSpec = async () => {
@@ -216,12 +293,12 @@ const getSeamSpec = async () => {
     limit: 50, 
   })
   seamSpecList.value = allSeamSpec
-  console.log(allSeamSpec)
+  //console.log(seamSpecList.value)
 }
 
 // Submit
 const  onSubmit = async () => {
-  errors.date = !form.date ? t('seam.required_field') : ''
+  /*errors.date = !form.date ? t('seam.required_field') : ''
   errors.time = !form.time ? t('seam.required_field') : ''
   errors.canCode = !form.canCode ? t('seam.required_field') : ''
   errors.number = !form.number ? t('seam.required_field') : ''
@@ -240,13 +317,36 @@ const  onSubmit = async () => {
       errors[field.name] = ''
     }
   })
-  if (Object.values(errors).some((e) => e)) return
-  submitted.value = true
-  /*try {
-    const doc = await db.createDoc('Double Seam Can Inspection', {
-      can_code: form.canCode,
+  
+  if (Object.values(errors).some((e) => e)) return */
+  try {
+    //split value from canCode to get PO docname, can code, double seam docname
+    const [processDocName,canCode,dsiName] = form.canCode.split("|"); 
+    const processItem = processList.value.find((p:any) => p.process_name.trim() === canCode.trim());
+    
+    if(checkDoubleSeamDoc === true) {
+      const doc = await db.createDoc('Double Seam Can Inspection', {
+      //Main Field
+      can_code: canCode,
       date: form.date,
       seamer_no: form.number,
+      seam_specification: form.seamSpecification,
+      size_of_can: form.canSize,
+      dia_and_height_of_can: form.canDIA,
+      tb: form.tb,
+      te: form.te,
+      //Seam Workder Table
+      work_order: [{
+        process_order: processDocName,
+        item: canCode,
+        description: description,
+        qty: processItem?.qty,
+        material_transferred_for_manufacturing: processItem?.material_transferred_for_manufacturing,
+        produced_qty: processItem?.produced_qty
+      }],
+      //Default Quality Control Table
+      default_qc: [defaultQC.value],
+      // QC Table
       quality_control_report: [
         {
           doctype: 'Quality Control Report',
@@ -254,12 +354,31 @@ const  onSubmit = async () => {
         },
       ],
     })
-    console.log('Create doctype success', doc)
+    console.log('Create doctype success', doc.name)
+
+    const updatePO = await db.updateDoc('Process Order',processDocName,{
+      dsi: doc.name
+    });
+    console.log("Process Order Updated",updatePO)
+    } else {
+      const getDsi = await db.getDoc('Double Seam Can Inspection',dsiName)
+      const qcTable = getDsi.quality_control_report || []
+      qcTable.push({
+        countersink_depth_cd: form.countersinkDepth,
+      })
+      const updateDsi = await db.updateDoc('Double Seam Can Inspection',dsiName,{
+        quality_control_report: qcTable
+      })
+      if(updateDsi){
+        //show modal
+          showModal.value = true
+          await new Promise((resolve) => setTimeout(resolve, 50))
+          loadingSuccessRef.value?.showAnimation()
+      }
+    }
   } catch (error) {
     console.error('Cannot create doctype', error)
-  }*/
-
-  //alert(t('seam.form_submitted'))
+  }
 }
 // Cancel
 const onCancel = () =>  {
@@ -283,8 +402,9 @@ const parseRange = (rangeStr: string | null, isPercent = false) => {
      if (rangeStr.includes("-")) {
     const [minStr, maxStr] = rangeStr.split("-").map(s => s.trim())
     return {
-      min: Number(minStr),
-      max: Number(maxStr),
+      min: parseFloat(minStr),
+      max: parseFloat(maxStr),
+      step: 0.01,
       placeholder: `${minStr} - ${maxStr}`
     }
   }
@@ -294,6 +414,7 @@ const parseRange = (rangeStr: string | null, isPercent = false) => {
     placeholder: isPercent ? `≥ ${rangeStr}%` : `≥ ${rangeStr}`
   }
 }
+
 const handleTimeChange = (ev:any) => {
   const value = ev.detail.value; 
   if (value) {
@@ -305,17 +426,51 @@ const handleTimeChange = (ev:any) => {
     time.value = null;
   }
 }
+const clearNumericFields = () => {
+  numericFields.forEach(({ name }) => {
+    if (name in form) {
+      form[name] = null
+    }
+  })
+}
 //on mounted
 onMounted(() => {
   getSeamSpec()
 });
+//watch date selector 
+watch(dateValue, (newDate) => {
+  if (newDate) {
+    getProcessOrder()
+    getLocal()
+  }
+});
+watch(canCodeSelect, async (newValue) => {
+  const [processDocname, processName] = newValue.split("|")
+  const getItem = await db.getDoc('Item', processName)
+  const getDsi = await db.getDoc('Process Order',processDocname)
+  description = getItem.description
+  form.canCode = newValue
+  if(!getDsi.dsi) {
+    checkDoubleSeamDoc = true
+    console.log(checkDoubleSeamDoc,"dsi field is :", getDsi.dsi, "need to update" )
+  } else {
+    console.log(form.canCode)
+  }
+})
+watch(selectSeamNo, (val) => {
+  form.number = val
+  console.log("Seam No is",form.number)
+})
 // watch to change placeholder and min,max of number
 watch(seamSpec, (newValue) => {
-  form.manufacturer = newValue
-
+  form.seamSpecification = newValue
   const selectedSpec = seamSpecList.value.find((item:any) => item.name === newValue)
   if (!selectedSpec) return
-
+  form.tb = selectedSpec.tb
+  form.te = selectedSpec.te
+  form.canSize = selectedSpec.can_size_oz
+  form.canDIA = selectedSpec.can_size
+  defaultQC.value = selectedSpec
   numericFields.splice(0, numericFields.length,
     {
       name: 'countersinkDepth',
