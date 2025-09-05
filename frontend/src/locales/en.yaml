@@ -28,6 +28,8 @@ labels:
   buy: Buying
   sale: Selling
   hash_basket_no: Basket#
+  save_sucess: Save Success
+  save_sub_header: The document has been saved
   
 greeting:
   hi: Hi
@@ -88,6 +90,7 @@ pallets:
   product_name: Product Name
   hash_pallet: Pallet
   start: Start
+  finished: Finished
   minute: Minute
   select_code: Select Basket Code
   pallet_qty: Palletized Qty
@@ -124,3 +127,34 @@ pagination:
   to: to
   entries: entries
   no_entries_found: No entries found
+  
+seam:
+  seam_entry: Seam Entry
+  seam_enter: Fill the values for SEAM
+  date: Date
+  time: Time
+  can_code: Product Code
+  number: Seamer Number
+  supplier: Supplier
+  batch_no: Batch No.
+  wrinkle_rating: Wrinkle Rating
+  comment: Comment
+  save: Save
+  cancel: Cancel
+  form_submitted: Form Submitted
+  required_field: This field is required
+  countersink_depth: Countersink Depth (mm)
+  seam_length: Seam Length (mm)
+  seam_thickness: Seam Thickness (mm)
+  body_hook: Body Hook (mm)
+  cover_hook: Cover Hook (mm)
+  actual_overlap: Actual Overlap (mm)
+  percent_overlap: Overlap
+  percent_body_hook_butting: Body Hook Butting
+  manufacturer: "Manufacturer"
+  select_seam: "Select a Seam Specification"
+  can_size: Can Size
+  can_dia: DIA & Height of Can
+  tb: TB
+  te: TE
+

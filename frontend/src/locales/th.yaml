@@ -28,6 +28,8 @@ labels:
   buy: การซื้อ
   sale: การขาย
   hash_basket_no: ตะแกรง#
+  save_sucess: บันทึกสำเร็จ
+  save_sub_header: ข้อมูลถูกบันทึกเรียบร้อยแล้ว
 
 greeting:
   hi: สวัสดี
@@ -88,6 +90,7 @@ pallets:
   product_name: ชื่อสินค้า
   hash_pallet: พาเลต
   start: เริ่ม
+  finished: สิ้นสุด
   minute: นาที
   select_code: เลือกเลขที่ตะแกรง
   pallet_qty: ขึ้นพาเลต
@@ -122,3 +125,33 @@ pagination:
   showing: แสดง
   to: ถึง
   entries: รายการ
+  
+seam: 
+  seam_entry: ข้อมูลการซีม
+  seam_enter: กรอกค่าสำหรับ SEAM
+  date: วันที่
+  time: เวลา
+  can_code: Product Code
+  number: หมายเลขเครื่อง
+  supplier: ผู้จัดจำหน่าย
+  batch_no: Batch No.
+  wrinkle_rating: กรุณาระบุ P หรือ N เท่านั้น
+  comment: ความคิดเห็น
+  save: บันทึก
+  cancel: ยกเลิก
+  form_submitted: ฟอร์มถูกส่งเรียบร้อยแล้ว
+  required_field: ฟิลด์นี้เป็นข้อมูลที่ต้องการ
+  countersink_depth: ค่า CD (มม.)
+  seam_length: ค่า SL (มม.)
+  seam_thickness: ค่า ST (มม.)
+  body_hook: ค่า BH (มม.)
+  cover_hook: ค่า CH (มม.)
+  actual_overlap: ค่า Actual Overlap (มม.)
+  percent_overlap: ของ Overlap 
+  percent_body_hook_butting: ของการติด Body Hook
+  manufacturer: ผู้ผลิต
+  select_seam: เลือก Seam Specification
+  can_size: ขนาดของกระป๋อง
+  can_dia: ค่า DIA และ Height
+  tb: ค่า TB
+  te: ค่า TE
