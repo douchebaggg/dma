@@ -9,7 +9,7 @@
           <ion-button color="secondary" @click="confirmChanges()">{{ t('button.Ok') }}</ion-button>
         </ion-buttons>
       </ion-toolbar>
-        <ion-searchbar class="custom mt-2 mb-2" @ionInput="searchbarInput($event)"></ion-searchbar>
+        <ion-searchbar class="custom-search mt-2 mb-2" @ionInput="searchbarInput($event)"></ion-searchbar>
 
     </ion-header>
   
@@ -22,7 +22,7 @@
             @ionChange="checkboxChange($event)"
           >{{ item.text }}</ion-checkbox>
         </ion-item>
-        <ion-item class="" v-if="filteredItems.length === 0">
+        <ion-item v-if="filteredItems.length === 0">
             <ion-label class="ion-text-center">
                 {{ t('labels.no_item') }}
             </ion-label>
@@ -100,8 +100,17 @@
 </script>
 
 <style scoped>
-ion-searchbar.custom {
-  --background: var(--ion-color-dark);
+ion-searchbar.custom-search {
   --border-radius: 12px;
+}
+.ion-palette-dark ion-searchbar.custom-search {
+  --background: var(--ion-color-dark-shade);
+  --border-radius: 12px;
+}
+.ion-palette-dark ion-checkbox::part(container) {
+  border: 1px solid var(--ion-color-dark-tint);
+  --checkbox-background-checked: var(--ion-color-light);
+  --checkmark-width: 5px;
+  --checkmark-color: var(--color-black)
 }
 </style>

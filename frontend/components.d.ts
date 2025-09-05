@@ -19,6 +19,7 @@ declare module 'vue' {
     Dashboard: typeof import('./src/components/icons/Dashboard.vue')['default']
     Document: typeof import('./src/components/icons/Document.vue')['default']
     Input: typeof import('./src/components/Input.vue')['default']
+    LoadingToSuccess: typeof import('./src/components/LoadingToSuccess.vue')['default']
     MediaIcon: typeof import('./src/components/icons/MediaIcon.vue')['default']
     MemoIcon: typeof import('./src/components/icons/MemoIcon.vue')['default']
     NewTicket: typeof import('./src/components/icons/NewTicket.vue')['default']

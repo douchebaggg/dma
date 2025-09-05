@@ -100,8 +100,8 @@ ion-tab-button {
   }
 ion-modal {
 	--border-radius: 8px;
+	--max-width: 80dvw
 }
-
 ion-datetime-button::part(native){
   width: 100%;
   font-size: 14px;
@@ -117,4 +117,23 @@ ion-datetime-button::part(native){
   padding-left: 1rem;
   outline: none;
   border: solid 1px grey;
+}
+#select{
+  border-radius: 8px;
+  margin-top: 2px;
+  padding: 4px 0px 4px 16px;
+  outline: none;
+  border: solid 1px grey;
+}
+.ion-palette-dark option {
+	background-color: #222428;
+}
+.alert-wrapper.sc-ion-alert-md {
+	border-radius: 8px;
+}
+.ion-palette-dark .sc-ion-textarea-md-h {
+	--highlight-color-focused: var(--ion-color-light)
+}
+.ion-palette-dark .sc-ion-input-md-h{
+	--highlight-color-focused: var(--ion-color-light)
 }
