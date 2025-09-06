@@ -240,7 +240,7 @@ const selectDoctype = async (doctype?: string) => {
 
   //map to full doctype to get child table data
   basketList.value = await Promise.all(
-    getBasket.map(async (doc) => {
+    getBasket.map(async (doc:any) => {
       const basketPO = await db.getDoc('Basket Entry', doc.name);
       return {
         name: doc.name,
@@ -318,7 +318,7 @@ const saveData = async () => {
 	const [docNameFromSelector, selectWorkOrder] = doctypeSelector.value.split("|");
 	const currentDoc = await db.getDoc("Basket Entry", docNameFromSelector);
 	const baskets_table = currentDoc.baskets || [];
-
+	const currentBaskets = (currentDoc.baskets || []).length
 	const latestBasketNo = baskets_table.length > 0 
       ? Math.max(...baskets_table.map((basket:any)=> basket.basket_no)) + 1 
       : 1; 
@@ -338,13 +338,13 @@ const saveData = async () => {
     const doc = await db.updateDoc("Basket Entry", docNameFromSelector, {
 		baskets: baskets_table,
     });
-	isSave = true
-	if(isSave){
+	const updateBaskets = (currentDoc.baskets || []).length
+	if(updateBaskets > currentBaskets){
 		showModal.value = true
         await new Promise((resolve) => setTimeout(resolve, 50))
         loadingSuccessRef.value?.showAnimation()
 		setTimeout(() => {
-			displayDoctype.value = 1; // Set response to be displayed
+			displayDoctype.value = doc
 			currentPage.value = 1;
 		}, 1200);
 	}

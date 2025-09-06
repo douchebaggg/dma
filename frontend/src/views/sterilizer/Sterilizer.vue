@@ -16,7 +16,7 @@
 		<div class="input-container m-4">
 			<div class=" flex justify-center">
 				<p class="py-5 text-sm">{{t('pallets.date_select')}}</p>
-				<ion-datetime-button class="ion-padding " datetime="date"></ion-datetime-button>
+				<ion-datetime-button class="ion-padding " datetime="date" v-model="dateButton"></ion-datetime-button>
 				<ion-modal :keep-contents-mounted="true">
 					<ion-datetime :locale="getLocal()" presentation="date" id="date" :multiple="true" v-model="dateValue"></ion-datetime>
 				</ion-modal>
@@ -117,7 +117,6 @@ import { frappeSDK } from "@/utils/frappeSDK";
 import LoadingToSuccess from "@/components/LoadingToSuccess.vue";
 const showModal = ref(false)
 const loadingSuccessRef = ref<InstanceType<typeof LoadingToSuccess> | null>(null)
-let isSave = ref(false)
 const { t } = useI18n()
 const router = useRouter()
 const { db, call } = frappeSDK()
@@ -127,6 +126,7 @@ const basketList = ref<any>([])
 const workOrderList = ref<any>([])
 const basketTable = ref<any>([])
 const dateValue = ref<any>(null)
+const dateButton = ref<any>(null)
 const doctypeSelector = ref<any>(workOrderList.value[0] || "|")
 const sterilizerList = ref<any>([])
 const sterilizerSelector = ref<any>(sterilizerList.value[0])
@@ -367,11 +367,6 @@ const saveData = async () => {
 		if(updateBaskets.value.length === 0) {
 			console.log("document is not save")
 		} else {
-			isSave.value = true
-		}
-		if (isSave.value === true){
-			console.log("doctype update success", isSave.value)
-
 			showModal.value = true
 			await new Promise((resolve) => setTimeout(resolve, 50))
 			loadingSuccessRef.value?.showAnimation()
@@ -385,10 +380,11 @@ const saveData = async () => {
 	}
 }
 const clearData = () => {
-	isSave.value = false
-	dateValue.value = getDate.value
+	const today = new Date().toISOString().split("T")[0];
 	sterilizerSelector.value = sterilizerList.value[0]
 	roundSelector.value = roundList.value[0]
+	dateValue.value = [today]
+	console.log(dateValue.value)
 }
 const getDate = computed(() => {
   if (!dateValue.value || dateValue.value.length === 0) {
@@ -433,9 +429,6 @@ watch(doctypeSelector, (newDoctype) => {
 	selectSterilizer(newDoctype);
   }
 });
-watch(roundSelector, (val)=>{
-	console.log(roundSelector.value)
-})
 onMounted(() => {
   	selectDoctype(doctypeSelector.value);
 });
