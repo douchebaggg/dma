@@ -41,7 +41,7 @@
 					>
 						<ion-select-option v-for="ster in sterilizerList" 
 						:key="ster.id "
-						:value="`${ster.name}/${roundSelector.value}`">
+						:value="`${ster.name}`">
 						{{ ster.name }}
 						</ion-select-option>
 					</ion-select>
@@ -54,7 +54,7 @@
 					fill="outline">
 					<ion-select-option v-for="round in roundList" 
 						:key="round.id "
-						:value="round.name">
+						:value="round.value">
 						{{ round.name }}
 						</ion-select-option>
 					</ion-select>
@@ -117,7 +117,7 @@ import { frappeSDK } from "@/utils/frappeSDK";
 import LoadingToSuccess from "@/components/LoadingToSuccess.vue";
 const showModal = ref(false)
 const loadingSuccessRef = ref<InstanceType<typeof LoadingToSuccess> | null>(null)
-let isSave = false
+let isSave = ref(false)
 const { t } = useI18n()
 const router = useRouter()
 const { db, call } = frappeSDK()
@@ -138,16 +138,16 @@ const selectCode = ref<string[]>([]);
 const selectCodeText = computed(() => `${selectCode.value.length} ${t('labels.items')}`);
 
 roundList.value = [
-	{ id: 1, name: "1" },
-	{ id: 2, name: "2" },
-	{ id: 3, name: "3" },
-	{ id: 4, name: "4" },
-	{ id: 5, name: "5" },
-	{ id: 6, name: "6" },
-	{ id: 7, name: "7" },
-	{ id: 8, name: "8" },
-	{ id: 9, name: "9" },
-	{ id: 10, name: "10" },
+	{ id: 1, name: "1",value:"01" },
+	{ id: 2, name: "2",value:"02" },
+	{ id: 3, name: "3",value:"03" },
+	{ id: 4, name: "4",value:"04" },
+	{ id: 5, name: "5",value:"05" },
+	{ id: 6, name: "6",value:"06" },
+	{ id: 7, name: "7",value:"07" },
+	{ id: 8, name: "8",value:"08" },
+	{ id: 9, name: "9",value:"09" },
+	{ id: 10, name: "10",value:"10" },
 ];
 const customActionSheet = {
 	header: t('sterilizer.round'),
@@ -308,7 +308,7 @@ const updateSelectedCodes = async (selectedValues: string[]) => {
 			palletized_qty: item.palletized_qty,
 			is_palletized: item.is_palletized,
 			is_sterilized: 1,
-			sterilizer_no: sterilizerSelector.value,
+			sterilizer_no: `${sterilizerSelector.value}/${roundSelector.value}`,
 			posting_date: item.posting_date,
 			net_qty: item.net_qty || item.qty,
 			available_qty: item.available_qty || item.qty, 
@@ -333,8 +333,7 @@ const updateSelectedCodes = async (selectedValues: string[]) => {
 //save
 const saveData = async () => {
 	try {
-		const updateBaskets = ref<any>()
-		const sterilizerName = sterilizerSelector.value;
+		let updateBaskets = ref<any>([])
 		const groupedByDocname = sterilizerUpdate.value.reduce((acc: any, item: any) => {
 		if (!acc[item.doc_name]) acc[item.doc_name] = [];
 		acc[item.doc_name].push(item);
@@ -353,7 +352,7 @@ const saveData = async () => {
 				...baskets_table[index],
 				...newBasket,
 				is_sterilized: 1,
-				sterilizer_no: sterilizerName,
+				sterilizer_no: `${sterilizerSelector.value}/${roundSelector.value}`,
 			};
 			}
 		});
@@ -364,20 +363,30 @@ const saveData = async () => {
 			baskets: baskets_table,
 		});
 		}
-		isSave = true
-		if(isSave){
+		console.log(updateBaskets.value)
+		if(updateBaskets.value.length === 0) {
+			console.log("document is not save")
+		} else {
+			isSave.value = true
+		}
+		if (isSave.value === true){
+			console.log("doctype update success", isSave.value)
+
 			showModal.value = true
-          	await new Promise((resolve) => setTimeout(resolve, 50))
-          	loadingSuccessRef.value?.showAnimation()
+			await new Promise((resolve) => setTimeout(resolve, 50))
+			loadingSuccessRef.value?.showAnimation()
+
 			setTimeout(() => {
 				displaySterilizer.value = updateBaskets.value
-			}, 1200);
+			}, 1200)
 		}
 	} catch (error) {
 		console.error("Error saving data:", error);
 	}
 }
 const clearData = () => {
+	isSave.value = false
+	dateValue.value = getDate.value
 	sterilizerSelector.value = sterilizerList.value[0]
 	roundSelector.value = roundList.value[0]
 }
@@ -424,7 +433,9 @@ watch(doctypeSelector, (newDoctype) => {
 	selectSterilizer(newDoctype);
   }
 });
-
+watch(roundSelector, (val)=>{
+	console.log(roundSelector.value)
+})
 onMounted(() => {
   	selectDoctype(doctypeSelector.value);
 });
