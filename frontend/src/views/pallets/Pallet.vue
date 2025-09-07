@@ -134,7 +134,7 @@ import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import { frappeSDK } from "@/utils/frappeSDK";
 import AppTypeahead from "@/components/AppTypeaheadCustom.vue";
-import { palletPrint } from "@/utils/PalletPrint";
+import { palletPrint } from "@/utils/printFormat";
 import { TextInput } from "frappe-ui/src/components/TextInput";
 import LoadingToSuccess from "@/components/LoadingToSuccess.vue";
 const showModal = ref(false)
