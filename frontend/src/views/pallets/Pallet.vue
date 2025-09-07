@@ -112,7 +112,7 @@
 		<ion-modal :is-open="showModal" backdrop-dismiss="false" animated="true">
 			<LoadingToSuccess 
 			v-model="showModal"
-			@confirmed="clearData"
+			@confirmed="clearBasketsSelect"
 			ref="loadingSuccessRef" />
 		</ion-modal>
 		</ion-card>
@@ -139,7 +139,6 @@ import { TextInput } from "frappe-ui/src/components/TextInput";
 import LoadingToSuccess from "@/components/LoadingToSuccess.vue";
 const showModal = ref(false)
 const loadingSuccessRef = ref<InstanceType<typeof LoadingToSuccess> | null>(null)
-let isSave = false
 const router = useRouter();
 const { t } = useI18n();
 const { db, call } = frappeSDK();
@@ -391,23 +390,20 @@ const saveData = async () => {
 			size: Number(size.value)
 		}
 	console.log("Args to backend", args)
+	showModal.value = true
+    await new Promise((resolve) => setTimeout(resolve, 500))
+    loadingSuccessRef.value?.showAnimation()
+	setTimeout(() => {
+		if(displayPallet){
+			tableHtml.value = true
+			console.log(tableHtml.value)
+		}
+	}, 1000);
 	const response = await call.post('thai.thai.doctype.palletizing_entry.palletizing_entry.set_required_products_mobile', args)
 	console.log("Response from set_required_products", response)
 	//get full doctype
 	const getCurrentPallet = await db.getDoc('Palletizing Entry', palletizingEntry.name);
-	isSave = true
-	if(isSave){
-		showModal.value = true
-        await new Promise((resolve) => setTimeout(resolve, 50))
-        loadingSuccessRef.value?.showAnimation()
-		setTimeout(() => {
-			displayPallet.value = getCurrentPallet
-			if(displayPallet){
-				tableHtml.value = true
-				console.log(tableHtml.value)
-			}
-		}, 1200);
-	}
+	displayPallet.value = getCurrentPallet
 	await fetchLatestPallet();
 	await selectDoctype(); 
 
@@ -613,6 +609,9 @@ const clearData = () => {
   toTime.value = "";
   palletName.value = "";
   tableHtml.value = false;
+}
+const clearBasketsSelect = () => {
+	selectCode.value = [];
 }
 </script>
 <style>

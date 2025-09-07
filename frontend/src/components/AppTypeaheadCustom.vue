@@ -26,7 +26,10 @@
           >
             {{ item.text }}
           </ion-checkbox>
-<div v-if="workingSelectedValues.includes(item.value)" class="mt-2 mb-2">
+<div 
+  v-if="workingSelectedValues.includes(item.value) && inputValues[item.value]" 
+  class="mt-2 mb-2"
+>
   <div class="grid grid-cols-6 content-center gap-5 text-center w-fit max-[620px]:grid-cols-3">
     <Input
       v-for="input in inputConfigs"
