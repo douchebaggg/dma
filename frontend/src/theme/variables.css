@@ -108,6 +108,17 @@ ion-datetime-button::part(native){
   border: solid 1px grey;
   background-color: #ffffff;
 }
+ion-alert .alert-head.sc-ion-alert-md, .alert-message.sc-ion-alert-md{
+	text-align: center;
+}
+ion-alert .alert-button.sc-ion-alert-md:hover {
+	background-color: #0369a1
+}
+ion-alert .alert-button.sc-ion-alert-md {
+	border-radius: 8px;
+	background-color: rgb(59 130 246);
+	color: white;
+}
 .ion-palette-dark ion-datetime-button::part(native){
   background-color: #222428; /* dark mode */
 }
