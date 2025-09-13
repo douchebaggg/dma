@@ -15,7 +15,7 @@ export const palletPrint = async (docname: string, t: (key: string) => string) =
   }
 
 setTimeout(() => {
-    const printUrl = `http://${urlPort}/api/method/frappe.utils.print_format.download_pdf?doctype=${docType}&name=${docname}&format=${printFormat}&no_letterhead=0`;
+    const printUrl = `${urlPort}/printview?doctype=${docType}&name=${docname}&format=${printFormat}&no_letterhead=0`;
     const printWindow = window.open(printUrl, "_blank");
   if (printWindow) {
     printWindow.focus();
@@ -42,14 +42,19 @@ export const seamPrint = async (docname: string, t: (key: string) => string) => 
   }
 
 setTimeout(() => {
-    const printUrl = `http://${urlPort}/api/method/frappe.utils.print_format.download_pdf?doctype=${docType}&name=${docname}&format=${printFormat}&no_letterhead=0`;
-    const printWindow = window.open(printUrl, "_blank");
+  const printUrl = `${urlPort}/printview?doctype=${docType}&name=${docname}&format=${printFormat}&no_letterhead=0`;
+  const printWindow = window.open(printUrl, "_blank");
+
   if (printWindow) {
-    printWindow.focus();
-    printWindow.print();
-  } 
-  else {
+    const interval = setInterval(() => {
+      if (printWindow.document.readyState === "complete") {
+        clearInterval(interval);
+        printWindow.focus();
+        printWindow.print();
+      }
+    }, 500);
+  } else {
     console.error("Failed to open PDF window");
   }
-}, 500); 
+}, 500);
 };
