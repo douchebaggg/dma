@@ -1,9 +1,8 @@
 <template>
 	<div class="flex flex-col items-center justify-center m-4">
-		<!-- Success Lottie -->
 		<DotLottieVue
 			v-if="isLoading"
-			src="/assets/animation/Success.lottie"
+			src="/assets/dma/frontend/lottie/Success.lottie"
 			autoplay
 			:loop="false"
 			style="width: 64px; height: 64px"
@@ -30,7 +29,7 @@ import { DotLottieVue } from "@lottiefiles/dotlottie-vue"
 
 const { t } = useI18n()
 
-// รับค่า v-model
+
 const props = defineProps<{ modelValue: boolean }>()
 const emit = defineEmits<{
   (e: "update:modelValue", value: boolean): void
@@ -40,17 +39,16 @@ const emit = defineEmits<{
 const isLoading = ref(false)
 const isSuccess = ref(false)
 
-// ฟังก์ชันโชว์ animation
 const showAnimation = async () => {
   try {
     isLoading.value = true
     isSuccess.value = false
-    emit("update:modelValue", true) // เปิด modal
+    emit("update:modelValue", true) 
 
     setTimeout(() => {
       isSuccess.value = true
       isLoading.value = false
-    }, 1100)
+    }, 1500)
   } catch (err) {
     console.error(err)
     emit("update:modelValue", false)
@@ -62,6 +60,5 @@ const closeModal = () => {
   emit("confirmed")
 }
 
-// export method ออกไปใช้ข้างนอกได้
 defineExpose({ showAnimation })
 </script>

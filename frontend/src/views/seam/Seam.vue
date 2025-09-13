@@ -1,3 +1,4 @@
+
 <template>
   <ion-page>
       <ion-header>
@@ -12,7 +13,7 @@
         <h2 class="text-center text-2xl font-semibold mb-4">{{ t('seam.seam_entry') }}</h2>
       <!-- Card กรอบหลัก -->
       <ion-card class="rounded-xl m-2 pb-14 border-1 border-zinc-500 ">     
-        <form @submit.prevent="onSubmit" class="ion-margin ion-padding" novalidate>
+        <div class="ion-margin ion-padding" novalidate>
           <!-- Date & Time -->
           <div class="grid grid-cols-2 gap-4">
           <div>
@@ -100,37 +101,51 @@
            <h2 class="text-center">{{ t('seam.seam_enter') }}</h2>
           <div class=" grid grid-cols-4 gap-4 text-center max-sm:grid-cols-2">
             <div v-for="field in numericFields" :key="field.name">
-              <!--<label :for="field.name" class="text-sm mt-2 font-medium block">{{ field.label }}</label>-->
-              <ion-label :for="field.name" class=" max-sm:text-xs">{{ field.label }}</ion-label>
+              <ion-label :for="field.name" class="max-sm:text-xs">
+                {{ field.label }}
+              </ion-label>
+              <div v-if="!['actualOverlap','percentOverlap','percentBodyHookButting'].includes(field.name)">
+                <Input
+                  :id="field.name"
+                  type="number"
+                  v-model.number="form[field.name]"
+                  :step="field.step"
+                  :min="field.min"
+                  :max="field.max"
+                  :placeholder="field.placeholder"
+                  :class="inputClass(errors[field.name])"
+                  style="outline:none; padding-left:1rem; border:solid 1px grey;"
+                />
+                <p v-if="errors[field.name]" class="text-red-500 text-sm mt-2">
+                  {{ errors[field.name] }}
+                </p>
+              </div>
               <Input
+                v-else
                 :id="field.name"
                 type="number"
-                v-model.number="form[field.name]"
-                :step="field.step"
-                :min="field.min"
-                :max="field.max"
+                disabled
                 :placeholder="field.placeholder"
-                :class="inputClass(errors[field.name])"
-                style="outline: none; padding-left: 1rem; border: solid 1px grey;"
+                :value="getComputedValue(field.name)"
+                :class="inputClass(null)"
+                style="outline:none; padding-left:1rem; border:solid 1px grey;"
               />
-              <p v-if="errors[field.name]" class="text-red-500 text-sm mt-2">{{ errors[field.name] }}</p>
             </div>
           </div>
 
           <!-- Wrinkle Rating -->
           <div class="py-4">
-            <Input
+            <ion-label class="mb-1 block text-sm">{{ t('seam.wrinkle_rating') }}</ion-label>
+            <ion-select
               id="wrinkleRating"
-              type="text"
               v-model="form.wrinkleRating"
-              :class="inputClass(errors.wrinkleRating)"
-              :label="t('seam.wrinkle_rating')"
-              maxlength="1"
-              pattern="[PpNn]"
-              placeholder="P or N"
-              style="outline: none; padding-left: 1rem; border: solid 1px grey;"
-            />
-            <p v-if="errors.wrinkleRating" class="text-red-500 text-sm mt-2">{{ errors.wrinkleRating }}</p>
+              interface="popover"
+              placeholder="Select P or N"
+              fill="outline"
+            >
+              <ion-select-option value="P">P</ion-select-option>
+              <ion-select-option value="N">N</ion-select-option>
+            </ion-select>
           </div>
 
           <!-- Comment -->
@@ -146,13 +161,18 @@
             <Button 
               class=" rounded-lg  text-white hover:bg-[#383838] bg-[#171717] w-20"
               :variant="'solid'"
-              type="submit"
+              @click="onSubmit"
               size="md"> {{ t("button.Save") }}</Button>
+            <Button 
+              class=" rounded-lg  text-white hover:bg-[#383838] bg-[#171717] w-20"
+              :variant="'solid'"
+              @click="seamPrint(seamDocname,t)"
+              size="md">{{ t("button.Print") }}</Button>
             <Button
-            class=" rounded-lg text-white hover:bg-red-800 bg-red-700 w-20"
-            :variant="'solid'"
-            @click="onCancel"
-            size="md" >{{ t("button.Cancel") }}</Button>
+              class=" rounded-lg text-white hover:bg-red-800 bg-red-700 w-20"
+              :variant="'solid'"
+              @click="onCancel"
+              size="md" >{{ t("button.Cancel") }}</Button>
          </div>
           <ion-modal :is-open="showModal" backdrop-dismiss="false" animated="true">
             <LoadingToSuccess 
@@ -167,7 +187,7 @@
               <pre class="whitespace-pre-wrap text-sm mt-2">{{ JSON.stringify(form, null, 2) }}</pre>
             </div>
           </transition>
-        </form>
+        </div>
       </ion-card>
     </ion-content>
   </ion-page>
@@ -186,7 +206,7 @@ import { TextInput } from 'frappe-ui/src/components/TextInput'
 import Select from 'frappe-ui/src/components/Select/Select.vue'
 import { seamerList } from './seamerList'
 import LoadingToSuccess from "@/components/LoadingToSuccess.vue"
-
+import { seamPrint } from '@/utils/printFormat'
 const seamSpecList = ref<any>([])
 const seamSpec = ref(seamSpecList.value[0])
 const selectSeamNo = ref<string>('')
@@ -198,11 +218,13 @@ let defaultQC = ref({})
 let checkDoubleSeamDoc = false
 let description = ''
 const showModal = ref(false)
+const seamDocname = ref<string>('')
+let disablePrint = ref(true)
 const loadingSuccessRef = ref<InstanceType<typeof LoadingToSuccess> | null>(null)
 const getCurrentTime = () => {
-  const d = new Date();
-  const hh = String(d.getHours()).padStart(2, "0");
-  const mm = String(d.getMinutes()).padStart(2, "0");
+const d = new Date();
+const hh = String(d.getHours()).padStart(2, "0");
+const mm = String(d.getMinutes()).padStart(2, "0");
   return `${hh}:${mm}`;
 }
 const getDate = computed(() => {
@@ -271,13 +293,13 @@ const inputClass = (error: any) =>
 
 // Get Process order
 const getProcessOrder = async () => {
-  	const getBasket = await db.getDocList('Process Order',{
+  	const getProcessOrder = await db.getDocList('Process Order',{
 		fields: ['name','process_name', 'dsi', 'qty','material_transferred_for_manufacturing','produced_qty'],
 		limit: 10, 
     	filters: [['custom_actual_start_date','=', getDate.value],['status','=','In Process']],
 		orderBy: { field: 'modified',order: 'desc',} 
   })
-  processList.value = getBasket.map(item => ({
+  processList.value = getProcessOrder.map(item => ({
     ...item,
     label: item.process_name, 
     value: `${item.name}|${item.process_name}|${item.dsi}`
@@ -295,7 +317,6 @@ const getSeamSpec = async () => {
   seamSpecList.value = allSeamSpec
   //console.log(seamSpecList.value)
 }
-
 // Submit
 const  onSubmit = async () => {
   /*errors.date = !form.date ? t('seam.required_field') : ''
@@ -323,7 +344,6 @@ const  onSubmit = async () => {
     //split value from canCode to get PO docname, can code, double seam docname
     const [processDocName,canCode,dsiName] = form.canCode.split("|"); 
     const processItem = processList.value.find((p:any) => p.process_name.trim() === canCode.trim());
-    
     if(checkDoubleSeamDoc === true) {
       const doc = await db.createDoc('Double Seam Can Inspection', {
       //Main Field
@@ -335,6 +355,7 @@ const  onSubmit = async () => {
       dia_and_height_of_can: form.canDIA,
       tb: form.tb,
       te: form.te,
+      supplier: form.supplier,
       //Seam Workder Table
       work_order: [{
         process_order: processDocName,
@@ -348,33 +369,62 @@ const  onSubmit = async () => {
       default_qc: [defaultQC.value],
       // QC Table
       quality_control_report: [
-        {
-          doctype: 'Quality Control Report',
-          countersink_depth_cd: form.countersinkDepth,
-        },
-      ],
+      {
+        doctype: 'Quality Control Report',
+        countersink_depth_cd: form.countersinkDepth,
+        seam_length_sl: form.seamLength,
+        sea_thinckness_st: form.seamThickness,
+        body_hook_bh: form.bodyHook,
+        cover_hook_ch: form.coverHook,
+        actual_overlab: form.actualOverlap,
+        overlab_ol: form.percentOverlap,
+        body_hook_butting_bh: form.percentBodyHookButting,
+        comment: form.comment,
+        wrinkle_rating: form.wrinkleRating,
+      },
+    ],
+
     })
-    console.log('Create doctype success', doc.name)
+    console.log('Create doctype success', doc)
 
     const updatePO = await db.updateDoc('Process Order',processDocName,{
       dsi: doc.name
     });
     console.log("Process Order Updated",updatePO)
+    seamDocname.value = doc.name
+    if(doc.quality_control_report.length > 0) {
+        showModal.value = true
+        await new Promise((resolve) => setTimeout(resolve, 50))
+        loadingSuccessRef.value?.showAnimation()  
+    }
     } else {
       const getDsi = await db.getDoc('Double Seam Can Inspection',dsiName)
       const qcTable = getDsi.quality_control_report || []
+      const currentData = (getDsi.quality_control_report || []).length
+      seamDocname.value = dsiName
       qcTable.push({
         countersink_depth_cd: form.countersinkDepth,
+        seam_length_sl: form.seamLength,
+        sea_thinckness_st: form.seamThickness,
+        body_hook_bh: form.bodyHook,
+        cover_hook_ch: form.coverHook,
+        actual_overlab: form.actualOverlap,
+        overlab_ol: form.percentOverlap,
+        body_hook_butting_bh: form.percentBodyHookButting,
+        comment: form.comment,
+        wrinkle_rating: form.wrinkleRating,
       })
       const updateDsi = await db.updateDoc('Double Seam Can Inspection',dsiName,{
         quality_control_report: qcTable
       })
-      if(updateDsi){
+      const updateData = (updateDsi.quality_control_report || []).length
+      if(updateData > currentData){
         //show modal
           showModal.value = true
           await new Promise((resolve) => setTimeout(resolve, 50))
           loadingSuccessRef.value?.showAnimation()
       }
+      submitted.value = true
     }
   } catch (error) {
     console.error('Cannot create doctype', error)
@@ -433,10 +483,53 @@ const clearNumericFields = () => {
     }
   })
 }
+//compute calculate  
+const actualOverlapComputed = computed(() => {
+  if (
+    form.bodyHook != null &&
+    form.coverHook != null &&
+    form.seamThickness != null
+  ) {
+    return +(form.coverHook + form.bodyHook + (1.1 * Number(form.te)) - form.seamLength).toFixed(2)
+  }
+  return null
+})
+
+const percentOverlapComputed = computed(() => {
+  const x = form.bodyHook + form.coverHook + 1.1 * Number(form.te) - form.seamLength;
+  const y = form.seamLength - (2.2 * Number(form.te) + 1.1 * Number(form.tb));
+  if (
+    actualOverlapComputed.value != null &&
+    form.bodyHook != null &&
+    form.coverHook != null
+  ) {
+    return +(Math.round((x / y) * 100))
+  }
+  return null
+})
+
+const percentBodyHookButtingComputed = computed(() => {
+  const num1 = form.bodyHook - 1.1 * Number(form.tb);
+  const num2 = form.seamLength - (2.2 * Number(form.te) + 1.1 * Number(form.tb));
+  if (actualOverlapComputed.value != null && form.seamThickness) {
+    return +(Math.round((num1 / num2) * 100))
+  }
+  return null
+})
+
+const getComputedValue = (name: string) => {
+  switch (name) {
+    case 'actualOverlap': return actualOverlapComputed.value
+    case 'percentOverlap': return percentOverlapComputed.value
+    case 'percentBodyHookButting': return percentBodyHookButtingComputed.value
+    default: return ''
+  }
+}
 //on mounted
 onMounted(() => {
   getSeamSpec()
 });
+
 //watch date selector 
 watch(dateValue, (newDate) => {
   if (newDate) {
@@ -444,17 +537,22 @@ watch(dateValue, (newDate) => {
     getLocal()
   }
 });
-watch(canCodeSelect, async (newValue) => {
+watch(canCodeSelect, async (newValue) => {    
+  if (!newValue || typeof newValue !== "string") {
+    return
+  }
   const [processDocname, processName] = newValue.split("|")
-  const getItem = await db.getDoc('Item', processName)
-  const getDsi = await db.getDoc('Process Order',processDocname)
-  description = getItem.description
-  form.canCode = newValue
-  if(!getDsi.dsi) {
-    checkDoubleSeamDoc = true
-    console.log(checkDoubleSeamDoc,"dsi field is :", getDsi.dsi, "need to update" )
-  } else {
-    console.log(form.canCode)
+  try {
+    const getItem = await db.getDoc('Item', processName)
+    const getDsi = await db.getDoc('Process Order', processDocname)
+    description = getItem.description
+    form.canCode = newValue
+    if (!getDsi.dsi) {
+      checkDoubleSeamDoc = true
+      console.log(checkDoubleSeamDoc,"dsi field is :", getDsi.dsi, "need to update" )
+    }
+  } catch (err) {
+    console.error("Error fetching process/order:", err)
   }
 })
 watch(selectSeamNo, (val) => {
@@ -470,6 +568,7 @@ watch(seamSpec, (newValue) => {
   form.te = selectedSpec.te
   form.canSize = selectedSpec.can_size_oz
   form.canDIA = selectedSpec.can_size
+  form.supplier = selectedSpec.supplier
   defaultQC.value = selectedSpec
   numericFields.splice(0, numericFields.length,
     {
@@ -513,5 +612,54 @@ watch(seamSpec, (newValue) => {
       ...parseRange(selectedSpec.df_bh_percent, true)
     }
   )
+    clearNumericFields()
 })
+// set value of after compute
+watch(
+  [actualOverlapComputed, percentOverlapComputed, percentBodyHookButtingComputed],
+  ([actual, percentOL, percentBH]) => {
+    form.actualOverlap = actual
+    form.percentOverlap = percentOL
+    form.percentBodyHookButting = percentBH
+
+    //compare with the default and set wrinkle
+    const actualDefault = numericFields.find(f => f.name === 'actualOverlap')?.min
+    const overlapDefault = numericFields.find(f => f.name === 'percentOverlap')?.min
+    const bhbDefault = numericFields.find(f => f.name === 'percentBodyHookButting')?.min
+
+    const actualOverLap = actualOverlapComputed.value
+    const overlap = percentOverlapComputed.value
+    const bhb = percentBodyHookButtingComputed.value
+
+    if (
+      actualOverLap != null &&
+      overlap != null &&
+      bhb != null &&
+      actualDefault != null &&
+      overlapDefault != null &&
+      bhbDefault != null
+    ) {
+      if (actualOverLap >= actualDefault && overlap >= overlapDefault && bhb >= bhbDefault) {
+        form.wrinkleRating = "P"
+      } else {
+        form.wrinkleRating = "N"
+      }
+    } else {
+      form.wrinkleRating = null
+    }
+  },
+  { immediate: true }
+)
+watch(seamSpecList, (newList) => {
+  if (newList.length > 0) {
+    seamSpec.value = newList[0]
+  }
+})
+
+watch(processList, (newList) => {
+  if (newList.length > 0) {
+    canCodeSelect.value = newList[0]
+  }
+})
+
 </script>

@@ -614,7 +614,7 @@ const clearBasketsSelect = () => {
 	selectCode.value = [];
 }
 </script>
-<style>
+<style scoped>
 
 #select-code:hover{
 	cursor: pointer;
@@ -622,17 +622,6 @@ const clearBasketsSelect = () => {
 ion-checkbox::part(container) {
 	border-radius: 4px;
 	border: 1px solid #171717;
-  }
-.alert-head.sc-ion-alert-md, .alert-message.sc-ion-alert-md{
-	text-align: center;
-}
-.alert-button.sc-ion-alert-md {
-	border-radius: 8px;
-	background-color: #0ea5e9;
-	color: white;
-}
-.alert-button.sc-ion-alert-md:hover {
-	background-color: #0369a1
 }
 .table{
 	margin: 16px;
