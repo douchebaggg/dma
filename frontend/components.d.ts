@@ -26,6 +26,7 @@ declare module 'vue' {
     PalletsIcon: typeof import('./src/components/icons/PalletsIcon.vue')['default']
     PhotoAttach: typeof import('./src/components/PhotoAttach.vue')['default']
     Profile: typeof import('./src/components/icons/Profile.vue')['default']
+    QrScan: typeof import('./src/components/icons/QrScan.vue')['default']
     Rescue: typeof import('./src/components/icons/Rescue.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
