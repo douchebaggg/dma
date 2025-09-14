@@ -16,7 +16,7 @@
 		<ion-tab-button
 			class="rounded-r-md mb-4"
 			tab="DocTab"
-			href="/tabs/docType"
+			href="/tabs/doctype"
 		>
 		<DocumentIcon
 		:class="
@@ -38,6 +38,19 @@
 			/>
 			<p class=" py-1 ">{{ t("nav.account") }}</p>
 		</ion-tab-button>
+		<ion-tab-button
+			class="rounded-r-md mb-4"
+			tab="QRScanTab"
+			href="/tabs/qrscaner"
+		>
+			<QrScan
+				:class="
+					route.path == '/tabs/qrscaner' ? 'text-gray-600' : 'text-gray-500'
+				"
+				class="h-8 w-8"
+			/>
+			<p class=" py-1 ">QR Scan</p>
+		</ion-tab-button>
 	</ion-tab-bar>
 </template>
 
@@ -48,6 +61,7 @@ import DashboardIcon from "@/components/icons/Dashboard.vue"
 import ProfileIcon from "@/components/icons/Profile.vue"
 import { IonTabBar, IonTabButton } from "@ionic/vue"
 import DocumentIcon from "../icons/Document.vue"
+import QrScan from "../icons/QrScan.vue"
 const route = useRoute()
 const { t } = useI18n()
 </script>

@@ -37,10 +37,14 @@ const routes: Array<RouteRecordRaw> = [
 				//meta: { requiresAuth: true }
 			},
 			{
-				path: "docType",
+				path: "doctype",
 				component:() => import("@/views/DocType.vue"),
 				//meta: { requiresAuth: true }
 			},
+			{
+				path: "qrscaner",
+				component: () => import("@/views/QrScanner.vue")
+			}
 		],
 	},
 	...accountRoutes,

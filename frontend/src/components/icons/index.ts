@@ -12,6 +12,7 @@ import Media from "@/components/icons/MediaIcon.vue"
 import Document from "./Document.vue"
 import Selling from "./Selling.vue"
 import Buying from "./Buying.vue"
+import QrScan from "./QrScan.vue"
 export const FrappeIcons = {
 	BeneficiaryIcon,
 	RescueIcon,
@@ -26,5 +27,6 @@ export const FrappeIcons = {
 	Pallets,
 	Media,
 	Buying,
-	Selling
+	Selling,
+	QrScan
 }
