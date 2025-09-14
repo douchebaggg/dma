@@ -620,20 +620,11 @@ const clearBasketsSelect = () => {
 #select-code:hover{
 	cursor: pointer;
 }
-ion-checkbox::part(container) {
-	border-radius: 4px;
-	border: 1px solid #171717;
-}
 .table{
 	margin: 16px;
 	width: 90dvw;
 }
 .custom {
 	border: solid 1px ;
-}
-.ion-palette-dark ion-checkbox::part(container) {
-  border: 1px solid var(--ion-color-dark-tint);
-  --checkbox-background-checked: var(--ion-color-light);
-  --checkmark-color: var(--color-black)
 }
 </style>

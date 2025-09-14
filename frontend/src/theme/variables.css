@@ -82,7 +82,7 @@ http://ionicframework.com/docs/theming/ */
 	--ion-color-light-shade: #d7d8da;
 	--ion-color-light-tint: #f5f6f9;
 }
-*{
+* {
 	font-size: 16px;
 }
 ion-tab-bar {
@@ -97,7 +97,7 @@ ion-tab-button {
 	--ion-card-color:#f4f5f8;
 	--ion-card-border: solid 1px #383a3e;
 	
-  }
+}
 ion-modal {
 	--border-radius: 8px;
 	--max-width: 80dvw
@@ -147,4 +147,16 @@ ion-alert .alert-button.sc-ion-alert-md {
 }
 .ion-palette-dark ion-input{
 	--highlight-color-focused: var(--ion-color-light)
+}
+/*checkbox-custom*/
+ion-checkbox::part(container) {
+	border-radius: 4px;
+	border: 1px solid #171717;
+	padding:2px;
+}
+.ion-palette-dark ion-checkbox::part(container) {
+  border: 1px solid var(--ion-color-dark-tint);
+  --checkbox-background-checked: var(--ion-color-light);
+  --checkmark-color: var(--color-black);
+  padding:2px;
 }

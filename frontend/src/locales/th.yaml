@@ -155,3 +155,5 @@ seam:
   can_dia: ค่า DIA และ Height
   tb: ค่า TB
   te: ค่า TE
+  recheck: Recheck
+  pass: Pass

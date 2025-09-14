@@ -157,4 +157,6 @@ seam:
   can_dia: DIA & Height of Can
   tb: TB
   te: TE
+  recheck: Recheck
+  pass: Pass
 
