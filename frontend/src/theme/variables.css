@@ -142,9 +142,9 @@ ion-alert .alert-button.sc-ion-alert-md {
 .alert-wrapper.sc-ion-alert-md {
 	border-radius: 8px;
 }
-.ion-palette-dark .sc-ion-textarea-md-h {
+.ion-palette-dark ion-textarea {
 	--highlight-color-focused: var(--ion-color-light)
 }
-.ion-palette-dark .sc-ion-input-md-h{
+.ion-palette-dark ion-input{
 	--highlight-color-focused: var(--ion-color-light)
 }

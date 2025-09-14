@@ -46,7 +46,8 @@
 						</ion-select-option>
 					</ion-select>
 					<ion-input 
-					class="py-2 w-92 mt-2 max-sm:w-full" 
+					style="width: 23rem"
+					class="py-2 mt-2 max-sm:w-full" 
 					fill="outline" type="number" 
 					inputmode="numeric" :label="t('pallets.size')" label-placement="stacked"
 					v-model="size"></ion-input>
