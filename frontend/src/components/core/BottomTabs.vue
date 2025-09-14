@@ -1,7 +1,8 @@
 <template>
 	<ion-tab-bar slot="bottom" class=" pt-4 shadow-[1px_-3px_6px_0px_rgba(0,_0,_0,_0.1)]">
+		<div class=" grid grid-cols-4">
 		<ion-tab-button
-			class="rounded-l-md mb-4 "
+			class="rounded-l-md pb- "
 			tab="dashboardTab"
 			href="/tabs/dashboard"
 		>
@@ -9,9 +10,9 @@
 				:class="
 					route.path == '/tabs/dashboard' ? 'text-gray-600' : 'text-gray-500'
 				"
-				class="h-7 w-8"
+				class="h-7 w-7"
 			/>
-			<p class=" py-1">{{ t("nav.dashboard") }}</p>
+			<p class=" py-1 text-sm">{{ t("nav.dashboard") }}</p>
 		</ion-tab-button>
 		<ion-tab-button
 			class="rounded-r-md mb-4"
@@ -21,22 +22,9 @@
 		<DocumentIcon
 		:class="
 		route.path == '/tabs/docType' ? 'text-gray-600' : 'text-gray-500'"
-		class="h-8 w-8"
+		class="h-7 w-7"
 		/>
-		<p class=" py-1">{{ t("nav.document") }}</p>
-		</ion-tab-button>
-		<ion-tab-button
-			class="rounded-r-md mb-4"
-			tab="AccountTab"
-			href="/tabs/account"
-		>
-			<ProfileIcon
-				:class="
-					route.path == '/tabs/account' ? 'text-gray-600' : 'text-gray-500'
-				"
-				class="h-8 w-8"
-			/>
-			<p class=" py-1 ">{{ t("nav.account") }}</p>
+		<p class=" py-1 text-sm">{{ t("nav.document") }}</p>
 		</ion-tab-button>
 		<ion-tab-button
 			class="rounded-r-md mb-4"
@@ -47,10 +35,25 @@
 				:class="
 					route.path == '/tabs/qrscaner' ? 'text-gray-600' : 'text-gray-500'
 				"
-				class="h-8 w-8"
+				class="h-7 w-7 "
 			/>
-			<p class=" py-1 ">QR Scan</p>
+			<p class=" py-1 text-sm">QR Scan</p>
 		</ion-tab-button>
+		<ion-tab-button
+			class="rounded-r-md mb-4"
+			tab="AccountTab"
+			href="/tabs/account"
+		>
+			<ProfileIcon
+				:class="
+					route.path == '/tabs/account' ? 'text-gray-600' : 'text-gray-500'
+				"
+				class="h-7 w-7"
+			/>
+			<p class=" py-1 text-sm">{{ t("nav.account") }}</p>
+		</ion-tab-button>
+
+		</div>
 	</ion-tab-bar>
 </template>
 
